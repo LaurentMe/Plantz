@@ -1,5 +1,7 @@
 import React from 'react';
 import {Image, Text, View, StyleSheet, TextInput, TouchableOpacity} from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faUser, faLock } from '@fortawesome/free-solid-svg-icons'
 
 function Login(props) {
     return (
@@ -13,6 +15,7 @@ function Login(props) {
                 <View style={styles.inputContainer}>
                     <TextInput style={styles.inputField}>
                     </TextInput>
+                    <FontAwesomeIcon icon={faUser} color={'#26A66B'}/>
                 </View>
             </View>
             <View>
@@ -20,6 +23,7 @@ function Login(props) {
                 <View style={styles.inputContainer}>
                     <TextInput style={styles.inputField}>
                     </TextInput>
+                    <FontAwesomeIcon icon={faLock} color={'#26A66B'}/>
                 </View>
             </View>
             <TouchableOpacity>

@@ -1,0 +1,49 @@
+version: '3'
+
+networks:
+  laravel:
+
+services:
+  site:
+    build:
+      context: .
+      dockerfile: nginx.dockerfile
+    container_name: nginx4
+    ports:
+      - 8080:80
+    volumes:
+      - ./src:/var/www/html:delegated
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - laravel
+
+  mysql:
+    image: mysql:5.7.29
+    container_name: mysql4
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    ports:
+      - 3308:3306
+    environment:
+      MYSQL_DATABASE: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - laravel
+
+  php:
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    container_name: php4
+    volumes:
+      - ./src:/var/www/html:delegated
+    networks:
+      - laravel

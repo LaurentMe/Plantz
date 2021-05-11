@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlantController;
@@ -20,3 +21,4 @@ use App\Http\Controllers\PlantController;
 //});
 
 Route::get('/plants', [PlantController::class, 'index']);
+

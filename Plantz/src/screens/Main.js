@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {SafeAreaView, Text, View, StyleSheet, TextInput, TouchableHighlight} from "react-native";
+import {SafeAreaView, Text, View, StyleSheet, Dimensions, TextInput, TouchableHighlight, TouchableOpacity} from "react-native";
 import {useLogout} from "../hooks/EncryptedStorage.hook";
 import {Button, ThemeProvider} from 'react-native-elements';
 import {SearchBar} from 'react-native-elements';
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faUser, faSearch, faPlusCircle} from '@fortawesome/free-solid-svg-icons'
+import Svg, {Circle} from "react-native-svg";
 
 
 function Main({navigation}) {
@@ -18,6 +19,17 @@ function Main({navigation}) {
 
     return (
         <View style={styles.container}>
+            <View style={{position: 'absolute', width: Dimensions.get("window").width, height: Dimensions.get("window").height}}>
+                <Svg viewBox="0 0 40 40">
+                    <Circle
+                        cx="-18"
+                        cy="50"
+                        r="50"
+                        strokeWidth="2.5"
+                        fill="#26A66B"
+                    />
+                </Svg>
+            </View>
             <SafeAreaView>
                 <View style={styles.topContainer}>
                     <View style={styles.searchContainer}>
@@ -51,9 +63,9 @@ function Main({navigation}) {
                 <View style={styles.secondContainer}>
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>My Plants</Text>
-                        <TouchableHighlight>
+                        <TouchableOpacity>
                             <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#26A66B'} style={{top: 4, marginRight: 4}}/>
-                        </TouchableHighlight>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </SafeAreaView>

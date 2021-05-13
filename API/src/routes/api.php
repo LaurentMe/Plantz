@@ -20,5 +20,5 @@ use App\Http\Controllers\PlantController;
 //    return $request->user();
 //});
 
-Route::get('/plants', [PlantController::class, 'index']);
+Route::middleware('auth:sanctum')->get('/plants', [PlantController::class, 'index']);
 

@@ -59,16 +59,18 @@ function Main({navigation}) {
                             onChangeText={(text) => search(text)}
                         />
                     </View>
-                    <View
-                        style={{
-                            backgroundColor: '#ddd',
-                            padding: 7,
-                            marginRight: 20,
-                            borderRadius: 6
-                        }}
-                    >
-                        <FontAwesomeIcon size={20} icon={faUser} color={'#888'}/>
-                    </View>
+                    <TouchableOpacity>
+                        <View
+                            style={{
+                                backgroundColor: '#ddd',
+                                padding: 7,
+                                marginRight: 20,
+                                borderRadius: 6
+                            }}
+                        >
+                            <FontAwesomeIcon size={20} icon={faUser} color={'#888'}/>
+                        </View>
+                    </TouchableOpacity>
                 </View>
                 <ScrollView>
                     <View style={styles.secondContainer}>

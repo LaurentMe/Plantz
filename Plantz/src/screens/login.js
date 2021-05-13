@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 import {Image, Text, View, StyleSheet, TextInput, TouchableOpacity} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faUser, faLock} from '@fortawesome/free-solid-svg-icons'
+import { useStoreSession } from '../hooks/EncryptedStorage.hook';
 
-function Login(props) {
+function Login({navigation}) {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
 
@@ -16,28 +17,11 @@ function Login(props) {
             device_name: 'mobile',
         })
             .then(function (response) {
-
+                useStoreSession(response.data).then(() => navigation.replace('Main'))
             })
             .catch(function (error) {
                 console.log(error);
             });
-    }
-
-    async function storeUserSession(res) {
-        try {
-            await EncryptedStorage.setItem(
-                'user_session',
-                JSON.stringify({
-                    token: res.token,
-                    username: username.toLowerCase(),
-                }),
-            );
-            navigation.replace('Main');
-
-            // Congrats! You've just stored your first value!
-        } catch (error) {
-            // There was an error on the native side
-        }
     }
 
     return (

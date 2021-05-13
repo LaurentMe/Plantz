@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Cassandra\Exception\ValidationException;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -14,7 +15,7 @@ class LoginController extends Controller
      * Handle an authentication attempt.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function login(Request $request)
     {
@@ -28,13 +29,15 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = User::where('email', $request->email)->first();
-            return $user->createToken($request->device_name)->plainTextToken;
+
+            return response([
+                'user' => $user,
+                'token' => $user->createToken($request->device_name)->plainTextToken
+            ], 201);
         }
         else
         {
-            return back()->withErrors([
-                'email' => 'The provided credentials do not match our records.',
-            ]);
+            return response('', 401);
         }
 //        $user = User::where('email', $request->email)->first();
 //

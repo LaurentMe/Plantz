@@ -1,14 +1,20 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Image, Text, View, StyleSheet, TextInput, TouchableOpacity} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faUser, faLock} from '@fortawesome/free-solid-svg-icons'
-import { useStoreSession } from '../hooks/EncryptedStorage.hook';
+import { useStoreSession, useRetrieveSession } from '../hooks/EncryptedStorage.hook';
 
 function Login({navigation}) {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
 
     const axios = require('axios').default;
+
+    useEffect(() => {
+        useRetrieveSession().then((session) => {
+            if (session) navigation.replace('Main')
+        })
+    })
 
     const login = () => {
         axios.post('http://localhost:8080/login', {

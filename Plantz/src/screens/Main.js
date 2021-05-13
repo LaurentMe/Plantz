@@ -1,5 +1,15 @@
 import React, {useState} from 'react';
-import {SafeAreaView, Text, View, StyleSheet, Dimensions, TextInput, TouchableHighlight, TouchableOpacity} from "react-native";
+import {
+    SafeAreaView,
+    Text,
+    View,
+    StyleSheet,
+    Dimensions,
+    TextInput,
+    TouchableHighlight,
+    TouchableOpacity,
+    ScrollView
+} from "react-native";
 import {useLogout} from "../hooks/EncryptedStorage.hook";
 import {Button, ThemeProvider} from 'react-native-elements';
 import {SearchBar} from 'react-native-elements';
@@ -60,14 +70,42 @@ function Main({navigation}) {
                         <FontAwesomeIcon size={20} icon={faUser} color={'#888'}/>
                     </View>
                 </View>
-                <View style={styles.secondContainer}>
-                    <View style={styles.titleContainer}>
-                        <Text style={styles.title}>My Plants</Text>
-                        <TouchableOpacity>
-                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#26A66B'} style={{top: 4, marginRight: 4}}/>
-                        </TouchableOpacity>
+                <ScrollView>
+                    <View style={styles.secondContainer}>
+                        <View style={styles.titleContainer}>
+                            <Text style={styles.title}>My Plants</Text>
+                            <TouchableOpacity>
+                                <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#26A66B'} style={{top: 4, marginRight: 4}}/>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
+                    <View style={styles.thirdContainer}>
+                        <View style={styles.card}>
+
+                        </View>
+                        <View style={styles.card}>
+
+                        </View>
+                        <View style={styles.card}>
+
+                        </View>
+                        <View style={styles.card}>
+
+                        </View>
+                        <View style={styles.card}>
+
+                        </View>
+                        <View style={styles.card}>
+
+                        </View>
+                        <View style={styles.card}>
+
+                        </View>
+                        <View style={styles.card}>
+
+                        </View>
+                    </View>
+                </ScrollView>
             </SafeAreaView>
         </View>
     );
@@ -110,7 +148,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-
     },
     title: {
         marginTop: 10,
@@ -118,5 +155,22 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto',
         fontWeight: 'bold',
         color: '#1F6F4A'
+    },
+    thirdContainer: {
+        marginHorizontal: 25,
+        marginTop: 10,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center'
+    },
+    card: {
+        width: 150,
+        height: 170,
+        backgroundColor: '#fff',
+        shadowColor: '#444',
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        margin: 6,
     }
 })

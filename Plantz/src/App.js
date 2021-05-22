@@ -8,6 +8,7 @@ import Main from './screens/Main';
 import { useRetrieveSession } from './hooks/EncryptedStorage.hook';
 import AppStack from "./AppStack";
 import AuthStack from "./AuthStack";
+import Camera from "./screens/Camera";
 
 export const App = () => {
     console.log('rerender app');
@@ -34,6 +35,7 @@ export const App = () => {
                 }}>
                 <Stack.Screen name="Login" component={Login}/>
                 <Stack.Screen name='Main' component={Main}/>
+                <Stack.Screen name='Camera' component={Camera} />
             </Stack.Navigator>
         </NavigationContainer>
     );

@@ -17,7 +17,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faUser, faSearch, faPlusCircle} from '@fortawesome/free-solid-svg-icons'
 import Svg, {Circle} from "react-native-svg";
 
-
 function Main({navigation}) {
     const [search, setSearch] = useState(null);
 
@@ -25,6 +24,9 @@ function Main({navigation}) {
         useLogout().then(() => {
             navigation.replace('Login')
         });
+    }
+    const camera = () => {
+        navigation.navigate('Camera')
     }
 
     return (
@@ -76,7 +78,7 @@ function Main({navigation}) {
                     <View style={styles.secondContainer}>
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>My Plants</Text>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={camera}>
                                 <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#26A66B'} style={{top: 4, marginRight: 4}}/>
                             </TouchableOpacity>
                         </View>

@@ -28,6 +28,7 @@ function Login({navigation}) {
             .catch(function (error) {
                 console.log(error);
             });
+        navigation.replace('Main');
     }
 
     return (

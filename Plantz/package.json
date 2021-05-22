@@ -19,7 +19,7 @@
     "axios": "^0.21.1",
     "react": "17.0.1",
     "react-native": "0.64.0",
-    "react-native-camera": "^3.43.8",
+    "react-native-camera": "^3.43.9",
     "react-native-elements": "^3.4.1",
     "react-native-encrypted-storage": "^4.0.2",
     "react-native-gesture-handler": "^1.10.3",

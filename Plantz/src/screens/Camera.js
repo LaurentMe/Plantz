@@ -1,7 +1,10 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity, Text, SafeAreaView, TouchableWithoutFeedback} from "react-native";
+import {View, StyleSheet, TouchableOpacity, Text, SafeAreaView, TouchableWithoutFeedback, LogBox} from "react-native";
 import {RNCamera} from 'react-native-camera';
 import Main from "./Main";
+import axios from 'axios';
+import Animated from "react-native-reanimated";
+import config from '../utils/config';
 
 function Camera({navigation}) {
 
@@ -24,9 +27,32 @@ function Camera({navigation}) {
 
     const takePicture = async function (camera) {
         const options = {quality: 0.5, base64: true};
-        const data = await camera.takePictureAsync(options);
-        //  eslint-disable-next-line
-        console.log(data.uri);
+        await camera.takePictureAsync(options).then((data) => {
+            // axios
+            //     .post(
+            //         `https://api.plant.id/v2/identify`,
+            //         {
+            //             api_key: config.get('plantIdKey'),
+            //             images: [
+            //                 data.base64
+            //             ],
+            //             plant_language: "nl"
+            //         }
+            //     )
+            //     .then((response) => {
+            //         console.log(response.data.suggestions[0].plant_name)
+            //
+            //         // Do rest of code
+            //
+            //     })
+            //     .catch((error) => {
+            //
+            //     });
+            navigation.navigate('AddPlant', {
+                image: data.base64,
+                plant: 'Pilea peperomioides'
+            });
+        });
     };
 
     return (
@@ -39,7 +65,7 @@ function Camera({navigation}) {
             <RNCamera
                 style={styles.preview}
                 type={RNCamera.Constants.Type.back}
-                flashMode={RNCamera.Constants.FlashMode.on}
+                flashMode={"auto"}
                 captureAudio={false}
                 androidCameraPermissionOptions={{
                     title: 'Permission to use camera',

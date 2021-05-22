@@ -9,6 +9,7 @@ import { useRetrieveSession } from './hooks/EncryptedStorage.hook';
 import AppStack from "./AppStack";
 import AuthStack from "./AuthStack";
 import Camera from "./screens/Camera";
+import AddPlant from "./screens/AddPlant";
 
 export const App = () => {
     console.log('rerender app');
@@ -36,6 +37,7 @@ export const App = () => {
                 <Stack.Screen name="Login" component={Login}/>
                 <Stack.Screen name='Main' component={Main}/>
                 <Stack.Screen name='Camera' component={Camera} />
+                <Stack.Screen name={'AddPlant'} component={AddPlant} />
             </Stack.Navigator>
         </NavigationContainer>
     );

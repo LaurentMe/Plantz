@@ -44,6 +44,6 @@ class User extends Authenticatable
 
     public function plants()
     {
-        return $this->hasMany('App\User');
+        return $this->hasMany(Plant::class,'plant_user');
     }
 }

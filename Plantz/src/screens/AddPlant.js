@@ -15,6 +15,7 @@ function AddPlant({navigation, route}) {
     const [location, setLocation] = useState();
 
     const addPlant = () => {
+        console.log()
         useRetrieveSession().then((session) => {
             axios.post('http://localhost:8080/api/plants', {
                 name: name,
@@ -22,20 +23,22 @@ function AddPlant({navigation, route}) {
                 nickname: nickname,
                 water: water,
                 waterDays: waterDays,
-                location: location
+                location: location,
+                image: route.params.image
             }, {
                 headers: {
                     Authorization: "Bearer " + session.token
                 }
             })
                 .then(function (response) {
-                    console.log(response.data);
+                    if(response.status === 201) {
+                        navigation.popToTop();
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         })
-        // navigation.popToTop();
     }
 
 
@@ -66,12 +69,14 @@ function AddPlant({navigation, route}) {
                             onChangeText={(text) => setName(text)}
                             autoCapitalize='none'
                             autoCorrect={false}
+
                         />
                     </View>
 
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Latin name</Text>
                         <TextInput
+                            keyboardType={'numeric'}
                             style={styles.inputField}
                             onChangeText={(text) => setLatinName(text)}
                             autoCapitalize='none'

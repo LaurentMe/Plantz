@@ -15,9 +15,12 @@ class CreatePlantUserTable extends Migration
     {
         Schema::create('plant_user', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('plant_id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('location')->nullable();
+            $table->string('nickname')->nullable();
+            $table->binary('image');
             $table->timestamps();
-            $table->string('location');
-            $table->string('nickname');
         });
     }
 

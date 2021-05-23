@@ -10,6 +10,12 @@ class Plant extends Model
     use HasFactory;
     protected $guarded = [];
 
+    protected $fillable = [
+        'name',
+        'latin_name',
+        'water_amount',
+        'days_between_water',
+    ];
 
     public function users(){
         return $this->belongsToMany(User::class);

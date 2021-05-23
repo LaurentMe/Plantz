@@ -34,7 +34,7 @@ class LoginController extends Controller
             return response([
                 'user' => $user,
                 'token' => $user->createToken($request->device_name)->plainTextToken
-            ], 201);
+            ], 200);
         }
         else
         {

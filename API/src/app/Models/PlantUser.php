@@ -9,7 +9,7 @@ class PlantUser extends Model
 {
     use HasFactory;
 
-    protected $table = 'event_user';
+    protected $table = 'plant_user';
 
     /**
      * The attributes that are mass assignable.
@@ -19,6 +19,9 @@ class PlantUser extends Model
     protected $fillable = [
         'plant_id',
         'user_id',
+        'location',
+        'nickname',
+        'image'
     ];
 
     /**
@@ -40,7 +43,7 @@ class PlantUser extends Model
     ];
 
     public function users(){
-        return $this->belongsToMany(User::class, 'event_user');
+        return $this->belongsToMany(User::class, 'plant_user');
     }
     public function plants(){
         return $this->belongsToMany(Plant::class);

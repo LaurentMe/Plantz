@@ -32,7 +32,7 @@ function Main({navigation}) {
 
     useEffect(() => {
         getPlants();
-    }, [])
+    })
 
     const getPlants = () => {
         useRetrieveSession().then((session) => {
@@ -42,7 +42,7 @@ function Main({navigation}) {
                 }
             })
                 .then(function (response) {
-                    console.log(response)
+                    console.log(response.data.length)
                 })
                 .catch(function (error) {
                     console.log(error);

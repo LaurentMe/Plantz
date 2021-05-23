@@ -1,18 +1,38 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Image, SafeAreaView, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faPlusCircle, faUser} from "@fortawesome/free-solid-svg-icons";
+import {useStoreSession} from "../hooks/EncryptedStorage.hook";
+import axios from "axios";
 
 function AddPlant({navigation, route}) {
+    const [name, setName] = useState();
+    const [latinName, setLatinName] = useState();
+    const [nickname, setNickname] = useState();
+    const [water, setWater] = useState();
+    const [location, setLocation] = useState();
 
     const addPlant = () => {
-        navigation.popToTop()
-
+        axios.post('http://localhost:8080/api/plants', {
+            name: name,
+            latinName: latinName,
+            nickname: nickname,
+            water: water,
+            location: location
+        })
+            .then(function (response) {
+                console.log(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        // navigation.popToTop();
     }
+
 
     return (
         <SafeAreaView>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.secondContainer}>
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>Add plant</Text>
@@ -34,7 +54,7 @@ function AddPlant({navigation, route}) {
                         <Text style={styles.label}>Name</Text>
                         <TextInput
                             style={styles.inputField}
-                            // onChangeText={(text) => setUsername(text)}
+                            onChangeText={(text) => setName(text)}
                             autoCapitalize='none'
                             autoCorrect={false}
                         />
@@ -44,16 +64,16 @@ function AddPlant({navigation, route}) {
                         <Text style={styles.label}>Latin name</Text>
                         <TextInput
                             style={styles.inputField}
-                            // onChangeText={(text) => setUsername(text)}
+                            onChangeText={(text) => setLatinName(text)}
                             autoCapitalize='none'
                             autoCorrect={false}
                         />
                     </View>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Date added</Text>
+                        <Text style={styles.label}>Nickname</Text>
                         <TextInput
                             style={styles.inputField}
-                            // onChangeText={(text) => setUsername(text)}
+                            onChangeText={(text) => setNickname(text)}
                             autoCapitalize='none'
                             autoCorrect={false}
                         />
@@ -62,7 +82,7 @@ function AddPlant({navigation, route}) {
                         <Text style={styles.label}>Water</Text>
                         <TextInput
                             style={styles.inputField}
-                            // onChangeText={(text) => setUsername(text)}
+                            onChangeText={(text) => setWater(text)}
                             autoCapitalize='none'
                             autoCorrect={false}
                         />
@@ -71,14 +91,14 @@ function AddPlant({navigation, route}) {
                         <Text style={styles.label}>Location</Text>
                         <TextInput
                             style={styles.inputField}
-                            // onChangeText={(text) => setUsername(text)}
+                            onChangeText={(text) => setLocation(text)}
                             autoCapitalize='none'
                             autoCorrect={false}
                         />
                     </View>
 
                 </View>
-                <TouchableOpacity style={{alignItems: 'center', marginTop: 20}} onPress={addPlant}>
+                <TouchableOpacity style={{alignItems: 'center', marginBottom: 20}} onPress={addPlant}>
                     <View style={styles.loginButton}>
                         <Text style={styles.loginText}>Add plant</Text>
                     </View>

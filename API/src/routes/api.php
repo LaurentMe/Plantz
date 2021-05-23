@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PlantController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PlantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,5 +20,9 @@ use App\Http\Controllers\PlantController;
 //    return $request->user();
 //});
 
-Route::middleware('auth:sanctum')->get('/plants', [PlantController::class, 'index']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::resource('plants', PlantController::class);
+});
+
+//Route::middleware('auth:sanctum')->resource('/plants', [PlantController::class, 'index']);
 

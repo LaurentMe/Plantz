@@ -17,6 +17,7 @@ class CreatePlantUserTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('location');
+            $table->string('nickname');
         });
     }
 

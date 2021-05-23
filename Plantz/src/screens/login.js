@@ -23,12 +23,13 @@ function Login({navigation}) {
             device_name: 'mobile',
         })
             .then(function (response) {
-                useStoreSession(response.data).then(() => navigation.replace('Main'))
+                if (response.status == 200){
+                    useStoreSession(response.data).then(() => navigation.replace('Main'))
+                }
             })
             .catch(function (error) {
                 console.log(error);
             });
-        navigation.replace('Main');
     }
 
     return (

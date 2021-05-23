@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Plant;
+use App\Models\PlantUser;
 use Illuminate\Http\Request;
+use Mockery\Exception;
 
 class PlantController extends Controller
 {
@@ -24,7 +27,42 @@ class PlantController extends Controller
      */
     public function store(Request $request)
     {
-        dd('ok');
+        $request->validate([
+            'name' => 'required',
+            'latinName' => 'required',
+            'nickname' => 'required',
+            'water' => 'required',
+            'waterDays' => 'required',
+            'location' => 'required'
+        ]);
+
+        try {
+            $plant = Plant::create([
+                'name' => $request->name,
+                'latin_name' => $request->latinName,
+                'water_amount' => $request->water,
+                'days_between_water' => $request->waterDays
+            ]);
+
+            $plantUser = PlantUser::create([
+                'plant_id' => $plant->id,
+                'user_id' => $request->user()->id,
+                'location' => $request->location,
+                'nickname' => $request->nickname
+            ]);
+
+            return response([
+                'plant' => $plant,
+                'plantUser' => $plantUser
+            ], 201);
+        } catch (Exception $exception) {
+
+        }
+
+        return response([
+            'plant' => $request
+        ]);
+
     }
 
     /**

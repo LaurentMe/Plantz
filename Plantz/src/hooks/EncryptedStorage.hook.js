@@ -16,7 +16,7 @@ export async function useStoreSession(data) {
 
 export async function useRetrieveSession() {
     try {
-        return JSON.parse(await EncryptedStorage.getItem('session'));
+        return JSON.parse(await EncryptedStorage.getItem('session')).session;
     } catch (error) {
         console.log(error);
     }

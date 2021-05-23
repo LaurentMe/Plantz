@@ -4,28 +4,37 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faPlusCircle, faUser} from "@fortawesome/free-solid-svg-icons";
 import {useStoreSession} from "../hooks/EncryptedStorage.hook";
 import axios from "axios";
+import { useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 
 function AddPlant({navigation, route}) {
     const [name, setName] = useState();
     const [latinName, setLatinName] = useState();
     const [nickname, setNickname] = useState();
     const [water, setWater] = useState();
+    const [waterDays, setWaterDays] = useState();
     const [location, setLocation] = useState();
 
     const addPlant = () => {
-        axios.post('http://localhost:8080/api/plants', {
-            name: name,
-            latinName: latinName,
-            nickname: nickname,
-            water: water,
-            location: location
-        })
-            .then(function (response) {
-                console.log(response.data);
+        useRetrieveSession().then((session) => {
+            axios.post('http://localhost:8080/api/plants', {
+                name: name,
+                latinName: latinName,
+                nickname: nickname,
+                water: water,
+                waterDays: waterDays,
+                location: location
+            }, {
+                headers: {
+                    Authorization: "Bearer " + session.token
+                }
             })
-            .catch(function (error) {
-                console.log(error);
-            });
+                .then(function (response) {
+                    console.log(response.data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        })
         // navigation.popToTop();
     }
 
@@ -83,6 +92,15 @@ function AddPlant({navigation, route}) {
                         <TextInput
                             style={styles.inputField}
                             onChangeText={(text) => setWater(text)}
+                            autoCapitalize='none'
+                            autoCorrect={false}
+                        />
+                    </View>
+                    <View style={styles.inputContainer}>
+                        <Text style={styles.label}>Waterdays</Text>
+                        <TextInput
+                            style={styles.inputField}
+                            onChangeText={(text) => setWaterDays(text)}
                             autoCapitalize='none'
                             autoCorrect={false}
                         />

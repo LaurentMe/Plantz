@@ -61,7 +61,7 @@ function Main({navigation}) {
                             onChangeText={(text) => search(text)}
                         />
                     </View>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={logout}>
                         <View
                             style={{
                                 backgroundColor: '#ddd',

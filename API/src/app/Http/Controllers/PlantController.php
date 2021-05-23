@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PlantUserResource;
 use App\Models\Plant;
 use App\Models\PlantUser;
 use Illuminate\Http\Request;
@@ -12,11 +13,11 @@ class PlantController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return response(PlantUserResource::collection(PlantUser::where('user_id', $request->user()->id)->get()), 200);
     }
 
     /**
@@ -33,7 +34,8 @@ class PlantController extends Controller
             'nickname' => 'required',
             'water' => 'required',
             'waterDays' => 'required',
-            'location' => 'required'
+            'location' => 'required',
+            'image'=> 'required',
         ]);
 
         try {
@@ -48,7 +50,8 @@ class PlantController extends Controller
                 'plant_id' => $plant->id,
                 'user_id' => $request->user()->id,
                 'location' => $request->location,
-                'nickname' => $request->nickname
+                'nickname' => $request->nickname,
+                'image' => $request->image,
             ]);
 
             return response([
@@ -56,8 +59,8 @@ class PlantController extends Controller
                 'plantUser' => $plantUser
             ], 201);
         } catch (Exception $exception) {
-
         }
+
 
         return response([
             'plant' => $request

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     SafeAreaView,
     Text,
@@ -10,12 +10,13 @@ import {
     TouchableOpacity,
     ScrollView
 } from "react-native";
-import {useLogout} from "../hooks/EncryptedStorage.hook";
+import {useLogout, useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 import {Button, ThemeProvider} from 'react-native-elements';
 import {SearchBar} from 'react-native-elements';
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faUser, faSearch, faPlusCircle} from '@fortawesome/free-solid-svg-icons'
 import Svg, {Circle} from "react-native-svg";
+import axios from "axios";
 
 function Main({navigation}) {
     const [search, setSearch] = useState(null);
@@ -27,6 +28,26 @@ function Main({navigation}) {
     }
     const camera = () => {
         navigation.navigate('Camera')
+    }
+
+    useEffect(() => {
+        getPlants();
+    }, [])
+
+    const getPlants = () => {
+        useRetrieveSession().then((session) => {
+            axios.get('http://localhost:8080/api/plants', {
+                headers: {
+                    Authorization: "Bearer " + session.token
+                }
+            })
+                .then(function (response) {
+                    console.log(response)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        })
     }
 
     return (

@@ -139,6 +139,7 @@ function Main({navigation}) {
                                         source={{uri: 'data:image/png;base64,' + item.image}}
                                     />
                                     <Text>{item.plant.name}</Text>
+                                    <Text>{item.nickname}</Text>
                                 </View>
                             </View>
                         )

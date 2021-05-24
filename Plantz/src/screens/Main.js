@@ -8,7 +8,8 @@ import {
     TextInput,
     TouchableHighlight,
     TouchableOpacity,
-    ScrollView
+    ScrollView, Image,
+    RefreshControl
 } from "react-native";
 import {useLogout, useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 import {Button, ThemeProvider} from 'react-native-elements';
@@ -17,9 +18,19 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faUser, faSearch, faPlusCircle} from '@fortawesome/free-solid-svg-icons'
 import Svg, {Circle} from "react-native-svg";
 import axios from "axios";
+import { useIsFocused } from '@react-navigation/native';
 
 function Main({navigation}) {
     const [search, setSearch] = useState(null);
+    const [plants, setPlants] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const isFocused = useIsFocused();
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        getPlants().then(() => setRefreshing(false));
+    }, []);
 
     const logout = () => {
         useLogout().then(() => {
@@ -32,9 +43,9 @@ function Main({navigation}) {
 
     useEffect(() => {
         getPlants();
-    })
+    }, [isFocused])
 
-    const getPlants = () => {
+    const getPlants = async () => {
         useRetrieveSession().then((session) => {
             axios.get('http://localhost:8080/api/plants', {
                 headers: {
@@ -42,7 +53,7 @@ function Main({navigation}) {
                 }
             })
                 .then(function (response) {
-                    console.log(response.data.length)
+                    setPlants(response.data)
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -96,6 +107,10 @@ function Main({navigation}) {
                     </TouchableOpacity>
                 </View>
                 <ScrollView>
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
                     <View style={styles.secondContainer}>
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>My Plants</Text>
@@ -104,31 +119,29 @@ function Main({navigation}) {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={styles.thirdContainer}>
-                        <View style={styles.card}>
-
-                        </View>
-                        <View style={styles.card}>
-
-                        </View>
-                        <View style={styles.card}>
-
-                        </View>
-                        <View style={styles.card}>
-
-                        </View>
-                        <View style={styles.card}>
-
-                        </View>
-                        <View style={styles.card}>
-
-                        </View>
-                        <View style={styles.card}>
-
-                        </View>
-                        <View style={styles.card}>
-
-                        </View>
+                    <View style={styles.cardsContainer}>
+                        {plants.map((item, index) => {
+                            return(
+                            <View style={styles.card} key={index}>
+                                <View
+                                    style={{
+                                        alignItems: 'center'
+                                    }}
+                                >
+                                    <Image
+                                        style={{
+                                            width: 70,
+                                            height: 70,
+                                            borderRadius: 100,
+                                            marginTop: 6
+                                        }}
+                                        source={{uri: 'data:image/png;base64,' + item.image}}
+                                    />
+                                    <Text>{item.plant.name}</Text>
+                                </View>
+                            </View>
+                            )
+                        })}
                     </View>
                 </ScrollView>
             </SafeAreaView>
@@ -181,17 +194,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#1F6F4A'
     },
-    thirdContainer: {
+    cardsContainer: {
         marginHorizontal: 25,
         marginTop: 10,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'center'
     },
     card: {
         width: 150,
         height: 170,
         backgroundColor: '#fff',
+        borderRadius: 8,
         shadowColor: '#444',
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.2,

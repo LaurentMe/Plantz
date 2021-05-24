@@ -106,22 +106,23 @@ function Main({navigation}) {
                         </View>
                     </TouchableOpacity>
                 </View>
-                <ScrollView>
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                    />
-                    <View style={styles.secondContainer}>
-                        <View style={styles.titleContainer}>
-                            <Text style={styles.title}>My Plants</Text>
-                            <TouchableOpacity onPress={camera}>
-                                <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#26A66B'} style={{top: 4, marginRight: 4}}/>
-                            </TouchableOpacity>
-                        </View>
+            </SafeAreaView>
+            <ScrollView style={styles.scrollViewContainers}>
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                />
+                <View style={styles.secondContainer}>
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.title}>My Plants</Text>
+                        <TouchableOpacity onPress={camera}>
+                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#26A66B'} style={{top: 4, marginRight: 4}}/>
+                        </TouchableOpacity>
                     </View>
-                    <View style={styles.cardsContainer}>
-                        {plants.map((item, index) => {
-                            return(
+                </View>
+                <View style={styles.cardsContainer}>
+                    {plants.map((item, index) => {
+                        return(
                             <View style={styles.card} key={index}>
                                 <View
                                     style={{
@@ -140,11 +141,10 @@ function Main({navigation}) {
                                     <Text>{item.plant.name}</Text>
                                 </View>
                             </View>
-                            )
-                        })}
-                    </View>
-                </ScrollView>
-            </SafeAreaView>
+                        )
+                    })}
+                </View>
+            </ScrollView>
         </View>
     );
 }
@@ -210,5 +210,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 4,
         margin: 6,
+    },
+    scrollViewContainers: {
+
     }
 })

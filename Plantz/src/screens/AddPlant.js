@@ -7,12 +7,12 @@ import axios from "axios";
 import { useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 
 function AddPlant({navigation, route}) {
-    const [name, setName] = useState();
-    const [latinName, setLatinName] = useState();
-    const [nickname, setNickname] = useState();
-    const [water, setWater] = useState();
-    const [waterDays, setWaterDays] = useState();
-    const [location, setLocation] = useState();
+    const [name, setName] = useState('');
+    const [latinName, setLatinName] = useState('');
+    const [nickname, setNickname] = useState('');
+    const [water, setWater] = useState('');
+    const [waterDays, setWaterDays] = useState('');
+    const [location, setLocation] = useState('');
 
     useEffect(() => {
         setLatinName(route.params.plantLatin);

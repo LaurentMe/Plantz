@@ -15,7 +15,12 @@ function AddPlant({navigation, route}) {
     const [location, setLocation] = useState();
 
     useEffect(() => {
-        setLatinName(route.params.plantLatin)
+        setLatinName(route.params.plantLatin);
+        if (route.params.plant !== null){
+            setName(route.params.plant.name);
+            setWater(route.params.plant.water_amount);
+            setWaterDays(route.params.plant.days_between_water);
+        }
     }, [])
 
     const addPlant = () => {
@@ -34,7 +39,6 @@ function AddPlant({navigation, route}) {
                 }
             })
                 .then(function (response) {
-                    console.log(response.data)
                     if(response.status === 201) {
                         navigation.popToTop();
                     }
@@ -74,6 +78,7 @@ function AddPlant({navigation, route}) {
                         <Text style={styles.label}>Name</Text>
                         <TextInput
                             style={styles.inputField}
+                            value={name}
                             onChangeText={(text) => setName(text)}
                             autoCorrect={false}
 
@@ -84,7 +89,7 @@ function AddPlant({navigation, route}) {
                         <Text style={styles.label}>Latin name</Text>
                         <TextInput
                             style={styles.inputField}
-                            value={route.params.plantLatin}
+                            value={latinName}
                             onChangeText={(text) => setLatinName(text)}
                             autoCorrect={false}
                         />
@@ -93,6 +98,7 @@ function AddPlant({navigation, route}) {
                         <Text style={styles.label}>Nickname</Text>
                         <TextInput
                             style={styles.inputField}
+                            value={nickname}
                             onChangeText={(text) => setNickname(text)}
                             autoCorrect={false}
                         />
@@ -101,9 +107,9 @@ function AddPlant({navigation, route}) {
                         <Text style={styles.label}>Water</Text>
                         <TextInput
                             style={styles.inputField}
+                            value={water.toString()}
                             onChangeText={(text) => setWater(text)}
                             keyboardType={"number-pad"}
-                            autoCapitalize='none'
                             autoCorrect={false}
                         />
                     </View>
@@ -111,9 +117,9 @@ function AddPlant({navigation, route}) {
                         <Text style={styles.label}>Waterdays</Text>
                         <TextInput
                             style={styles.inputField}
+                            value={waterDays.toString()}
                             onChangeText={(text) => setWaterDays(text)}
                             keyboardType={"number-pad"}
-                            autoCapitalize='none'
                             autoCorrect={false}
                         />
                     </View>
@@ -121,6 +127,7 @@ function AddPlant({navigation, route}) {
                         <Text style={styles.label}>Location</Text>
                         <TextInput
                             style={styles.inputField}
+                            value={location}
                             onChangeText={(text) => setLocation(text)}
                             autoCorrect={false}
                         />

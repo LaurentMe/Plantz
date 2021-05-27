@@ -52,7 +52,8 @@ function Camera({navigation}) {
                     }).then((response) => {
                     navigation.navigate('AddPlant', {
                         image: data.base64,
-                        plantLatin: response.data.plant_name
+                        plantLatin: response.data.plant_name,
+                        plant: response.data.plant
                     });
                 }).catch((error) => {
                     console.log(error)

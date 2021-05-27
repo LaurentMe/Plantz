@@ -19,7 +19,7 @@ class CreatePlantUserTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('location')->nullable();
             $table->string('nickname')->nullable();
-            $table->binary('image');
+            $table->longblob('image');
             $table->timestamps();
         });
     }

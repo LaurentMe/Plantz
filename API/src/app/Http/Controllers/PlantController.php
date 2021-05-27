@@ -5,11 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PlantUserResource;
 use App\Models\Plant;
 use App\Models\PlantUser;
+use Illuminate\Http\Client\Factory;
 use Illuminate\Http\Request;
 use Mockery\Exception;
 
 class PlantController extends Controller
 {
+    private $requestFactory;
+
+    public function __construct(Factory $requestFactory)
+    {
+        $this->requestFactory = $requestFactory;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +31,7 @@ class PlantController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -35,7 +43,7 @@ class PlantController extends Controller
             'water' => 'required',
             'waterDays' => 'required',
             'location' => 'required',
-            'image'=> 'required',
+            'image' => 'required',
         ]);
 
         try {
@@ -59,6 +67,7 @@ class PlantController extends Controller
                 'plantUser' => $plantUser
             ], 201);
         } catch (Exception $exception) {
+            return response(['error' => $exception], 400);
         }
 
 
@@ -71,7 +80,7 @@ class PlantController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -82,7 +91,7 @@ class PlantController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -93,8 +102,8 @@ class PlantController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -105,11 +114,45 @@ class PlantController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
+    }
+
+
+    public function searchPlant(Request $request)
+    {
+//        $response = $this->requestFactory
+//            ->baseUrl('https://api.plant.id')
+//            ->post('/v2/identify', [
+//                'api_key' => env('PLANT_ID_KEY'),
+//                'images' => [
+//                    $request->image
+//                ],
+//                'plant_language' => "nl"
+//            ]);
+//        if ($response->getStatusCode() === 200) {
+//            return response([
+//                'plant_name' => $response['suggestions'][0]['plant_name']
+//            ], 200);
+//        } else {
+//            return response('Bad request', 400);
+//        }
+
+//        $response = $this->requestFactory
+//            ->baseUrl('https://api.plant.id')
+//            ->post('/v2/identify', [
+//                'api_key' => env('PLANT_ID_KEY'),
+//                'images' => [
+//                    $request->image
+//                ],
+//                'plant_language' => "nl"
+//            ]);
+        return response([
+            'plant_name' => 'Pilea peperomioides'
+        ], 200);
     }
 }

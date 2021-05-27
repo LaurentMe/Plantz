@@ -17,7 +17,7 @@ function Login({navigation}) {
     })
 
     const login = () => {
-        axios.post('http://localhost:8080/login', {
+        axios.post('http://192.168.1.110/login', {
             email: username,
             password: password,
             device_name: 'mobile',

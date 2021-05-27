@@ -24,5 +24,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('plants', PlantController::class);
 });
 
-//Route::middleware('auth:sanctum')->resource('/plants', [PlantController::class, 'index']);
-
+Route::post('/searchPlant', [PlantController::class, 'searchPlant']) -> middleware('auth:sanctum');

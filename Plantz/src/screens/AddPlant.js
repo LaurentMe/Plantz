@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, SafeAreaView, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faPlusCircle, faUser} from "@fortawesome/free-solid-svg-icons";
@@ -14,10 +14,13 @@ function AddPlant({navigation, route}) {
     const [waterDays, setWaterDays] = useState();
     const [location, setLocation] = useState();
 
+    useEffect(() => {
+        setLatinName(route.params.plantLatin)
+    }, [])
+
     const addPlant = () => {
-        console.log()
         useRetrieveSession().then((session) => {
-            axios.post('http://localhost:8080/api/plants', {
+            axios.post('http://192.168.1.110/api/plants', {
                 name: name,
                 latinName: latinName,
                 nickname: nickname,
@@ -27,10 +30,11 @@ function AddPlant({navigation, route}) {
                 image: route.params.image
             }, {
                 headers: {
-                    Authorization: "Bearer " + session.token
+                    Authorization: "Bearer " + session.token,
                 }
             })
                 .then(function (response) {
+                    console.log(response.data)
                     if(response.status === 201) {
                         navigation.popToTop();
                     }
@@ -48,15 +52,19 @@ function AddPlant({navigation, route}) {
                 <View style={styles.secondContainer}>
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>Add plant</Text>
+                        <TouchableOpacity onPress={addPlant}>
+                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'} style={{top: 4, marginRight: 4}}/>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View style={{alignItems: 'center'}}>
                     <Image
                         style={{
-                            width: 280,
-                            height: 400,
-                            borderRadius: 6,
-                            marginTop: 16
+                            width: 200,
+                            height: 200,
+                            borderRadius: 1000,
+                            marginTop: 16,
+                            marginBottom: 20
                         }}
                         source={{uri: 'data:image/png;base64,' + route.params.image}}
                     />
@@ -67,7 +75,6 @@ function AddPlant({navigation, route}) {
                         <TextInput
                             style={styles.inputField}
                             onChangeText={(text) => setName(text)}
-                            autoCapitalize='none'
                             autoCorrect={false}
 
                         />
@@ -76,10 +83,9 @@ function AddPlant({navigation, route}) {
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Latin name</Text>
                         <TextInput
-                            keyboardType={'numeric'}
                             style={styles.inputField}
+                            value={route.params.plantLatin}
                             onChangeText={(text) => setLatinName(text)}
-                            autoCapitalize='none'
                             autoCorrect={false}
                         />
                     </View>
@@ -88,7 +94,6 @@ function AddPlant({navigation, route}) {
                         <TextInput
                             style={styles.inputField}
                             onChangeText={(text) => setNickname(text)}
-                            autoCapitalize='none'
                             autoCorrect={false}
                         />
                     </View>
@@ -97,6 +102,7 @@ function AddPlant({navigation, route}) {
                         <TextInput
                             style={styles.inputField}
                             onChangeText={(text) => setWater(text)}
+                            keyboardType={"number-pad"}
                             autoCapitalize='none'
                             autoCorrect={false}
                         />
@@ -106,6 +112,7 @@ function AddPlant({navigation, route}) {
                         <TextInput
                             style={styles.inputField}
                             onChangeText={(text) => setWaterDays(text)}
+                            keyboardType={"number-pad"}
                             autoCapitalize='none'
                             autoCorrect={false}
                         />
@@ -115,7 +122,6 @@ function AddPlant({navigation, route}) {
                         <TextInput
                             style={styles.inputField}
                             onChangeText={(text) => setLocation(text)}
-                            autoCapitalize='none'
                             autoCorrect={false}
                         />
                     </View>
@@ -142,6 +148,8 @@ const styles = StyleSheet.create({
     },
     titleContainer: {
         flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     title: {
         marginTop: 10,

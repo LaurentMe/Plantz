@@ -19,6 +19,7 @@ import {faUser, faSearch, faPlusCircle} from '@fortawesome/free-solid-svg-icons'
 import Svg, {Circle} from "react-native-svg";
 import axios from "axios";
 import { useIsFocused } from '@react-navigation/native';
+import {err} from "react-native-svg/lib/typescript/xml";
 
 function Main({navigation}) {
     const [search, setSearch] = useState(null);
@@ -35,7 +36,7 @@ function Main({navigation}) {
     const logout = () => {
         useLogout().then(() => {
             navigation.replace('Login')
-        });
+        }).catch((error) => {});
     }
     const camera = () => {
         navigation.navigate('Camera')
@@ -47,7 +48,7 @@ function Main({navigation}) {
 
     const getPlants = async () => {
         useRetrieveSession().then((session) => {
-            axios.get('http://localhost:8080/api/plants', {
+            axios.get('http://192.168.1.110/api/plants', {
                 headers: {
                     Authorization: "Bearer " + session.token
                 }
@@ -58,6 +59,8 @@ function Main({navigation}) {
                 .catch(function (error) {
                     console.log(error);
                 });
+        }).catch((error) => {
+            console.log(error)
         })
     }
 
@@ -99,7 +102,9 @@ function Main({navigation}) {
                                 backgroundColor: '#ddd',
                                 padding: 7,
                                 marginRight: 20,
-                                borderRadius: 6
+                                borderRadius: 100,
+                                borderWidth: 1,
+                                borderColor: '#ddd',
                             }}
                         >
                             <FontAwesomeIcon size={20} icon={faUser} color={'#888'}/>
@@ -155,7 +160,7 @@ export default Main;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#f9fbfc',
     },
     topContainer: {
         flexDirection: 'row',
@@ -170,7 +175,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#eee',
-        borderRadius: 4,
+        borderRadius: 100,
         borderWidth: 1,
         borderColor: '#ddd',
         height: 34,

@@ -1,10 +1,22 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity, Text, SafeAreaView, TouchableWithoutFeedback, LogBox} from "react-native";
+import {
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    Text,
+    SafeAreaView,
+    TouchableWithoutFeedback,
+    LogBox,
+    TouchableHighlight, TouchableNativeFeedback
+} from "react-native";
 import {RNCamera} from 'react-native-camera';
 import Main from "./Main";
 import axios from 'axios';
 import Animated from "react-native-reanimated";
 import config from '../utils/config';
+import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
+import {faChevronLeft} from '@fortawesome/free-solid-svg-icons'
+import {useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 
 function Camera({navigation}) {
 
@@ -28,13 +40,31 @@ function Camera({navigation}) {
     const takePicture = async function (camera) {
         const options = {quality: 0.5, base64: true};
         await camera.takePictureAsync(options).then((data) => {
+            useRetrieveSession().then((session) => {
+                axios.post('http://192.168.1.110/api/searchPlant',
+                    {
+                        image: data.base64
+                    },
+                    {
+                        headers: {
+                            Authorization: "Bearer " + session.token
+                        }
+                    }).then((response) => {
+                    navigation.navigate('AddPlant', {
+                        image: data.base64,
+                        plantLatin: response.data.plant_name
+                    });
+                }).catch((error) => {
+                    console.log(error)
+                })
+            })
             // axios
             //     .post(
             //         `https://api.plant.id/v2/identify`,
             //         {
             //             api_key: config.get('plantIdKey'),
             //             images: [
-            //                 data.base64
+            //                 d ata.base64
             //             ],
             //             plant_language: "nl"
             //         }
@@ -48,10 +78,10 @@ function Camera({navigation}) {
             //     .catch((error) => {
             //
             //     });
-            navigation.navigate('AddPlant', {
-                image: data.base64,
-                plant: 'Pilea peperomioides'
-            });
+            // navigation.navigate('AddPlant', {
+            //     image: data.base64,
+            //     plantLatin: 'Pilea peperomioides'
+            // });
         });
     };
 
@@ -59,7 +89,8 @@ function Camera({navigation}) {
         <View style={styles.container}>
             <TouchableWithoutFeedback onPress={MainScreen}>
                 <View style={styles.backButton}>
-                    <Text style={styles.backButtonText}>{'<'} Terug</Text>
+                    <FontAwesomeIcon icon={faChevronLeft} color={'#fff'}/>
+                    <Text style={styles.backButtonText}>Terug</Text>
                 </View>
             </TouchableWithoutFeedback>
             <RNCamera
@@ -135,6 +166,8 @@ const styles = StyleSheet.create({
         marginTop: 20,
         opacity: 0.40,
         zIndex: 10,
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     backButtonText: {
         color: '#fff',

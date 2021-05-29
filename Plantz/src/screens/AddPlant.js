@@ -1,7 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {Image, SafeAreaView, Text, TouchableOpacity, View, StyleSheet, TextInput, ScrollView} from "react-native";
+import {
+    Image,
+    SafeAreaView,
+    Text,
+    TouchableOpacity,
+    View,
+    StyleSheet,
+    TextInput,
+    ScrollView,
+    Dimensions
+} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faPlusCircle, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faArrowLeft, faPlusCircle, faExpandArrowsAlt} from "@fortawesome/free-solid-svg-icons";
 import {useStoreSession} from "../hooks/EncryptedStorage.hook";
 import axios from "axios";
 import { useRetrieveSession} from "../hooks/EncryptedStorage.hook";
@@ -22,6 +32,10 @@ function AddPlant({navigation, route}) {
             setWaterDays(route.params.plant.days_between_water);
         }
     }, [])
+
+    const goBack = () => {
+        navigation.goBack();
+    }
 
     const addPlant = () => {
         useRetrieveSession().then((session) => {
@@ -51,49 +65,28 @@ function AddPlant({navigation, route}) {
 
 
     return (
-        <SafeAreaView>
+        <View>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.secondContainer}>
-                    <View style={styles.titleContainer}>
-                        <Text style={styles.title}>Add plant</Text>
-                        <TouchableOpacity onPress={addPlant}>
-                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'} style={{top: 4, marginRight: 4}}/>
-                        </TouchableOpacity>
+                <View>
+                    <TouchableOpacity style={{zIndex: 10}} onPress={goBack}>
+                        <View style={styles.backButton}>
+                            <FontAwesomeIcon icon={faArrowLeft} color={'#000'} size={18}/>
+                        </View>
+                    </TouchableOpacity>
+                    <View style={styles.expandButton}>
+                        <FontAwesomeIcon icon={faExpandArrowsAlt} color={'#fff'} size={18}/>
                     </View>
-                </View>
-                <View style={{alignItems: 'center'}}>
                     <Image
                         style={{
-                            width: 200,
-                            height: 200,
-                            borderRadius: 1000,
-                            marginTop: 16,
-                            marginBottom: 20
+                            width: Dimensions.get('window').width,
+                            height: 400,
                         }}
                         source={{uri: 'data:image/png;base64,' + route.params.image}}
                     />
                 </View>
+
                 <View style={styles.formContainer}>
-                    <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Name</Text>
-                        <TextInput
-                            style={styles.inputField}
-                            value={name}
-                            onChangeText={(text) => setName(text)}
-                            autoCorrect={false}
-
-                        />
-                    </View>
-
-                    <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Latin name</Text>
-                        <TextInput
-                            style={styles.inputField}
-                            value={latinName}
-                            onChangeText={(text) => setLatinName(text)}
-                            autoCorrect={false}
-                        />
-                    </View>
+                    <Text style={styles.title}>New plant</Text>
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Nickname</Text>
                         <TextInput
@@ -104,7 +97,26 @@ function AddPlant({navigation, route}) {
                         />
                     </View>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Water</Text>
+                        <Text style={styles.label}>Plant name</Text>
+                        <TextInput
+                            style={styles.inputField}
+                            value={name}
+                            onChangeText={(text) => setName(text)}
+                            autoCorrect={false}
+
+                        />
+                    </View>
+                    <View style={styles.inputContainer}>
+                        <Text style={styles.label}>Latin name</Text>
+                        <TextInput
+                            style={styles.inputField}
+                            value={latinName}
+                            onChangeText={(text) => setLatinName(text)}
+                            autoCorrect={false}
+                        />
+                    </View>
+                    <View style={styles.inputContainer}>
+                        <Text style={styles.label}>Water dosis</Text>
                         <TextInput
                             style={styles.inputField}
                             value={water.toString()}
@@ -140,7 +152,7 @@ function AddPlant({navigation, route}) {
                     </View>
                 </TouchableOpacity>
             </ScrollView>
-        </SafeAreaView>
+        </View>
     );
 }
 
@@ -159,7 +171,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     title: {
-        marginTop: 10,
+        marginBottom: 20,
         fontSize: 28,
         fontFamily: 'Roboto',
         fontWeight: 'bold',
@@ -168,9 +180,10 @@ const styles = StyleSheet.create({
     formContainer: {
         marginHorizontal: 35,
         paddingBottom: 10,
-        marginTop: 20,
+        marginTop: 15,
     },
     label: {
+        fontFamily: 'Circular Std',
         fontWeight: 'bold',
     },
     inputContainer: {
@@ -194,5 +207,23 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         fontFamily: 'Roboto',
         fontWeight: 'bold',
-    }
+    },
+    backButton: {
+        position: 'absolute',
+        top: 30,
+        left: 30,
+        color: '#fff',
+        backgroundColor: '#fff',
+        zIndex: 20,
+        borderRadius: 200,
+        padding: 12,
+        opacity: 0.9,
+    },
+    expandButton: {
+        position: 'absolute',
+        bottom: 20,
+        right: 30,
+        zIndex: 40,
+        opacity: 0.9,
+    },
 })

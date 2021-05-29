@@ -47,15 +47,16 @@ export const App = () => {
                         return [route.params.index.toString()];
                     }}
                     options={() => ({
-                        gestureEnabled: false,
-                        cardStyleInterpolator: ({current: {progress}}) => {
-                            return {
-                                cardStyle: {
-                                    opacity: progress,
-                                }
-                            }
-                        }
-                    })}/>
+                        gestureEnabled: true,
+                        // cardStyleInterpolator: ({current: {progress}}) => {
+                        //     return {
+                        //         cardStyle: {
+                        //             opacity: progress,
+                        //         }
+                        //     }
+                        // }
+                    })}
+                />
                 />
                 <Stack.Screen name='Camera' component={Camera}/>
                 <Stack.Screen name={'AddPlant'} component={AddPlant}/>

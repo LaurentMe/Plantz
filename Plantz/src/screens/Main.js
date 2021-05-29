@@ -142,24 +142,25 @@ function Main({navigation}) {
                 <View style={styles.secondContainer}>
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>My Plants</Text>
-                        <TouchableOpacity onPress={camera}>
-                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'}
-                                             style={{top: 4, marginRight: 4}}/>
+                        <TouchableOpacity onPress={camera} style={{zIndex: 1000}}>
+                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'} style={{top: 4, marginRight: 4, zIndex: 1000}} />
                         </TouchableOpacity>
                     </View>
                 </View>
                 <View style={styles.cardsContainer}>
                     {searchPlants.map((item, index) => {
                         return (
-                            <View key={index} style={{marginTop: -40}}>
+                            <View key={index}>
                                 <View style={{
                                     shadowColor: '#444',
                                     shadowOffset: {width: 0, height: 0},
                                     shadowOpacity: 0.40,
                                     shadowRadius: 6,
                                     zIndex: 10,
+                                    position: "absolute",
+                                    alignSelf: 'center',
                                 }}>
-                                    <SharedElement id={index.toString()}>
+                                    <SharedElement id={index.toString()} style={{zIndex: 0}}>
                                         <TouchableWithoutFeedback onPress={() => details(item.image, index)}>
                                             <Image
                                                 style={{
@@ -167,7 +168,6 @@ function Main({navigation}) {
                                                     height: 90,
                                                     borderRadius: 100,
                                                     alignSelf: 'center',
-                                                    top: 50,
                                                 }}
                                                 source={{uri: 'data:image/png;base64,' + item.image}}
                                             />
@@ -267,6 +267,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 6,
         margin: 6,
+        marginTop: 50
     },
     cardTitle: {
         fontFamily: 'Circular Std',

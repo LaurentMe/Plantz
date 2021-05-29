@@ -102,9 +102,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         width: 250,
         fontSize: 15,
+        fontFamily: 'Circular Std'
     },
     label: {
-        fontFamily: 'Roboto',
+        fontFamily: 'Circular Std',
         fontSize: 13,
         fontWeight: 'bold',
     },
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
     loginText: {
         color: '#fff',
         alignSelf: 'center',
-        fontFamily: 'Roboto',
+        fontFamily: 'Circular Std',
         fontWeight: 'bold',
     }
 });

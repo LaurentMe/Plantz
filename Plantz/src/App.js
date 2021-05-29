@@ -13,7 +13,8 @@ import AddPlant from "./screens/AddPlant";
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 import ImageView from "./screens/ImageView";
 import PlantDetails from "./screens/PlantDetails";
-
+import {enableScreens} from "react-native-screens";
+enableScreens()
 export const App = () => {
     console.log('rerender app');
     const Stack = createSharedElementStackNavigator();
@@ -45,6 +46,16 @@ export const App = () => {
                     sharedElementsConfig={(route, otherRoute, showing) => {
                         return [route.params.index.toString()];
                     }}
+                    options={() => ({
+                        gestureEnabled: false,
+                        cardStyleInterpolator: ({current: {progress}}) => {
+                            return {
+                                cardStyle: {
+                                    opacity: progress,
+                                }
+                            }
+                        }
+                    })}/>
                 />
                 <Stack.Screen name='Camera' component={Camera}/>
                 <Stack.Screen name={'AddPlant'} component={AddPlant}/>
@@ -68,5 +79,15 @@ export const App = () => {
         </NavigationContainer>
     );
 }
-
+export const iosTransitionSpec = {
+    animation: "spring",
+    config: {
+        stiffness: 1000,
+        damping: 500,
+        mass: 3,
+        overshootClamping: true,
+        restDisplacementThreshold: 10,
+        restSpeedThreshold: 10,
+    },
+};
 export default App;

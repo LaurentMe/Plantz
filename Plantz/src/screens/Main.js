@@ -25,7 +25,7 @@ import {SharedElement} from "react-navigation-shared-element";
 
 function Main({navigation}) {
     const [plants, setPlants] = useState([]);
-    const [searchPlants, setSearchPlants] =useState([]);
+    const [searchPlants, setSearchPlants] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
 
     const isFocused = useIsFocused();
@@ -75,7 +75,7 @@ function Main({navigation}) {
 
     function search(text) {
         setSearchPlants(plants.filter(i => {
-            if (i.nickname.toLowerCase().includes(text.toLowerCase())){
+            if (i.nickname.toLowerCase().includes(text.toLowerCase())) {
                 return i;
             }
         }))
@@ -143,23 +143,24 @@ function Main({navigation}) {
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>My Plants</Text>
                         <TouchableOpacity onPress={camera}>
-                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'} style={{top: 4, marginRight: 4}}/>
+                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'}
+                                             style={{top: 4, marginRight: 4}}/>
                         </TouchableOpacity>
                     </View>
                 </View>
                 <View style={styles.cardsContainer}>
                     {searchPlants.map((item, index) => {
                         return (
-                            <TouchableWithoutFeedback key={index} onPress={() => details(item.image, index)}>
-                                <View style={{marginTop: -40}}>
-                                    <View style={{
-                                        shadowColor: '#444',
-                                        shadowOffset: {width: 0, height: 0},
-                                        shadowOpacity: 0.40,
-                                        shadowRadius: 6,
-                                        zIndex: 10,
-                                    }}>
-                                        <SharedElement id={index.toString()}>
+                            <View key={index} style={{marginTop: -40}}>
+                                <View style={{
+                                    shadowColor: '#444',
+                                    shadowOffset: {width: 0, height: 0},
+                                    shadowOpacity: 0.40,
+                                    shadowRadius: 6,
+                                    zIndex: 10,
+                                }}>
+                                    <SharedElement id={index.toString()}>
+                                        <TouchableWithoutFeedback onPress={() => details(item.image, index)}>
                                             <Image
                                                 style={{
                                                     width: 90,
@@ -170,13 +171,16 @@ function Main({navigation}) {
                                                 }}
                                                 source={{uri: 'data:image/png;base64,' + item.image}}
                                             />
-                                        </SharedElement>
-                                    </View>
+                                        </TouchableWithoutFeedback>
+                                    </SharedElement>
+                                </View>
+                                <TouchableWithoutFeedback onPress={() => details(item.image, index)}>
                                     <View style={styles.card}>
                                         <Text style={styles.cardTitle}>{item.nickname}</Text>
                                         <View style={styles.cardText}>
                                             <View style={styles.textBox}>
-                                                <FontAwesomeIcon icon={faTint} style={{marginRight: 5}} color={'#373737'}/>
+                                                <FontAwesomeIcon icon={faTint} style={{marginRight: 5}}
+                                                                 color={'#373737'}/>
                                                 <Text style={styles.text}>{item.plant.water_amount}ml</Text>
                                             </View>
                                             <View style={styles.textBox}>
@@ -185,13 +189,14 @@ function Main({navigation}) {
                                                 <Text style={styles.text}>{item.plant.days_between_water} days</Text>
                                             </View>
                                             <View style={styles.textBox}>
-                                                <FontAwesomeIcon icon={faSun} style={{marginRight: 5}} color={'#373737'}/>
+                                                <FontAwesomeIcon icon={faSun} style={{marginRight: 5}}
+                                                                 color={'#373737'}/>
                                                 <Text style={styles.text}>{item.plant.days_between_water} days</Text>
                                             </View>
                                         </View>
                                     </View>
-                                </View>
-                            </TouchableWithoutFeedback>
+                                </TouchableWithoutFeedback>
+                            </View>
                         )
                     })}
                 </View>

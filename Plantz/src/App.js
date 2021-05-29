@@ -48,13 +48,13 @@ export const App = () => {
                     }}
                     options={() => ({
                         gestureEnabled: true,
-                        cardStyleInterpolator: ({current: {progress}}) => {
-                            return {
-                                cardStyle: {
-                                    opacity: progress,
-                                }
-                            }
-                        }
+                        // cardStyleInterpolator: ({current: {progress}}) => {
+                        //     return {
+                        //         cardStyle: {
+                        //             opacity: progress,
+                        //         }
+                        //     }
+                        // }
                     })}
                 />
                 />

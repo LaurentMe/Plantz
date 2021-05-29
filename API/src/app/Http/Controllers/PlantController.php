@@ -39,7 +39,6 @@ class PlantController extends Controller
         $request->validate([
             'name' => 'required',
             'latinName' => 'required',
-            'nickname' => 'required',
             'water' => 'required',
             'waterDays' => 'required',
             'location' => 'required',
@@ -54,13 +53,23 @@ class PlantController extends Controller
                 'days_between_water' => $request->waterDays
             ]);
 
-            $plantUser = PlantUser::create([
-                'plant_id' => $plant->id,
-                'user_id' => $request->user()->id,
-                'location' => $request->location,
-                'nickname' => $request->nickname,
-                'image' => $request->image,
-            ]);
+            if ($request->nickname !== null) {
+                $plantUser = PlantUser::create([
+                    'plant_id' => $plant->id,
+                    'user_id' => $request->user()->id,
+                    'location' => $request->location,
+                    'nickname' => $request->nickname,
+                    'image' => $request->image,
+                ]);
+            } else {
+                $plantUser = PlantUser::create([
+                    'plant_id' => $plant->id,
+                    'user_id' => $request->user()->id,
+                    'location' => $request->location,
+                    'nickname' => $request->name,
+                    'image' => $request->image,
+                ]);
+            }
 
             return response([
                 'plant' => $plant,

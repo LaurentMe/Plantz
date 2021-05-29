@@ -3,6 +3,7 @@ import {Dimensions, Image, Text, TouchableOpacity, View, StyleSheet} from "react
 import {SharedElement} from "react-navigation-shared-element";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
+import Camera from "./Camera";
 
 function ImageView({navigation, route}) {
 
@@ -17,7 +18,7 @@ function ImageView({navigation, route}) {
                     <FontAwesomeIcon icon={faArrowLeft} color={'#000'} size={18}/>
                 </View>
             </TouchableOpacity>
-            <SharedElement id={'image'}>
+            <SharedElement id={route.params.uri}>
                 <Image
                     style={{
                         width: Dimensions.get('window').width,

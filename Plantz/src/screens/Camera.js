@@ -17,6 +17,7 @@ import config from '../utils/config';
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faChevronLeft, faArrowLeft} from '@fortawesome/free-solid-svg-icons'
 import {useRetrieveSession} from "../hooks/EncryptedStorage.hook";
+import AddPlant from "./AddPlant";
 
 function Camera({navigation}) {
 

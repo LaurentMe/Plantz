@@ -84,7 +84,7 @@ function AddPlant({navigation, route}) {
                             <FontAwesomeIcon icon={faExpandArrowsAlt} color={'#fff'} size={18}/>
                         </View>
                     </TouchableWithoutFeedback>
-                    <SharedElement id={'image'}>
+                    <SharedElement id={route.params.uri}>
                         <Image
                             style={{
                                 width: Dimensions.get('window').width,
@@ -165,9 +165,6 @@ function AddPlant({navigation, route}) {
             </ScrollView>
         </View>
     );
-}
-AddPlant.sharedElements = (route, otherRoute, showing) => {
-    return ['image'];
 }
 
 export default AddPlant;

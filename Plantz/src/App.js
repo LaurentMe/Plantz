@@ -43,9 +43,11 @@ export const App = () => {
                 <Stack.Screen
                     name={'ImageView'}
                     component={ImageView}
+                    sharedElementsConfig={(route, otherRoute, showing) => {
+                        return [route.params.uri];
+                    }}
                     options={() => ({
                         gestureEnabled: false,
-
                         cardStyleInterpolator: ({current: {progress}}) => {
                             return {
                                 cardStyle: {

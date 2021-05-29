@@ -15,7 +15,7 @@ import axios from 'axios';
 import Animated from "react-native-reanimated";
 import config from '../utils/config';
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faChevronLeft} from '@fortawesome/free-solid-svg-icons'
+import {faChevronLeft, faArrowLeft} from '@fortawesome/free-solid-svg-icons'
 import {useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 
 function Camera({navigation}) {
@@ -67,9 +67,12 @@ function Camera({navigation}) {
     return (
         <View style={styles.container}>
             <TouchableWithoutFeedback onPress={MainScreen}>
-                <View style={styles.backButton}>
-                    <FontAwesomeIcon icon={faChevronLeft} color={'#fff'}/>
-                    <Text style={styles.backButtonText}>Terug</Text>
+                {/*<View style={styles.backButton}>*/}
+                {/*    <FontAwesomeIcon icon={faChevronLeft} color={'#fff'}/>*/}
+                {/*    <Text style={styles.backButtonText}>Terug</Text>*/}
+                {/*</View>*/}
+                <View style={styles.backButton2}>
+                    <FontAwesomeIcon icon={faArrowLeft} color={'#000'} size={18}/>
                 </View>
             </TouchableWithoutFeedback>
             <RNCamera
@@ -152,10 +155,22 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     },
+    backButton2: {
+        position: 'absolute',
+        top: 40,
+        left: 30,
+        color: '#fff',
+        backgroundColor: '#fff',
+        zIndex: 20,
+        borderRadius: 200,
+        padding: 15,
+        opacity: 0.9,
+    },
     backButtonText: {
         color: '#fff',
         fontSize: 17,
         marginLeft: 2,
         textAlign: 'center'
-    }
+    },
+
 });

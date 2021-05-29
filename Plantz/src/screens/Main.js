@@ -137,8 +137,7 @@ function Main({navigation}) {
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>My Plants</Text>
                         <TouchableOpacity onPress={camera}>
-                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'}
-                                             style={{top: 4, marginRight: 4}}/>
+                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'} style={{top: 4, marginRight: 4}}/>
                         </TouchableOpacity>
                     </View>
                 </View>

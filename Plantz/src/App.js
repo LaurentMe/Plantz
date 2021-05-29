@@ -12,6 +12,7 @@ import Camera from "./screens/Camera";
 import AddPlant from "./screens/AddPlant";
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 import ImageView from "./screens/ImageView";
+import PlantDetails from "./screens/PlantDetails";
 
 export const App = () => {
     console.log('rerender app');
@@ -38,6 +39,13 @@ export const App = () => {
                 }}>
                 <Stack.Screen name="Login" component={Login}/>
                 <Stack.Screen name='Main' component={Main}/>
+                <Stack.Screen
+                    name={'PlantDetails'}
+                    component={PlantDetails}
+                    sharedElementsConfig={(route, otherRoute, showing) => {
+                        return [route.params.index.toString()];
+                    }}
+                />
                 <Stack.Screen name='Camera' component={Camera}/>
                 <Stack.Screen name={'AddPlant'} component={AddPlant}/>
                 <Stack.Screen

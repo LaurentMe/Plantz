@@ -9,7 +9,7 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     ScrollView, Image,
-    RefreshControl
+    RefreshControl, TouchableWithoutFeedback
 } from "react-native";
 import LinearGradient from 'react-native-linear-gradient';
 import {useLogout, useRetrieveSession} from "../hooks/EncryptedStorage.hook";
@@ -21,6 +21,7 @@ import Svg, {Circle} from "react-native-svg";
 import axios from "axios";
 import {useIsFocused} from '@react-navigation/native';
 import {err} from "react-native-svg/lib/typescript/xml";
+import {SharedElement} from "react-navigation-shared-element";
 
 function Main({navigation}) {
     const [plants, setPlants] = useState([]);
@@ -42,6 +43,11 @@ function Main({navigation}) {
     }
     const camera = () => {
         navigation.navigate('Camera')
+    }
+
+    const details = (image, index) => {
+        console.log(index)
+        navigation.navigate('PlantDetails', {image: image, index: index})
     }
 
     useEffect(() => {
@@ -144,44 +150,48 @@ function Main({navigation}) {
                 <View style={styles.cardsContainer}>
                     {searchPlants.map((item, index) => {
                         return (
-                            <View key={index} style={{marginTop: -40}}>
-                                <View style={{
-                                    shadowColor: '#444',
-                                    shadowOffset: {width: 0, height: 0},
-                                    shadowOpacity: 0.40,
-                                    shadowRadius: 6,
-                                    zIndex: 10,
-                                }}>
-                                    <Image
-                                        style={{
-                                            width: 90,
-                                            height: 90,
-                                            borderRadius: 100,
-                                            alignSelf: 'center',
-                                            top: 50,
-                                        }}
-                                        source={{uri: 'data:image/png;base64,' + item.image}}
-                                    />
-                                </View>
-                                <View style={styles.card}>
-                                    <Text style={styles.cardTitle}>{item.nickname}</Text>
-                                    <View style={styles.cardText}>
-                                        <View style={styles.textBox}>
-                                            <FontAwesomeIcon icon={faTint} style={{marginRight: 5}} color={'#373737'}/>
-                                            <Text style={styles.text}>{item.plant.water_amount}ml</Text>
-                                        </View>
-                                        <View style={styles.textBox}>
-                                            <FontAwesomeIcon icon={faSyncAlt} style={{marginRight: 5}}
-                                                             color={'#373737'}/>
-                                            <Text style={styles.text}>{item.plant.days_between_water} days</Text>
-                                        </View>
-                                        <View style={styles.textBox}>
-                                            <FontAwesomeIcon icon={faSun} style={{marginRight: 5}} color={'#373737'}/>
-                                            <Text style={styles.text}>{item.plant.days_between_water} days</Text>
+                            <TouchableWithoutFeedback key={index} onPress={() => details(item.image, index)}>
+                                <View style={{marginTop: -40}}>
+                                    <View style={{
+                                        shadowColor: '#444',
+                                        shadowOffset: {width: 0, height: 0},
+                                        shadowOpacity: 0.40,
+                                        shadowRadius: 6,
+                                        zIndex: 10,
+                                    }}>
+                                        <SharedElement id={index.toString()}>
+                                            <Image
+                                                style={{
+                                                    width: 90,
+                                                    height: 90,
+                                                    borderRadius: 100,
+                                                    alignSelf: 'center',
+                                                    top: 50,
+                                                }}
+                                                source={{uri: 'data:image/png;base64,' + item.image}}
+                                            />
+                                        </SharedElement>
+                                    </View>
+                                    <View style={styles.card}>
+                                        <Text style={styles.cardTitle}>{item.nickname}</Text>
+                                        <View style={styles.cardText}>
+                                            <View style={styles.textBox}>
+                                                <FontAwesomeIcon icon={faTint} style={{marginRight: 5}} color={'#373737'}/>
+                                                <Text style={styles.text}>{item.plant.water_amount}ml</Text>
+                                            </View>
+                                            <View style={styles.textBox}>
+                                                <FontAwesomeIcon icon={faSyncAlt} style={{marginRight: 5}}
+                                                                 color={'#373737'}/>
+                                                <Text style={styles.text}>{item.plant.days_between_water} days</Text>
+                                            </View>
+                                            <View style={styles.textBox}>
+                                                <FontAwesomeIcon icon={faSun} style={{marginRight: 5}} color={'#373737'}/>
+                                                <Text style={styles.text}>{item.plant.days_between_water} days</Text>
+                                            </View>
                                         </View>
                                     </View>
                                 </View>
-                            </View>
+                            </TouchableWithoutFeedback>
                         )
                     })}
                 </View>

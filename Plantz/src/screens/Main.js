@@ -23,8 +23,8 @@ import {useIsFocused} from '@react-navigation/native';
 import {err} from "react-native-svg/lib/typescript/xml";
 
 function Main({navigation}) {
-    const [search, setSearch] = useState(null);
     const [plants, setPlants] = useState([]);
+    const [searchPlants, setSearchPlants] =useState([]);
     const [refreshing, setRefreshing] = useState(false);
 
     const isFocused = useIsFocused();
@@ -57,6 +57,7 @@ function Main({navigation}) {
             })
                 .then(function (response) {
                     setPlants(response.data)
+                    setSearchPlants(response.data)
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -64,6 +65,14 @@ function Main({navigation}) {
         }).catch((error) => {
             console.log(error)
         })
+    }
+
+    function search(text) {
+        setSearchPlants(plants.filter(i => {
+            if (i.nickname.toLowerCase().includes(text.toLowerCase())){
+                return i;
+            }
+        }))
     }
 
     return (
@@ -134,7 +143,7 @@ function Main({navigation}) {
                     </View>
                 </View>
                 <View style={styles.cardsContainer}>
-                    {plants.map((item, index) => {
+                    {searchPlants.map((item, index) => {
                         return (
                             <View key={index} style={{marginTop: -40}}>
                                 <View style={{

@@ -18,7 +18,7 @@ function PlantDetails({route, navigation}) {
                     <FontAwesomeIcon icon={faArrowLeft} color={'#000'} size={18}/>
                 </View>
             </TouchableOpacity>
-            <SharedElement id={route.params.index.toString()}>
+            <SharedElement id={route.params.index.toString() + 'image'}>
                 <Image
                     style={{
                         width: Dimensions.get('window').width,

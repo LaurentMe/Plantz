@@ -44,17 +44,17 @@ export const App = () => {
                     name={'PlantDetails'}
                     component={PlantDetails}
                     sharedElementsConfig={(route, otherRoute, showing) => {
-                        return [route.params.index.toString()];
+                        return [route.params.index.toString() + 'image'];
                     }}
                     options={() => ({
                         gestureEnabled: true,
-                        // cardStyleInterpolator: ({current: {progress}}) => {
-                        //     return {
-                        //         cardStyle: {
-                        //             opacity: progress,
-                        //         }
-                        //     }
-                        // }
+                        cardStyleInterpolator: ({current: {progress}}) => {
+                            return {
+                                cardStyle: {
+                                    opacity: progress,
+                                }
+                            }
+                        }
                     })}
                 />
                 />

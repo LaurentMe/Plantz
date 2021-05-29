@@ -46,7 +46,6 @@ function Main({navigation}) {
     }
 
     const details = (image, index) => {
-        console.log(index)
         navigation.navigate('PlantDetails', {image: image, index: index})
     }
 
@@ -143,7 +142,8 @@ function Main({navigation}) {
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>My Plants</Text>
                         <TouchableOpacity onPress={camera} style={{zIndex: 1000}}>
-                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'} style={{top: 4, marginRight: 4, zIndex: 1000}} />
+                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'}
+                                             style={{top: 4, marginRight: 4, zIndex: 1000}}/>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -160,8 +160,8 @@ function Main({navigation}) {
                                     position: "absolute",
                                     alignSelf: 'center',
                                 }}>
-                                    <SharedElement id={index.toString()} style={{zIndex: 0}}>
-                                        <TouchableWithoutFeedback onPress={() => details(item.image, index)}>
+                                    <TouchableWithoutFeedback onPress={() => details(item.image, index)}>
+                                        <SharedElement id={index.toString() + 'image'} style={{zIndex: 0}}>
                                             <Image
                                                 style={{
                                                     width: 90,
@@ -171,8 +171,9 @@ function Main({navigation}) {
                                                 }}
                                                 source={{uri: 'data:image/png;base64,' + item.image}}
                                             />
-                                        </TouchableWithoutFeedback>
-                                    </SharedElement>
+                                        </SharedElement>
+                                    </TouchableWithoutFeedback>
+
                                 </View>
                                 <TouchableWithoutFeedback onPress={() => details(item.image, index)}>
                                     <View style={styles.card}>

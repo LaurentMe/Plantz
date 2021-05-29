@@ -15,6 +15,7 @@ import {faArrowLeft, faPlusCircle, faExpandArrowsAlt} from "@fortawesome/free-so
 import {useStoreSession} from "../hooks/EncryptedStorage.hook";
 import axios from "axios";
 import {useRetrieveSession} from "../hooks/EncryptedStorage.hook";
+import {SharedElement} from "react-navigation-shared-element";
 
 function AddPlant({navigation, route}) {
     const [name, setName] = useState('');
@@ -37,7 +38,10 @@ function AddPlant({navigation, route}) {
         navigation.goBack();
     }
     const enlarge = () => {
-
+        navigation.navigate('ImageView', {
+            image: route.params.image,
+            uri: route.params.uri
+        })
     }
 
     const addPlant = () => {
@@ -66,7 +70,6 @@ function AddPlant({navigation, route}) {
         })
     }
 
-
     return (
         <View>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -81,14 +84,16 @@ function AddPlant({navigation, route}) {
                             <FontAwesomeIcon icon={faExpandArrowsAlt} color={'#fff'} size={18}/>
                         </View>
                     </TouchableWithoutFeedback>
-                    <Image
-                        style={{
-                            width: Dimensions.get('window').width,
-                            height: 400,
-                            alignSelf: 'center'
-                        }}
-                        source={{uri: 'data:image/png;base64,' + route.params.image}}
-                    />
+                    <SharedElement id={'image'}>
+                        <Image
+                            style={{
+                                width: Dimensions.get('window').width,
+                                height: 400,
+                                alignSelf: 'center'
+                            }}
+                            source={{uri: 'data:image/png;base64,' + route.params.image}}
+                        />
+                    </SharedElement>
                 </View>
 
                 <View style={styles.formContainer}>
@@ -160,6 +165,9 @@ function AddPlant({navigation, route}) {
             </ScrollView>
         </View>
     );
+}
+AddPlant.sharedElements = (route, otherRoute, showing) => {
+    return ['image'];
 }
 
 export default AddPlant;

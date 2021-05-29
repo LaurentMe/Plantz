@@ -53,7 +53,8 @@ function Camera({navigation}) {
                     navigation.navigate('AddPlant', {
                         image: data.base64,
                         plantLatin: response.data.plant_name,
-                        plant: response.data.plant
+                        plant: response.data.plant,
+                        uri: data.uri
                     });
                 }).catch((error) => {
                     console.log(error)

@@ -8,13 +8,13 @@ import {
     StyleSheet,
     TextInput,
     ScrollView,
-    Dimensions
+    Dimensions, TouchableWithoutFeedback
 } from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faArrowLeft, faPlusCircle, faExpandArrowsAlt} from "@fortawesome/free-solid-svg-icons";
 import {useStoreSession} from "../hooks/EncryptedStorage.hook";
 import axios from "axios";
-import { useRetrieveSession} from "../hooks/EncryptedStorage.hook";
+import {useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 
 function AddPlant({navigation, route}) {
     const [name, setName] = useState('');
@@ -26,7 +26,7 @@ function AddPlant({navigation, route}) {
 
     useEffect(() => {
         setLatinName(route.params.plantLatin);
-        if (route.params.plant !== null){
+        if (route.params.plant !== null) {
             setName(route.params.plant.name);
             setWater(route.params.plant.water_amount);
             setWaterDays(route.params.plant.days_between_water);
@@ -35,6 +35,9 @@ function AddPlant({navigation, route}) {
 
     const goBack = () => {
         navigation.goBack();
+    }
+    const enlarge = () => {
+
     }
 
     const addPlant = () => {
@@ -53,7 +56,7 @@ function AddPlant({navigation, route}) {
                 }
             })
                 .then(function (response) {
-                    if(response.status === 201) {
+                    if (response.status === 201) {
                         navigation.popToTop();
                     }
                 })
@@ -68,18 +71,21 @@ function AddPlant({navigation, route}) {
         <View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View>
-                    <TouchableOpacity style={{zIndex: 10}} onPress={goBack}>
+                    <TouchableOpacity style={{zIndex: 1}} onPress={goBack}>
                         <View style={styles.backButton}>
                             <FontAwesomeIcon icon={faArrowLeft} color={'#000'} size={18}/>
                         </View>
                     </TouchableOpacity>
-                    <View style={styles.expandButton}>
-                        <FontAwesomeIcon icon={faExpandArrowsAlt} color={'#fff'} size={18}/>
-                    </View>
+                    <TouchableWithoutFeedback style={{zIndex: 10}} onPress={enlarge}>
+                        <View style={styles.expandButton}>
+                            <FontAwesomeIcon icon={faExpandArrowsAlt} color={'#fff'} size={18}/>
+                        </View>
+                    </TouchableWithoutFeedback>
                     <Image
                         style={{
                             width: Dimensions.get('window').width,
                             height: 400,
+                            alignSelf: 'center'
                         }}
                         source={{uri: 'data:image/png;base64,' + route.params.image}}
                     />

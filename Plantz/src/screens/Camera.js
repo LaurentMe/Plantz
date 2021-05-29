@@ -58,31 +58,9 @@ function Camera({navigation}) {
                 }).catch((error) => {
                     console.log(error)
                 })
+            }).catch((error) => {
+                console.log(error)
             })
-            // axios
-            //     .post(
-            //         `https://api.plant.id/v2/identify`,
-            //         {
-            //             api_key: config.get('plantIdKey'),
-            //             images: [
-            //                 d ata.base64
-            //             ],
-            //             plant_language: "nl"
-            //         }
-            //     )
-            //     .then((response) => {
-            //         console.log(response.data.suggestions[0].plant_name)
-            //
-            //         // Do rest of code
-            //
-            //     })
-            //     .catch((error) => {
-            //
-            //     });
-            // navigation.navigate('AddPlant', {
-            //     image: data.base64,
-            //     plantLatin: 'Pilea peperomioides'
-            // });
         });
     };
 
@@ -116,10 +94,12 @@ function Camera({navigation}) {
                     if (status !== 'READY') return <PendingView/>;
                     return (
                         <View style={{flex: 0, flexDirection: 'row', justifyContent: 'center'}}>
-                            <TouchableOpacity onPress={() => takePicture(camera)} style={styles.capture}>
-                                <View style={styles.innerCircle}>
-                                </View>
-                            </TouchableOpacity>
+                            <View style={styles.capture}>
+                                <TouchableOpacity onPress={() => takePicture(camera)}>
+                                    <View style={styles.innerCircle}>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     );
                 }}
@@ -143,16 +123,18 @@ const styles = StyleSheet.create({
     },
     capture: {
         flex: 0,
-        backgroundColor: '#ddd',
+        backgroundColor: '#fff',
         borderRadius: 100,
         padding: 6,
         alignSelf: 'center',
         margin: 20,
     },
     innerCircle: {
-        padding: 30,
+        padding: 27,
         backgroundColor: '#fff',
         borderRadius: 100,
+        borderWidth: 2,
+        borderColor: 'black'
     },
     backButton: {
         position: 'absolute',
@@ -161,11 +143,11 @@ const styles = StyleSheet.create({
         color: '#fff',
         width: 80,
         padding: 7,
-        paddingVertical: 10,
+        paddingVertical: 8,
         borderRadius: 15,
         backgroundColor: '#222',
         marginTop: 20,
-        opacity: 0.40,
+        opacity: 0.50,
         zIndex: 10,
         flexDirection: 'row',
         alignItems: 'center'

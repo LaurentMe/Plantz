@@ -151,8 +151,26 @@ class PlantController extends Controller
 //                ],
 //                'plant_language' => "nl"
 //            ]);
+
+//        $response = $this->requestFactory
+//            ->baseUrl('https://api.plant.id')
+//            ->post('/v2/identify', [
+//                'api_key' => env('PLANT_ID_KEY'),
+//                'images' => [
+//                    $request->image
+//                ],
+//                'plant_language' => "nl"
+//            ]);
+//        $plant = Plant::where('latin_name', $response['suggestions'][0]['plant_name'])->first();
+//        return response([
+//            'plant_name' => $response['suggestions'][0]['plant_name'],
+//            'plant' => $plant
+//        ], 200);
+
+        $plant = Plant::where('latin_name', 'Pilea peperomasdfasioides')->first();
         return response([
-            'plant_name' => 'Pilea peperomioides'
+            'plant_name' => 'Pilea peperomioides',
+            'plant' => $plant
         ], 200);
     }
 }

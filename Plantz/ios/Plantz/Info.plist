@@ -35,8 +35,14 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Plant detection</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Plant detection</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Plant detection</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Roboto-Black.ttf</string>
@@ -51,6 +57,14 @@
 		<string>Roboto-Regular.ttf</string>
 		<string>Roboto-Thin.ttf</string>
 		<string>Roboto-ThinItalic.ttf</string>
+		<string>CircularStd-Black.otf</string>
+		<string>CircularStd-BlackItalic.otf</string>
+		<string>CircularStd-Bold.otf</string>
+		<string>CircularStd-BoldItalic.otf</string>
+		<string>CircularStd-Book.otf</string>
+		<string>CircularStd-BookItalic.otf</string>
+		<string>CircularStd-Medium.otf</string>
+		<string>CircularStd-MediumItalic.otf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -58,6 +72,10 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIStatusBarHidden</key>
+	<false/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDarkContent</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -66,11 +84,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSCameraUsageDescription</key>
-    <string>Plant detection</string>
-    <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>Plant detection</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>Plant detection</string>
 </dict>
 </plist>

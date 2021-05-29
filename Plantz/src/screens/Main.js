@@ -11,14 +11,15 @@ import {
     ScrollView, Image,
     RefreshControl
 } from "react-native";
+import LinearGradient from 'react-native-linear-gradient';
 import {useLogout, useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 import {Button, ThemeProvider} from 'react-native-elements';
 import {SearchBar} from 'react-native-elements';
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faUser, faSearch, faPlusCircle} from '@fortawesome/free-solid-svg-icons'
+import {faUser, faSearch, faPlusCircle, faTint, faSyncAlt, faSun} from '@fortawesome/free-solid-svg-icons'
 import Svg, {Circle} from "react-native-svg";
 import axios from "axios";
-import { useIsFocused } from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import {err} from "react-native-svg/lib/typescript/xml";
 
 function Main({navigation}) {
@@ -36,7 +37,8 @@ function Main({navigation}) {
     const logout = () => {
         useLogout().then(() => {
             navigation.replace('Login')
-        }).catch((error) => {});
+        }).catch((error) => {
+        });
     }
     const camera = () => {
         navigation.navigate('Camera')
@@ -66,7 +68,11 @@ function Main({navigation}) {
 
     return (
         <View style={styles.container}>
-            <View style={{position: 'absolute', width: Dimensions.get("window").width, height: Dimensions.get("window").height}}>
+            <View style={{
+                position: 'absolute',
+                width: Dimensions.get("window").width,
+                height: Dimensions.get("window").height
+            }}>
                 <Svg viewBox="0 0 40 40">
                     <Circle
                         cx="-18"
@@ -90,6 +96,7 @@ function Main({navigation}) {
                                 borderRadius: 3,
                                 marginVertical: 10,
                                 width: 280,
+                                fontFamily: 'Circular Std'
                             }]}
                             placeholder="Zoek op naam"
                             placeholderTextColor={'#888'}
@@ -104,10 +111,10 @@ function Main({navigation}) {
                                 marginRight: 20,
                                 borderRadius: 100,
                                 borderWidth: 1,
-                                borderColor: '#ddd',
+                                borderColor: '#ececec',
                             }}
                         >
-                            <FontAwesomeIcon size={20} icon={faUser} color={'#888'}/>
+                            <FontAwesomeIcon size={20} icon={faUser} color={'#545454'}/>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -121,30 +128,50 @@ function Main({navigation}) {
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>My Plants</Text>
                         <TouchableOpacity onPress={camera}>
-                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#26A66B'} style={{top: 4, marginRight: 4}}/>
+                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'}
+                                             style={{top: 4, marginRight: 4}}/>
                         </TouchableOpacity>
                     </View>
                 </View>
                 <View style={styles.cardsContainer}>
                     {plants.map((item, index) => {
-                        return(
-                            <View style={styles.card} key={index}>
-                                <View
-                                    style={{
-                                        alignItems: 'center'
-                                    }}
-                                >
+                        return (
+                            <View key={index} style={{marginTop: -40}}>
+                                <View style={{
+                                    shadowColor: '#444',
+                                    shadowOffset: {width: 0, height: 0},
+                                    shadowOpacity: 0.40,
+                                    shadowRadius: 6,
+                                    zIndex: 10,
+                                }}>
                                     <Image
                                         style={{
-                                            width: 70,
-                                            height: 70,
+                                            width: 90,
+                                            height: 90,
                                             borderRadius: 100,
-                                            marginTop: 6
+                                            alignSelf: 'center',
+                                            top: 50,
                                         }}
                                         source={{uri: 'data:image/png;base64,' + item.image}}
                                     />
-                                    <Text>{item.plant.name}</Text>
-                                    <Text>{item.nickname}</Text>
+                                </View>
+                                <View style={styles.card}>
+                                    <Text style={styles.cardTitle}>{item.nickname}</Text>
+                                    <View style={styles.cardText}>
+                                        <View style={styles.textBox}>
+                                            <FontAwesomeIcon icon={faTint} style={{marginRight: 5}} color={'#373737'}/>
+                                            <Text style={styles.text}>{item.plant.water_amount}ml</Text>
+                                        </View>
+                                        <View style={styles.textBox}>
+                                            <FontAwesomeIcon icon={faSyncAlt} style={{marginRight: 5}}
+                                                             color={'#373737'}/>
+                                            <Text style={styles.text}>{item.plant.days_between_water} days</Text>
+                                        </View>
+                                        <View style={styles.textBox}>
+                                            <FontAwesomeIcon icon={faSun} style={{marginRight: 5}} color={'#373737'}/>
+                                            <Text style={styles.text}>{item.plant.days_between_water} days</Text>
+                                        </View>
+                                    </View>
                                 </View>
                             </View>
                         )
@@ -160,7 +187,8 @@ export default Main;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f9fbfc',
+        backgroundColor: '#FBFBFB',
+        fontFamily: 'Circular Std',
     },
     topContainer: {
         flexDirection: 'row',
@@ -196,13 +224,13 @@ const styles = StyleSheet.create({
     title: {
         marginTop: 10,
         fontSize: 28,
-        fontFamily: 'Roboto',
+        fontFamily: 'Circular Std',
         fontWeight: 'bold',
         color: '#1F6F4A'
     },
     cardsContainer: {
         marginHorizontal: 25,
-        marginTop: 10,
+        marginTop: 5,
         flexDirection: 'row',
         flexWrap: 'wrap',
     },
@@ -212,12 +240,33 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 8,
         shadowColor: '#444',
-        shadowOffset: { width: 0, height: 0 },
+        shadowOffset: {width: 0, height: 0},
         shadowOpacity: 0.2,
-        shadowRadius: 4,
+        shadowRadius: 6,
         margin: 6,
     },
-    scrollViewContainers: {
-
-    }
+    cardTitle: {
+        fontFamily: 'Circular Std',
+        fontWeight: '600',
+        alignSelf: 'center',
+        marginTop: 50,
+        color: '#373737',
+        fontSize: 15
+    },
+    cardText: {
+        marginTop: 15,
+        marginHorizontal: 15,
+        color: '#373737',
+        fontFamily: 'Circular Std',
+    },
+    textBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 4
+    },
+    text: {
+        fontFamily: 'Circular Std',
+        fontSize: 14,
+    },
+    scrollViewContainers: {}
 })

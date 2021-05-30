@@ -24,8 +24,8 @@ export async function useRetrieveSession() {
 
 export async function useLogout() {
 
-        try {
-            await EncryptedStorage.removeItem("session");
-        } catch (error) {
-        }
+    try {
+        await EncryptedStorage.removeItem("session");
+    } catch (error) {
+    }
 }

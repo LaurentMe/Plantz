@@ -73,7 +73,12 @@ export const App = () => {
                     name={'ImageView'}
                     component={ImageView}
                     sharedElementsConfig={(route, otherRoute, showing) => {
-                        return [route.params.uri];
+                        if (otherRoute.name === 'AddPlant' && showing) {
+                            return [
+                                {id: route.params.uri},
+                                {id: 'back'}
+                            ];
+                        }
                     }}
                     options={() => ({
                         gestureEnabled: false,

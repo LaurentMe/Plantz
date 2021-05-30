@@ -76,11 +76,13 @@ function AddPlant({navigation, route}) {
         <View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View>
-                    <TouchableWithoutFeedback style={{zIndex: 1}} onPress={back}>
-                        <View style={styles.backButton}>
-                            <FontAwesomeIcon icon={faArrowLeft} color={'#000'} size={18}/>
-                        </View>
-                    </TouchableWithoutFeedback>
+                    <SharedElement id={'back'} style={{zIndex: 4}}>
+                        <TouchableWithoutFeedback style={{zIndex: 1}} onPress={back}>
+                            <View style={styles.backButton}>
+                                <FontAwesomeIcon icon={faArrowLeft} color={'#000'} size={18}/>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </SharedElement>
                     <TouchableWithoutFeedback style={{zIndex: 10}} onPress={enlarge}>
                         <View style={styles.expandButton}>
                             <FontAwesomeIcon icon={faExpandArrowsAlt} color={'#fff'} size={18}/>

@@ -7,7 +7,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     View,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback, ScrollView
 } from "react-native";
 import {SharedElement} from "react-navigation-shared-element";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
@@ -29,7 +29,7 @@ function PlantDetails({route, navigation}) {
 
 
     return (
-        <View>
+        <ScrollView>
             <View>
                 <TouchableWithoutFeedback onPress={() => {
                     navigation.goBack()
@@ -62,7 +62,6 @@ function PlantDetails({route, navigation}) {
                     }}>
                     </LinearGradient>
                 </SharedElement>
-
                 <SharedElement id={route.params.plant.nickname} style={[{zIndex: 10, position: "absolute"}]}>
                     <Text style={{
                         top: 410,
@@ -89,9 +88,21 @@ function PlantDetails({route, navigation}) {
                     />
                 </SharedElement>
             </View>
-            <Text>Hallo</Text>
+            <View style={styles.infoContainer}>
+                <Text style={styles.subTitle}>Location</Text>
+                <Text style={styles.locationText}>{route.params.plant.location}</Text>
+                <Text style={[styles.subTitle, {marginTop: 20}]}>Description</Text>
+                <Text style={styles.text}>{route.params.plant.plant.description}</Text>
+                <Text style={[styles.subTitle, {marginTop: 20}]}>Danger zone</Text>
 
-        </View>
+            </View>
+
+            <TouchableOpacity>
+                <View style={styles.deleteButton}>
+                    <Text style={styles.deleteText}>Remove plant</Text>
+                </View>
+            </TouchableOpacity>
+        </ScrollView>
     );
 }
 
@@ -136,5 +147,42 @@ const styles = StyleSheet.create({
         fontSize: 50,
         bottom: 15,
         left: 20
+    },
+    infoContainer: {
+        marginHorizontal: 30,
+        marginTop: 10,
+        marginBottom: 20,
+    },
+    subTitle: {
+        color: '#1a1a1a',
+        fontFamily: 'Circular Std',
+        fontWeight: 'bold',
+        fontSize: 26,
+    },
+    locationText: {
+        color: '#575757',
+        fontFamily: 'Circular Std',
+        fontWeight: 'bold',
+        fontSize: 18,
+    },
+    text: {
+        color: '#575757',
+        fontFamily: 'Circular Std',
+        fontWeight: 'bold',
+        fontSize: 14,
+    },
+    deleteButton: {
+        alignSelf: 'center',
+        backgroundColor: '#e01919',
+        width: 280,
+        height: 45,
+        justifyContent: 'center',
+        marginBottom: 30
+    },
+    deleteText: {
+        color: '#fff',
+        alignSelf: 'center',
+        fontFamily: 'Circular Std',
+        fontWeight: 'bold',
     }
 })

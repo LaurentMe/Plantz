@@ -13,6 +13,7 @@ import {SharedElement} from "react-navigation-shared-element";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faArrowLeft, faExpandArrowsAlt} from "@fortawesome/free-solid-svg-icons";
 import LinearGradient from 'react-native-linear-gradient'
+import Moment from 'moment';
 
 function PlantDetails({route, navigation}) {
 
@@ -80,9 +81,9 @@ function PlantDetails({route, navigation}) {
                         fontWeight: 'bold',
                         fontSize: 20,
                         left: 22
-                    }}>{route.params.plant.created_at}</Text>
+                    }}>{Moment(route.params.plant.created_at).format('DD/MM/YYYY')}</Text>
                 </SharedElement>
-                <SharedElement id={route.params.image}>
+                <SharedElement id={route.params.plant.created_at.toString()}>
                     <Image
                         style={{
                             width: Dimensions.get('window').width,

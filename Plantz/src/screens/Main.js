@@ -161,7 +161,7 @@ function Main({navigation}) {
                                     alignSelf: 'center',
                                 }}>
                                     <TouchableWithoutFeedback onPress={() => details(item, index)}>
-                                        <SharedElement id={item.image} style={{zIndex: 0}}>
+                                        <SharedElement id={item.created_at.toString()} style={{zIndex: 0}}>
                                             <Image
                                                 style={{
                                                     width: 90,
@@ -177,7 +177,7 @@ function Main({navigation}) {
                                 </View>
                                 <TouchableWithoutFeedback onPress={() => details(item, index)}>
                                     <View style={styles.card}>
-                                        <SharedElement id={item.nickname}>
+                                        <SharedElement id={item.nickname + item.created_at.toString()}>
                                             <Text style={styles.cardTitle}>{item.nickname}</Text>
                                         </SharedElement>
                                         <View style={styles.cardText}>

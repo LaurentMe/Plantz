@@ -21,6 +21,7 @@ class PlantUserResource extends JsonResource
             'nickname' => $this->nickname,
             'image' => $this->image,
             'plant' => Plant::where('id', $this->plant_id)->first(),
+            'created_at' => $this->created_at
         ];
     }
 }

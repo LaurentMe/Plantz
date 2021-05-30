@@ -47,11 +47,11 @@ export const App = () => {
                     sharedElementsConfig={(route, otherRoute, showing) => {
                         if (otherRoute.name === 'Main' && showing) {
                             return [
-                                {id: route.params.image},
+                                {id: route.params.plant.created_at.toString()},
                                 {id: 'back', animation: 'fade-in'},
                                 {id: 'enlarge', animation: 'fade-in'},
                                 {id: 'overlay', animation: 'fade-in'},
-                                {id: 'date', animation: 'fade-in'},
+                                {id: 'date', animation: 'fade'},
                                 {id: route.params.plant.nickname, animation: 'fade-in'},
                             ];
                         }

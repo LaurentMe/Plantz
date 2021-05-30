@@ -37,7 +37,6 @@ class PlantController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
             'latinName' => 'required',
             'water' => 'required',
             'waterDays' => 'required',
@@ -46,30 +45,33 @@ class PlantController extends Controller
         ]);
 
         try {
-            $plant = Plant::create([
-                'name' => $request->name,
-                'latin_name' => $request->latinName,
-                'water_amount' => $request->water,
-                'days_between_water' => $request->waterDays
+            $plant = Plant::where('latin_name', $request->latinName)->first();
+            if ($plant === null) {
+                $plant = Plant::create([
+                    'latin_name' => $request->latinName,
+                    'water_amount' => $request->water,
+                    'days_between_water' => $request->waterDays
+                ]);
+                if ($request->name === null) {
+                    $plant->name = $request->latinName;
+                } else {
+                    $plant->name = $request->name;
+                }
+                $plant->save();
+            }
+
+            $plantUser = PlantUser::create([
+                'plant_id' => $plant->id,
+                'user_id' => $request->user()->id,
+                'location' => $request->location,
+                'image' => $request->image,
+                'nickname' => $plant->name,
             ]);
 
             if ($request->nickname !== null) {
-                $plantUser = PlantUser::create([
-                    'plant_id' => $plant->id,
-                    'user_id' => $request->user()->id,
-                    'location' => $request->location,
-                    'nickname' => $request->nickname,
-                    'image' => $request->image,
-                ]);
-            } else {
-                $plantUser = PlantUser::create([
-                    'plant_id' => $plant->id,
-                    'user_id' => $request->user()->id,
-                    'location' => $request->location,
-                    'nickname' => $request->name,
-                    'image' => $request->image,
-                ]);
+                $plantUser->nickname = $request->nickname;
             }
+            $plantUser->save();
 
             return response([
                 'plant' => $plant,
@@ -78,11 +80,6 @@ class PlantController extends Controller
         } catch (Exception $exception) {
             return response(['error' => $exception], 400);
         }
-
-
-        return response([
-            'plant' => $request
-        ]);
 
     }
 

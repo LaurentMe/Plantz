@@ -3,6 +3,7 @@ import {Image, Text, View, StyleSheet, TextInput, TouchableOpacity} from "react-
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faUser, faLock} from '@fortawesome/free-solid-svg-icons'
 import { useStoreSession, useRetrieveSession } from '../hooks/EncryptedStorage.hook';
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 function Login({navigation}) {
     const [username, setUsername] = useState();
@@ -33,7 +34,7 @@ function Login({navigation}) {
     }
 
     return (
-        <View style={styles.container}>
+        <KeyboardAwareScrollView contentContainerStyle={styles.container}>
             <Image
                 style={styles.logo}
                 source={require('../assets/logo/logoPlantz.png')}
@@ -68,7 +69,7 @@ function Login({navigation}) {
                     <Text style={styles.loginText}>Login</Text>
                 </View>
             </TouchableOpacity>
-        </View>
+        </KeyboardAwareScrollView>
     );
 }
 

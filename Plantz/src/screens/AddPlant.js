@@ -18,6 +18,7 @@ import {useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 import {SharedElement} from "react-navigation-shared-element";
 import LinearGradient from "react-native-linear-gradient";
 
+
 function AddPlant({navigation, route}) {
     const [name, setName] = useState('');
     const [latinName, setLatinName] = useState('');
@@ -154,6 +155,15 @@ function AddPlant({navigation, route}) {
                     </View>
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Location</Text>
+                        <TextInput
+                            style={styles.inputField}
+                            value={location}
+                            onChangeText={(text) => setLocation(text)}
+                            autoCorrect={false}
+                        />
+                    </View>
+                    <View style={styles.inputContainer}>
+                        <Text style={styles.label}>Description</Text>
                         <TextInput
                             style={styles.inputField}
                             value={location}

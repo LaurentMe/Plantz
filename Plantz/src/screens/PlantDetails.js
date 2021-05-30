@@ -14,6 +14,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faArrowLeft, faExpandArrowsAlt} from "@fortawesome/free-solid-svg-icons";
 import LinearGradient from 'react-native-linear-gradient'
 import Moment from 'moment';
+import {useRetrieveSession} from "../hooks/EncryptedStorage.hook";
+import axios from "axios";
 
 function PlantDetails({route, navigation}) {
 
@@ -28,13 +30,29 @@ function PlantDetails({route, navigation}) {
         })
     }
 
+    const deletePlant = () => {
+        useRetrieveSession().then((session) => {
+            axios.delete('http://192.168.1.110/api/plants/' + route.params.plant.id, {
+                headers: {
+                    Authorization: "Bearer " + session.token
+                }
+            })
+                .then(function (response) {
+                    navigation.popToTop();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
 
     return (
         <ScrollView>
             <View>
-                <TouchableWithoutFeedback onPress={() => {
-                    navigation.goBack()
-                }}>
+                <TouchableWithoutFeedback onPress={() => {goBack()}}>
                     <SharedElement id={'back'} style={[{zIndex: 20, position: "absolute"}]}>
                         <View style={styles.backButton}>
                             <FontAwesomeIcon icon={faArrowLeft} color={'#000'} size={18} style={{zIndex: 20}}/>
@@ -103,10 +121,9 @@ function PlantDetails({route, navigation}) {
                 <Text style={[styles.subTitle, {marginTop: 20}]}>Description</Text>
                 <Text style={styles.text}>{route.params.plant.plant.description}</Text>
                 <Text style={[styles.subTitle, {marginTop: 20}]}>Danger zone</Text>
-
             </View>
 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={deletePlant}>
                 <View style={styles.deleteButton}>
                     <Text style={styles.deleteText}>Remove plant</Text>
                 </View>

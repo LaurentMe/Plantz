@@ -176,7 +176,7 @@ class PlantController extends Controller
 //            'plant' => $plant
 //        ], 200);
 
-        $plant = Plant::where('latin_name', 'Pilea peperomasdfasioides')->first();
+        $plant = Plant::where('latin_name', 'Pilea peperomioides')->first();
         return response([
             'plant_name' => 'Pilea peperomioides',
             'plant' => $plant

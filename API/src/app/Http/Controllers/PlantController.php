@@ -125,7 +125,8 @@ class PlantController extends Controller
      */
     public function destroy($id)
     {
-        //
+        PlantUser::findOrFail($id)->delete();
+        return response()->noContent(201);
     }
 
 

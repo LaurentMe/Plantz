@@ -133,7 +133,7 @@ function Main({navigation}) {
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
-            <ScrollView style={styles.scrollViewContainers}>
+            <ScrollView style={styles.scrollViewContainers} showsVerticalScrollIndicator={false}>
                 <RefreshControl
                     refreshing={refreshing}
                     onRefresh={onRefresh}

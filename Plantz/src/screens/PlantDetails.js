@@ -69,11 +69,19 @@ function PlantDetails({route, navigation}) {
                         fontFamily: 'Circular Std',
                         fontWeight: 'bold',
                         fontSize: 50,
-                        bottom: 15,
                         left: 20
                     }}>{route.params.plant.nickname}</Text>
                 </SharedElement>
-
+                <SharedElement id={'date'} style={[{zIndex: 10, position: "absolute"}]}>
+                    <Text style={{
+                        top: 465,
+                        color: '#575757',
+                        fontFamily: 'Circular Std',
+                        fontWeight: 'bold',
+                        fontSize: 20,
+                        left: 22
+                    }}>{route.params.plant.created_at}</Text>
+                </SharedElement>
                 <SharedElement id={route.params.image}>
                     <Image
                         style={{

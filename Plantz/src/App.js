@@ -51,6 +51,7 @@ export const App = () => {
                                 {id: 'back', animation: 'fade-in'},
                                 {id: 'enlarge', animation: 'fade-in'},
                                 {id: 'overlay', animation: 'fade-in'},
+                                {id: 'date', animation: 'fade-in'},
                                 {id: route.params.plant.nickname, animation: 'fade-in'},
                             ];
                         }

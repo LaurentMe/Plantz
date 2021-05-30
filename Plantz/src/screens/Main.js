@@ -16,7 +16,7 @@ import {useLogout, useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 import {Button, ThemeProvider} from 'react-native-elements';
 import {SearchBar} from 'react-native-elements';
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faUser, faSearch, faPlusCircle, faTint, faSyncAlt, faSun} from '@fortawesome/free-solid-svg-icons'
+import {faUser, faSearch, faPlusCircle, faTint, faSyncAlt, faSun, faCheck} from '@fortawesome/free-solid-svg-icons'
 import Svg, {Circle} from "react-native-svg";
 import axios from "axios";
 import {useIsFocused} from '@react-navigation/native';
@@ -154,8 +154,8 @@ function Main({navigation}) {
                                 <View style={{
                                     shadowColor: '#444',
                                     shadowOffset: {width: 0, height: 0},
-                                    shadowOpacity: 0.40,
-                                    shadowRadius: 6,
+                                    shadowOpacity: 0.50,
+                                    shadowRadius: 4,
                                     zIndex: 10,
                                     position: "absolute",
                                     alignSelf: 'center',
@@ -195,11 +195,10 @@ function Main({navigation}) {
                                                     <Text style={styles.text}>{item.plant.days_between_water} days</Text>
                                                 </View>
                                             </SharedElement>
-                                            <View style={styles.textBox}>
-                                                <FontAwesomeIcon icon={faSun} style={{marginRight: 5}}
-                                                                 color={'#373737'}/>
-                                                <Text style={styles.text}>{item.plant.days_between_water} days</Text>
-                                            </View>
+                                        </View>
+                                        <View style={styles.waterStatus}>
+                                            <Text style={styles.waterStatusText}>Just fine</Text>
+                                            <FontAwesomeIcon icon={faCheck} size={20} color={'#fff'} style={{}}/>
                                         </View>
                                     </View>
                                 </TouchableWithoutFeedback>
@@ -300,8 +299,8 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         shadowColor: '#444',
         shadowOffset: {width: 0, height: 0},
-        shadowOpacity: 0.2,
-        shadowRadius: 6,
+        shadowOpacity: 0.4,
+        shadowRadius: 12,
         margin: 6,
         marginTop: 50
     },
@@ -328,5 +327,22 @@ const styles = StyleSheet.create({
         fontFamily: 'Circular Std',
         fontSize: 14,
     },
-    scrollViewContainers: {}
+    waterStatus: {
+        position: 'absolute',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        backgroundColor: '#23B571',
+        width: '100%',
+        height: 30,
+        bottom: 0,
+        borderBottomLeftRadius: 8,
+        borderBottomRightRadius: 8,
+    },
+    waterStatusText: {
+        fontFamily: 'Circular Std',
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: '#fff',
+    }
 })

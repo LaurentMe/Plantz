@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, Image, Text, TouchableOpacity, View, StyleSheet} from "react-native";
+import {Dimensions, Image, Text, TouchableOpacity, View, StyleSheet, TouchableWithoutFeedback} from "react-native";
 import {SharedElement} from "react-navigation-shared-element";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
@@ -13,11 +13,11 @@ function ImageView({navigation, route}) {
 
     return (
         <View>
-            <TouchableOpacity style={{zIndex: 1}} onPress={goBack}>
+            <TouchableWithoutFeedback style={{zIndex: 1}} onPress={goBack}>
                 <View style={styles.backButton}>
                     <FontAwesomeIcon icon={faArrowLeft} color={'#000'} size={18}/>
                 </View>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
             <SharedElement id={route.params.uri}>
                 <Image
                     style={{

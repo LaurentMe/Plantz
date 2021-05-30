@@ -142,8 +142,7 @@ function Main({navigation}) {
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>My Plants</Text>
                         <TouchableOpacity onPress={camera} style={{zIndex: 1000}}>
-                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'}
-                                             style={{top: 4, marginRight: 4, zIndex: 1000}}/>
+                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'} style={{top: 4, marginRight: 4, zIndex: 1000}}/>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -200,6 +199,28 @@ function Main({navigation}) {
                             </View>
                         )
                     })}
+                    <TouchableWithoutFeedback onPress={() => camera()}>
+                        <View>
+                            <View
+                                style={{
+                                    width: 90,
+                                    height: 90,
+                                    borderRadius: 100,
+                                    alignSelf: 'center',
+                                    backgroundColor: '#fff',
+                                    position: 'absolute',
+                                    zIndex: 20,
+                                    shadowColor: '#444',
+                                    shadowOffset: {width: 0, height: 0},
+                                    shadowOpacity: 0.40,
+                                    shadowRadius: 6,
+                                }}
+                            />
+                            <View style={[styles.card, {justifyContent: "center"}]}>
+                                <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'} style={{alignSelf: 'center'}}/>
+                            </View>
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
             </ScrollView>
         </View>
@@ -237,7 +258,6 @@ const styles = StyleSheet.create({
     secondContainer: {
         marginHorizontal: 35,
         paddingBottom: 10,
-        borderBottomWidth: 1,
         borderColor: '#eee',
     },
     titleContainer: {

@@ -16,6 +16,7 @@ import {useStoreSession} from "../hooks/EncryptedStorage.hook";
 import axios from "axios";
 import {useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 import {SharedElement} from "react-navigation-shared-element";
+import LinearGradient from "react-native-linear-gradient";
 
 function AddPlant({navigation, route}) {
     const [name, setName] = useState('');
@@ -34,7 +35,7 @@ function AddPlant({navigation, route}) {
         }
     }, [])
 
-    const goBack = () => {
+    const back = () => {
         navigation.goBack();
     }
 
@@ -75,16 +76,19 @@ function AddPlant({navigation, route}) {
         <View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View>
-                    <TouchableOpacity style={{zIndex: 1}} onPress={goBack}>
+                    <TouchableWithoutFeedback style={{zIndex: 1}} onPress={back}>
                         <View style={styles.backButton}>
                             <FontAwesomeIcon icon={faArrowLeft} color={'#000'} size={18}/>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback style={{zIndex: 10}} onPress={enlarge}>
                         <View style={styles.expandButton}>
                             <FontAwesomeIcon icon={faExpandArrowsAlt} color={'#fff'} size={18}/>
                         </View>
                     </TouchableWithoutFeedback>
+                    <LinearGradient colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']} style={styles.bottomOverlay}>
+                        <Text style={styles.title}>New plant</Text>
+                    </LinearGradient>
                     <SharedElement id={route.params.uri}>
                         <Image
                             style={{
@@ -98,7 +102,6 @@ function AddPlant({navigation, route}) {
                 </View>
 
                 <View style={styles.formContainer}>
-                    <Text style={styles.title}>New plant</Text>
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Nickname</Text>
                         <TextInput
@@ -182,13 +185,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
-    title: {
-        marginBottom: 20,
-        fontSize: 28,
-        fontFamily: 'Roboto',
-        fontWeight: 'bold',
-        color: '#1F6F4A'
-    },
     formContainer: {
         marginHorizontal: 35,
         paddingBottom: 10,
@@ -238,4 +234,23 @@ const styles = StyleSheet.create({
         zIndex: 40,
         opacity: 0.9,
     },
+    bottomOverlay: {
+        position: 'absolute',
+        width: Dimensions.get('window').width,
+        height: 200,
+        backgroundColor: '#000',
+        zIndex: 20,
+        bottom: 0,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+    },
+    title: {
+        position: 'absolute',
+        color: '#fff',
+        fontFamily: 'Circular Std',
+        fontWeight: 'bold',
+        fontSize: 45,
+        bottom: 15,
+        left: 20
+    }
 })

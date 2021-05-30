@@ -204,21 +204,28 @@ function Main({navigation}) {
                     })}
                     <TouchableWithoutFeedback onPress={() => camera()}>
                         <View>
-                            <View
-                                style={{
-                                    width: 90,
-                                    height: 90,
-                                    borderRadius: 100,
-                                    alignSelf: 'center',
-                                    backgroundColor: '#fff',
-                                    position: 'absolute',
-                                    zIndex: 20,
-                                    shadowColor: '#444',
-                                    shadowOffset: {width: 0, height: 0},
-                                    shadowOpacity: 0.40,
-                                    shadowRadius: 6,
-                                }}
-                            />
+                            <View style={{
+                                width: 90,
+                                height: 90,
+                                borderRadius: 100,
+                                alignSelf: 'center',
+                                backgroundColor: '#fff',
+                                position: 'absolute',
+                                zIndex: 20,
+                                shadowColor: '#444',
+                                shadowOffset: {width: 0, height: 0},
+                                shadowOpacity: 0.40,
+                                shadowRadius: 6,
+                            }}>
+                                <Image
+                                    style={{
+                                        width: 90,
+                                        height: 90,
+                                        borderRadius: 100,
+                                    }}
+                                    source={require('../assets/logo/logoPlantz.png')}
+                                />
+                            </View>
                             <View style={[styles.card, {justifyContent: "center"}]}>
                                 <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'}
                                                  style={{alignSelf: 'center'}}/>

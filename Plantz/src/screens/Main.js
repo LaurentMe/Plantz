@@ -161,7 +161,7 @@ function Main({navigation}) {
                                     alignSelf: 'center',
                                 }}>
                                     <TouchableWithoutFeedback onPress={() => details(item.image, index)}>
-                                        <SharedElement id={index.toString() + 'image'} style={{zIndex: 0}}>
+                                        <SharedElement id={item.image} style={{zIndex: 0}}>
                                             <Image
                                                 style={{
                                                     width: 90,

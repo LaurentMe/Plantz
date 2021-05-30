@@ -14,7 +14,7 @@ import {createSharedElementStackNavigator} from 'react-navigation-shared-element
 import ImageView from "./screens/ImageView";
 import PlantDetails from "./screens/PlantDetails";
 import {enableScreens} from "react-native-screens";
-enableScreens()
+
 export const App = () => {
     console.log('rerender app');
     const Stack = createSharedElementStackNavigator();
@@ -43,8 +43,11 @@ export const App = () => {
                 <Stack.Screen
                     name={'PlantDetails'}
                     component={PlantDetails}
+
                     sharedElementsConfig={(route, otherRoute, showing) => {
-                        return [route.params.index.toString() + 'image'];
+                        if (otherRoute.name === 'Main' && showing) {
+                            return [`${route.params.image}`];
+                        }
                     }}
                     options={() => ({
                         gestureEnabled: true,

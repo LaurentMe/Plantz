@@ -37,6 +37,7 @@ function AddPlant({navigation, route}) {
     const goBack = () => {
         navigation.goBack();
     }
+
     const enlarge = () => {
         navigation.navigate('ImageView', {
             image: route.params.image,

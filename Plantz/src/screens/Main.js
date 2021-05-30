@@ -9,7 +9,7 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     ScrollView, Image,
-    RefreshControl, TouchableWithoutFeedback
+    RefreshControl, TouchableWithoutFeedback, Share
 } from "react-native";
 import LinearGradient from 'react-native-linear-gradient';
 import {useLogout, useRetrieveSession} from "../hooks/EncryptedStorage.hook";
@@ -45,8 +45,8 @@ function Main({navigation}) {
         navigation.navigate('Camera')
     }
 
-    const details = (image, index) => {
-        navigation.navigate('PlantDetails', {image: image, index: index})
+    const details = (plant, index) => {
+        navigation.navigate('PlantDetails', {image: plant.image, index: index, plant: plant})
     }
 
     useEffect(() => {
@@ -142,7 +142,8 @@ function Main({navigation}) {
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>My Plants</Text>
                         <TouchableOpacity onPress={camera} style={{zIndex: 1000}}>
-                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'} style={{top: 4, marginRight: 4, zIndex: 1000}}/>
+                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'}
+                                             style={{top: 4, marginRight: 4, zIndex: 1000}}/>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -159,7 +160,7 @@ function Main({navigation}) {
                                     position: "absolute",
                                     alignSelf: 'center',
                                 }}>
-                                    <TouchableWithoutFeedback onPress={() => details(item.image, index)}>
+                                    <TouchableWithoutFeedback onPress={() => details(item, index)}>
                                         <SharedElement id={item.image} style={{zIndex: 0}}>
                                             <Image
                                                 style={{
@@ -174,9 +175,11 @@ function Main({navigation}) {
                                     </TouchableWithoutFeedback>
 
                                 </View>
-                                <TouchableWithoutFeedback onPress={() => details(item.image, index)}>
+                                <TouchableWithoutFeedback onPress={() => details(item, index)}>
                                     <View style={styles.card}>
-                                        <Text style={styles.cardTitle}>{item.nickname}</Text>
+                                        <SharedElement id={item.nickname}>
+                                            <Text style={styles.cardTitle}>{item.nickname}</Text>
+                                        </SharedElement>
                                         <View style={styles.cardText}>
                                             <View style={styles.textBox}>
                                                 <FontAwesomeIcon icon={faTint} style={{marginRight: 5}}
@@ -217,7 +220,8 @@ function Main({navigation}) {
                                 }}
                             />
                             <View style={[styles.card, {justifyContent: "center"}]}>
-                                <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'} style={{alignSelf: 'center'}}/>
+                                <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'}
+                                                 style={{alignSelf: 'center'}}/>
                             </View>
                         </View>
                     </TouchableWithoutFeedback>

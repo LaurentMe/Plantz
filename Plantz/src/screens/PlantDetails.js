@@ -60,8 +60,19 @@ function PlantDetails({route, navigation}) {
                         borderBottomLeftRadius: 20,
                         borderBottomRightRadius: 20,
                     }}>
-                        <Text style={styles.title}>hallo</Text>
                     </LinearGradient>
+                </SharedElement>
+
+                <SharedElement id={route.params.plant.nickname} style={[{zIndex: 10, position: "absolute"}]}>
+                    <Text style={{
+                        top: 410,
+                        color: '#fff',
+                        fontFamily: 'Circular Std',
+                        fontWeight: 'bold',
+                        fontSize: 50,
+                        bottom: 15,
+                        left: 20
+                    }}>{route.params.plant.nickname}</Text>
                 </SharedElement>
 
                 <SharedElement id={route.params.image}>

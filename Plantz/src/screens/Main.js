@@ -181,16 +181,20 @@ function Main({navigation}) {
                                             <Text style={styles.cardTitle}>{item.nickname}</Text>
                                         </SharedElement>
                                         <View style={styles.cardText}>
-                                            <View style={styles.textBox}>
-                                                <FontAwesomeIcon icon={faTint} style={{marginRight: 5}}
-                                                                 color={'#373737'}/>
-                                                <Text style={styles.text}>{item.plant.water_amount}ml</Text>
-                                            </View>
-                                            <View style={styles.textBox}>
-                                                <FontAwesomeIcon icon={faSyncAlt} style={{marginRight: 5}}
-                                                                 color={'#373737'}/>
-                                                <Text style={styles.text}>{item.plant.days_between_water} days</Text>
-                                            </View>
+                                            <SharedElement id={'water'}>
+                                                <View style={styles.textBox}>
+                                                    <FontAwesomeIcon icon={faTint} style={{marginRight: 5}}
+                                                                     color={'#373737'}/>
+                                                    <Text style={styles.text}>{item.plant.water_amount}ml</Text>
+                                                </View>
+                                            </SharedElement>
+                                            <SharedElement id={'waterDays'}>
+                                                <View style={styles.textBox}>
+                                                    <FontAwesomeIcon icon={faSyncAlt} style={{marginRight: 5}}
+                                                                     color={'#373737'}/>
+                                                    <Text style={styles.text}>{item.plant.days_between_water} days</Text>
+                                                </View>
+                                            </SharedElement>
                                             <View style={styles.textBox}>
                                                 <FontAwesomeIcon icon={faSun} style={{marginRight: 5}}
                                                                  color={'#373737'}/>

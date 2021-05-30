@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import {SharedElement} from "react-navigation-shared-element";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faArrowLeft, faExpandArrowsAlt} from "@fortawesome/free-solid-svg-icons";
+import {faArrowLeft, faExpandArrowsAlt, faTint, faCalendarAlt} from "@fortawesome/free-solid-svg-icons";
 import LinearGradient from 'react-native-linear-gradient'
 import Moment from 'moment';
 import {useRetrieveSession} from "../hooks/EncryptedStorage.hook";
@@ -52,23 +52,28 @@ function PlantDetails({route, navigation}) {
     return (
         <ScrollView>
             <View>
-                <TouchableWithoutFeedback onPress={() => {goBack()}}>
-                    <SharedElement id={'back'} style={[{zIndex: 20, position: "absolute"}]}>
+                <TouchableWithoutFeedback onPress={() => {
+                    goBack()
+                }}>
+                    <SharedElement id={'back'} style={[{zIndex: 40, position: "absolute"}]}>
                         <View style={styles.backButton}>
                             <FontAwesomeIcon icon={faArrowLeft} color={'#000'} size={18} style={{zIndex: 20}}/>
                         </View>
                     </SharedElement>
                 </TouchableWithoutFeedback>
 
-                {/*<TouchableWithoutFeedback onPress={() => {*/}
-                {/*    enlarge()*/}
-                {/*}}>*/}
-                {/*    <SharedElement id={'enlarge'} style={[{zIndex: 30, position: "absolute"}]}>*/}
-                {/*        <View style={styles.expandButton}>*/}
-                {/*            <FontAwesomeIcon icon={faExpandArrowsAlt} color={'#000'} size={18} style={{zIndex: 20}}/>*/}
-                {/*        </View>*/}
-                {/*    </SharedElement>*/}
-                {/*</TouchableWithoutFeedback>*/}
+                <SharedElement id={'water'} style={[{zIndex: 30, position: "absolute"}]}>
+                    <View style={[styles.bottomIcons, {flexDirection: 'row', alignItems: 'center'}]}>
+                        <FontAwesomeIcon icon={faTint} color={'#fff'} size={20} style={{zIndex: 20}}/>
+                        <Text style={[styles.text, {color: '#fff', marginLeft: 2}]}>{route.params.plant.plant.water_amount}ml</Text>
+                    </View>
+                </SharedElement>
+                <SharedElement id={'waterDays'} style={[{zIndex: 30, position: "absolute"}]}>
+                    <View style={[styles.bottomIcons, {flexDirection: 'row', alignItems: 'center', marginTop: 30}]}>
+                        <FontAwesomeIcon icon={faCalendarAlt} color={'#fff'} size={20} style={{zIndex: 20}}/>
+                        <Text style={[styles.text, {color: '#fff', marginLeft: 4}]}>{route.params.plant.plant.days_between_water} days</Text>
+                    </View>
+                </SharedElement>
 
                 <SharedElement id={'overlay'} style={[{zIndex: 10, position: "absolute"}]}>
                     <LinearGradient colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']} style={{
@@ -117,8 +122,10 @@ function PlantDetails({route, navigation}) {
             </View>
             <View style={styles.infoContainer}>
                 <Text style={styles.subTitle}>Location</Text>
-                <Text style={styles.locationText}>{route.params.plant.location}</Text>
-                <Text style={[styles.subTitle, {marginTop: 20}]}>Description</Text>
+                <Text style={styles.bigText}>{route.params.plant.location}</Text>
+                <Text style={styles.subTitle}>Scientific name</Text>
+                <Text style={styles.bigText}>{route.params.plant.plant.latin_name}</Text>
+                <Text style={[styles.subTitle]}>Description</Text>
                 <Text style={styles.text}>{route.params.plant.plant.description}</Text>
                 <Text style={[styles.subTitle, {marginTop: 20}]}>Danger zone</Text>
             </View>
@@ -145,11 +152,9 @@ const styles = StyleSheet.create({
         padding: 12,
         opacity: 0.9,
     },
-    expandButton: {
-        top: 435,
-        right: -310,
-        color: '#fff',
-        backgroundColor: '#fff',
+    bottomIcons: {
+        top: 415,
+        right: -280,
         zIndex: 20,
         borderRadius: 200,
         padding: 12,
@@ -185,11 +190,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 26,
     },
-    locationText: {
+    bigText: {
         color: '#575757',
         fontFamily: 'Circular Std',
         fontWeight: 'bold',
         fontSize: 18,
+        marginBottom: 10
     },
     text: {
         color: '#575757',

@@ -23,7 +23,7 @@ function PlantDetails({route, navigation}) {
     const enlarge = () => {
         navigation.navigate('ImageView', {
             image: route.params.image,
-            uri: route.params.uri
+            uri: 'image'
         })
     }
 
@@ -41,15 +41,15 @@ function PlantDetails({route, navigation}) {
                     </SharedElement>
                 </TouchableWithoutFeedback>
 
-                <TouchableWithoutFeedback onPress={() => {
-                    enlarge()
-                }}>
-                    <SharedElement id={'enlarge'} style={[{zIndex: 30, position: "absolute"}]}>
-                        <View style={styles.expandButton}>
-                            <FontAwesomeIcon icon={faExpandArrowsAlt} color={'#000'} size={18} style={{zIndex: 20}}/>
-                        </View>
-                    </SharedElement>
-                </TouchableWithoutFeedback>
+                {/*<TouchableWithoutFeedback onPress={() => {*/}
+                {/*    enlarge()*/}
+                {/*}}>*/}
+                {/*    <SharedElement id={'enlarge'} style={[{zIndex: 30, position: "absolute"}]}>*/}
+                {/*        <View style={styles.expandButton}>*/}
+                {/*            <FontAwesomeIcon icon={faExpandArrowsAlt} color={'#000'} size={18} style={{zIndex: 20}}/>*/}
+                {/*        </View>*/}
+                {/*    </SharedElement>*/}
+                {/*</TouchableWithoutFeedback>*/}
 
                 <SharedElement id={'overlay'} style={[{zIndex: 10, position: "absolute"}]}>
                     <LinearGradient colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']} style={{

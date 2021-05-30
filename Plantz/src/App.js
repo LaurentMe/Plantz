@@ -50,7 +50,7 @@ export const App = () => {
                                 {id: route.params.image},
                                 {id: 'back', animation: 'fade-in'},
                                 {id: 'enlarge', animation: 'fade-in'},
-                                {id: 'overlay', animation: 'fade-out'},
+                                {id: 'overlay', animation: 'fade-in'},
                             ];
                         }
                     }}

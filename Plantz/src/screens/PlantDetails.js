@@ -62,13 +62,13 @@ function PlantDetails({route, navigation}) {
                     </SharedElement>
                 </TouchableWithoutFeedback>
 
-                <SharedElement id={'water'} style={[{zIndex: 30, position: "absolute"}]}>
+                <SharedElement id={'water' + route.params.index} style={[{zIndex: 30, position: "absolute"}]}>
                     <View style={[styles.bottomIcons, {flexDirection: 'row', alignItems: 'center'}]}>
                         <FontAwesomeIcon icon={faTint} color={'#fff'} size={20} style={{zIndex: 20}}/>
                         <Text style={[styles.text, {color: '#fff', marginLeft: 2}]}>{route.params.plant.plant.water_amount}ml</Text>
                     </View>
                 </SharedElement>
-                <SharedElement id={'waterDays'} style={[{zIndex: 30, position: "absolute"}]}>
+                <SharedElement id={'waterDays' + route.params.index} style={[{zIndex: 30, position: "absolute"}]}>
                     <View style={[styles.bottomIcons, {flexDirection: 'row', alignItems: 'center', marginTop: 30}]}>
                         <FontAwesomeIcon icon={faCalendarAlt} color={'#fff'} size={20} style={{zIndex: 20}}/>
                         <Text style={[styles.text, {color: '#fff', marginLeft: 4}]}>{route.params.plant.plant.days_between_water} days</Text>

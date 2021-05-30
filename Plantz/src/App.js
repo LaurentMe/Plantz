@@ -52,8 +52,8 @@ export const App = () => {
                                 {id: 'enlarge', animation: 'fade-in'},
                                 {id: 'overlay', animation: 'fade-in'},
                                 {id: 'date', animation: 'fade'},
-                                {id: 'water', animation: 'fade'},
-                                {id: 'waterDays', animation: 'fade'},
+                                {id: 'water' + route.params.index, animation: 'fade'},
+                                {id: 'waterDays' + route.params.index, animation: 'fade'},
                                 {id: route.params.plant.nickname, animation: 'fade-in'},
                             ];
                         }

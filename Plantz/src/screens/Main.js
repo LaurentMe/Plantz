@@ -181,18 +181,19 @@ function Main({navigation}) {
                                             <Text style={styles.cardTitle}>{item.nickname}</Text>
                                         </SharedElement>
                                         <View style={styles.cardText}>
-                                            <SharedElement id={'water'}>
+                                            <SharedElement id={'water' + index}>
                                                 <View style={styles.textBox}>
                                                     <FontAwesomeIcon icon={faTint} style={{marginRight: 5}}
                                                                      color={'#373737'}/>
                                                     <Text style={styles.text}>{item.plant.water_amount}ml</Text>
                                                 </View>
                                             </SharedElement>
-                                            <SharedElement id={'waterDays'}>
+                                            <SharedElement id={'waterDays' + index}>
                                                 <View style={styles.textBox}>
                                                     <FontAwesomeIcon icon={faSyncAlt} style={{marginRight: 5}}
                                                                      color={'#373737'}/>
-                                                    <Text style={styles.text}>{item.plant.days_between_water} days</Text>
+                                                    <Text
+                                                        style={styles.text}>{item.plant.days_between_water} days</Text>
                                                 </View>
                                             </SharedElement>
                                         </View>
@@ -302,7 +303,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.4,
         shadowRadius: 12,
         margin: 6,
-        marginTop: 50
+        marginTop: 50,
+        marginBottom: 15
     },
     cardTitle: {
         fontFamily: 'Circular Std',

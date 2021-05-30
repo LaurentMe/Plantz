@@ -46,7 +46,12 @@ export const App = () => {
 
                     sharedElementsConfig={(route, otherRoute, showing) => {
                         if (otherRoute.name === 'Main' && showing) {
-                            return [`${route.params.image}`];
+                            return [
+                                {id: route.params.image},
+                                {id: 'back', animation: 'fade-in'},
+                                {id: 'enlarge', animation: 'fade-in'},
+                                {id: 'overlay', animation: 'fade-out'},
+                            ];
                         }
                     }}
                     options={() => ({

@@ -14,85 +14,95 @@ import {createSharedElementStackNavigator} from 'react-navigation-shared-element
 import ImageView from "./screens/ImageView";
 import PlantDetails from "./screens/PlantDetails";
 import {enableScreens} from "react-native-screens";
+import SplashScreen from "./screens/SplashScreen";
 
 export const App = () => {
     console.log('rerender app');
     const Stack = createSharedElementStackNavigator();
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(undefined);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isSignout, setIsSignout] = useState(true);
 
     useEffect(() => {
         useRetrieveSession().then((session) => {
             setUser(session);
+            setIsLoading(false);
         })
     }, [])
 
+    if (isLoading) {
+        return <SplashScreen/>
+    }
+
     return (
         <NavigationContainer>
-            {/*{user ?*/}
-            {/*    <AppStack />*/}
-            {/*    :*/}
-            {/*    <AuthStack />*/}
-            {/*}*/}
-
             <Stack.Navigator
                 screenOptions={{
                     headerShown: false,
                 }}>
-                <Stack.Screen name="Login" component={Login}/>
-                <Stack.Screen name='Main' component={Main}/>
-                <Stack.Screen
-                    name={'PlantDetails'}
-                    component={PlantDetails}
+                {user === undefined ? (
+                    <>
+                        <Stack.Screen name="Login" component={Login}/>
+                    </>
+                ) : (
+                    <>
+                        <Stack.Screen name='Main' component={Main}/>
+                        <Stack.Screen
+                            name={'PlantDetails'}
+                            component={PlantDetails}
 
-                    sharedElementsConfig={(route, otherRoute, showing) => {
-                        if (otherRoute.name === 'Main' && showing) {
-                            return [
-                                {id: route.params.plant.created_at.toString()},
-                                {id: 'back', animation: 'fade-in'},
-                                {id: 'enlarge', animation: 'fade-in'},
-                                {id: 'overlay', animation: 'fade-in'},
-                                {id: 'date', animation: 'fade'},
-                                {id: 'water' + route.params.index, animation: 'fade'},
-                                {id: 'waterDays' + route.params.index, animation: 'fade'},
-                                {id: route.params.plant.nickname, animation: 'fade-in'},
-                            ];
-                        }
-                    }}
-                    options={() => ({
-                        gestureEnabled: true,
-                        // cardStyleInterpolator: ({current: {progress}}) => {
-                        //     return {
-                        //         cardStyle: {
-                        //             opacity: progress,
-                        //         }
-                        //     }
-                        // }
-                    })}
-                />
-                />
-                <Stack.Screen name='Camera' component={Camera}/>
-                <Stack.Screen name={'AddPlant'} component={AddPlant}/>
-                <Stack.Screen
-                    name={'ImageView'}
-                    component={ImageView}
-                    sharedElementsConfig={(route, otherRoute, showing) => {
-                        if (otherRoute.name === 'AddPlant' && showing) {
-                            return [
-                                {id: route.params.uri},
-                                {id: 'back'}
-                            ];
-                        }
-                    }}
-                    options={() => ({
-                        gestureEnabled: false,
-                        cardStyleInterpolator: ({current: {progress}}) => {
-                            return {
-                                cardStyle: {
-                                    opacity: progress,
+                            sharedElementsConfig={(route, otherRoute, showing) => {
+                                if (otherRoute.name === 'Main' && showing) {
+                                    return [
+                                        {id: route.params.plant.created_at.toString()},
+                                        {id: 'back', animation: 'fade-in'},
+                                        {id: 'enlarge', animation: 'fade-in'},
+                                        {id: 'overlay', animation: 'fade-in'},
+                                        {id: 'date', animation: 'fade'},
+                                        {id: 'water' + route.params.index, animation: 'fade'},
+                                        {id: 'waterDays' + route.params.index, animation: 'fade'},
+                                        {id: route.params.plant.nickname, animation: 'fade-in'},
+                                    ];
                                 }
-                            }
-                        }
-                    })}/>
+                            }}
+                            options={() => ({
+                                gestureEnabled: true,
+                                // cardStyleInterpolator: ({current: {progress}}) => {
+                                //     return {
+                                //         cardStyle: {
+                                //             opacity: progress,
+                                //         }
+                                //     }
+                                // }
+                            })}
+                        />
+                        <Stack.Screen name='Camera' component={Camera}/>
+                        <Stack.Screen name={'AddPlant'} component={AddPlant}/>
+                        <Stack.Screen
+                            name={'ImageView'}
+                            component={ImageView}
+                            sharedElementsConfig={(route, otherRoute, showing) => {
+                                if (otherRoute.name === 'AddPlant' && showing) {
+                                    return [
+                                        {id: route.params.uri},
+                                        {id: 'back'}
+                                    ];
+                                }
+                            }}
+                            options={() => ({
+                                gestureEnabled: false,
+                                cardStyleInterpolator: ({current: {progress}}) => {
+                                    return {
+                                        cardStyle: {
+                                            opacity: progress,
+                                        }
+                                    }
+                                }
+                            })}/>
+                    </>
+                )
+
+                }
             </Stack.Navigator>
         </NavigationContainer>
     );

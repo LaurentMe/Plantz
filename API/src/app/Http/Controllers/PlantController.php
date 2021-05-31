@@ -25,7 +25,7 @@ class PlantController extends Controller
      */
     public function index(Request $request)
     {
-        return response(PlantUserResource::collection(PlantUser::where('user_id', $request->user()->id)->get()), 200);
+        return response(PlantUserResource::collection(PlantUser::where('user_id', $request->user()->id)->get())->sortByDesc('name'), 200);
     }
 
     /**

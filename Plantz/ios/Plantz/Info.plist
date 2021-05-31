@@ -38,7 +38,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Plant detection</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Plant detection</string>
 	<key>NSPhotoLibraryUsageDescription</key>

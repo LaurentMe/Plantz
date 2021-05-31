@@ -25,7 +25,7 @@ function Login({navigation}) {
         })
             .then(function (response) {
                 if (response.status == 200){
-                    useStoreSession(response.data).then(() => navigation.replace('Main'))
+                    useStoreSession(response.data);
                 }
             })
             .catch(function (error) {

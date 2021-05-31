@@ -9,7 +9,7 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     ScrollView, Image,
-    RefreshControl, TouchableWithoutFeedback, Share
+    RefreshControl, TouchableWithoutFeedback, Share, ActivityIndicator
 } from "react-native";
 import LinearGradient from 'react-native-linear-gradient';
 import {useLogout, useRetrieveSession} from "../hooks/EncryptedStorage.hook";
@@ -22,12 +22,16 @@ import axios from "axios";
 import {useIsFocused} from '@react-navigation/native';
 import {err} from "react-native-svg/lib/typescript/xml";
 import {SharedElement} from "react-navigation-shared-element";
+import { AuthContext } from "./../hooks/AuthContext";
+
 
 function Main({navigation}) {
     const [plants, setPlants] = useState([]);
     const [searchPlants, setSearchPlants] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
+    const { signOut } = React.useContext(AuthContext);
     const isFocused = useIsFocused();
 
     const onRefresh = React.useCallback(() => {
@@ -35,12 +39,7 @@ function Main({navigation}) {
         getPlants().then(() => setRefreshing(false));
     }, []);
 
-    const logout = () => {
-        useLogout().then(() => {
-            navigation.replace('Login')
-        }).catch((error) => {
-        });
-    }
+
     const camera = () => {
         navigation.navigate('Camera')
     }
@@ -57,12 +56,13 @@ function Main({navigation}) {
         useRetrieveSession().then((session) => {
             axios.get('http://192.168.1.110/api/plants', {
                 headers: {
-                    Authorization: "Bearer " + session.token
+                    Authorization: "Bearer " + session
                 }
             })
                 .then(function (response) {
                     setPlants(response.data)
                     setSearchPlants(response.data)
+                    setIsLoading(false);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -117,7 +117,7 @@ function Main({navigation}) {
                             onChangeText={(text) => search(text)}
                         />
                     </View>
-                    <TouchableOpacity onPress={logout}>
+                    <TouchableOpacity onPress={() => signOut()}>
                         <View
                             style={{
                                 backgroundColor: '#ddd',
@@ -147,96 +147,100 @@ function Main({navigation}) {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={styles.cardsContainer}>
-                    {searchPlants.map((item, index) => {
-                        return (
-                            <View key={index}>
+                {isLoading ?
+                    <ActivityIndicator size="small" color="#000000" />
+                    :
+                    <View style={styles.cardsContainer}>
+                        {searchPlants.map((item, index) => {
+                            return (
+                                <View key={index}>
+                                    <View style={{
+                                        shadowColor: '#444',
+                                        shadowOffset: {width: 0, height: 0},
+                                        shadowOpacity: 0.50,
+                                        shadowRadius: 4,
+                                        zIndex: 10,
+                                        position: "absolute",
+                                        alignSelf: 'center',
+                                    }}>
+                                        <TouchableWithoutFeedback onPress={() => details(item, index)}>
+                                            <SharedElement id={item.created_at.toString()} style={{zIndex: 0}}>
+                                                <Image
+                                                    style={{
+                                                        width: 90,
+                                                        height: 90,
+                                                        borderRadius: 100,
+                                                        alignSelf: 'center',
+                                                    }}
+                                                    source={{uri: 'data:image/png;base64,' + item.image}}
+                                                />
+                                            </SharedElement>
+                                        </TouchableWithoutFeedback>
+
+                                    </View>
+                                    <TouchableWithoutFeedback onPress={() => details(item, index)}>
+                                        <View style={styles.card}>
+                                            <SharedElement id={item.nickname + item.created_at.toString()}>
+                                                <Text style={styles.cardTitle}>{item.nickname}</Text>
+                                            </SharedElement>
+                                            <View style={styles.cardText}>
+                                                <SharedElement id={'water' + index}>
+                                                    <View style={styles.textBox}>
+                                                        <FontAwesomeIcon icon={faTint} style={{marginRight: 5}}
+                                                                         color={'#373737'}/>
+                                                        <Text style={styles.text}>{item.plant.water_amount}ml</Text>
+                                                    </View>
+                                                </SharedElement>
+                                                <SharedElement id={'waterDays' + index}>
+                                                    <View style={styles.textBox}>
+                                                        <FontAwesomeIcon icon={faSyncAlt} style={{marginRight: 5}}
+                                                                         color={'#373737'}/>
+                                                        <Text
+                                                            style={styles.text}>{item.plant.days_between_water} days</Text>
+                                                    </View>
+                                                </SharedElement>
+                                            </View>
+                                            <View style={styles.waterStatus}>
+                                                <Text style={styles.waterStatusText}>Just fine</Text>
+                                                <FontAwesomeIcon icon={faCheck} size={20} color={'#fff'} style={{}}/>
+                                            </View>
+                                        </View>
+                                    </TouchableWithoutFeedback>
+                                </View>
+                            )
+                        })}
+                        <TouchableWithoutFeedback onPress={() => camera()}>
+                            <View>
                                 <View style={{
+                                    width: 90,
+                                    height: 90,
+                                    borderRadius: 100,
+                                    alignSelf: 'center',
+                                    backgroundColor: '#fff',
+                                    position: 'absolute',
+                                    zIndex: 20,
                                     shadowColor: '#444',
                                     shadowOffset: {width: 0, height: 0},
-                                    shadowOpacity: 0.50,
-                                    shadowRadius: 4,
-                                    zIndex: 10,
-                                    position: "absolute",
-                                    alignSelf: 'center',
+                                    shadowOpacity: 0.40,
+                                    shadowRadius: 6,
                                 }}>
-                                    <TouchableWithoutFeedback onPress={() => details(item, index)}>
-                                        <SharedElement id={item.created_at.toString()} style={{zIndex: 0}}>
-                                            <Image
-                                                style={{
-                                                    width: 90,
-                                                    height: 90,
-                                                    borderRadius: 100,
-                                                    alignSelf: 'center',
-                                                }}
-                                                source={{uri: 'data:image/png;base64,' + item.image}}
-                                            />
-                                        </SharedElement>
-                                    </TouchableWithoutFeedback>
-
+                                    <Image
+                                        style={{
+                                            width: 90,
+                                            height: 90,
+                                            borderRadius: 100,
+                                        }}
+                                        source={require('../assets/logo/logoPlantz.png')}
+                                    />
                                 </View>
-                                <TouchableWithoutFeedback onPress={() => details(item, index)}>
-                                    <View style={styles.card}>
-                                        <SharedElement id={item.nickname + item.created_at.toString()}>
-                                            <Text style={styles.cardTitle}>{item.nickname}</Text>
-                                        </SharedElement>
-                                        <View style={styles.cardText}>
-                                            <SharedElement id={'water' + index}>
-                                                <View style={styles.textBox}>
-                                                    <FontAwesomeIcon icon={faTint} style={{marginRight: 5}}
-                                                                     color={'#373737'}/>
-                                                    <Text style={styles.text}>{item.plant.water_amount}ml</Text>
-                                                </View>
-                                            </SharedElement>
-                                            <SharedElement id={'waterDays' + index}>
-                                                <View style={styles.textBox}>
-                                                    <FontAwesomeIcon icon={faSyncAlt} style={{marginRight: 5}}
-                                                                     color={'#373737'}/>
-                                                    <Text
-                                                        style={styles.text}>{item.plant.days_between_water} days</Text>
-                                                </View>
-                                            </SharedElement>
-                                        </View>
-                                        <View style={styles.waterStatus}>
-                                            <Text style={styles.waterStatusText}>Just fine</Text>
-                                            <FontAwesomeIcon icon={faCheck} size={20} color={'#fff'} style={{}}/>
-                                        </View>
-                                    </View>
-                                </TouchableWithoutFeedback>
+                                <View style={[styles.card, {justifyContent: "center"}]}>
+                                    <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'}
+                                                     style={{alignSelf: 'center'}}/>
+                                </View>
                             </View>
-                        )
-                    })}
-                    <TouchableWithoutFeedback onPress={() => camera()}>
-                        <View>
-                            <View style={{
-                                width: 90,
-                                height: 90,
-                                borderRadius: 100,
-                                alignSelf: 'center',
-                                backgroundColor: '#fff',
-                                position: 'absolute',
-                                zIndex: 20,
-                                shadowColor: '#444',
-                                shadowOffset: {width: 0, height: 0},
-                                shadowOpacity: 0.40,
-                                shadowRadius: 6,
-                            }}>
-                                <Image
-                                    style={{
-                                        width: 90,
-                                        height: 90,
-                                        borderRadius: 100,
-                                    }}
-                                    source={require('../assets/logo/logoPlantz.png')}
-                                />
-                            </View>
-                            <View style={[styles.card, {justifyContent: "center"}]}>
-                                <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'}
-                                                 style={{alignSelf: 'center'}}/>
-                            </View>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </View>
+                        </TouchableWithoutFeedback>
+                    </View>
+                }
             </ScrollView>
         </View>
     );

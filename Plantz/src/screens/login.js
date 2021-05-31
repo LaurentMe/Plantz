@@ -4,35 +4,14 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faUser, faLock} from '@fortawesome/free-solid-svg-icons'
 import { useStoreSession, useRetrieveSession } from '../hooks/EncryptedStorage.hook';
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import { AuthContext } from "../hooks/AuthContext";
 
 function Login({navigation}) {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
-
     const axios = require('axios').default;
 
-    useEffect(() => {
-        useRetrieveSession().then((session) => {
-            if (session) navigation.replace('Main')
-        })
-    })
-
-    const login = () => {
-        axios.post('http://192.168.1.110/login', {
-            email: username,
-            password: password,
-            device_name: 'mobile',
-        })
-            .then(function (response) {
-                if (response.status == 200){
-                    useStoreSession(response.data);
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
-
+    const { signIn } = React.useContext(AuthContext);
     return (
         <KeyboardAwareScrollView contentContainerStyle={styles.container}>
             <Image
@@ -64,7 +43,7 @@ function Login({navigation}) {
                     <FontAwesomeIcon icon={faLock} color={'#26A66B'}/>
                 </View>
             </View>
-            <TouchableOpacity onPress={login}>
+            <TouchableOpacity onPress={() => signIn({ username, password })}>
                 <View style={styles.loginButton}>
                     <Text style={styles.loginText}>Login</Text>
                 </View>

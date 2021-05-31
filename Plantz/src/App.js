@@ -90,7 +90,7 @@ export const App = () => {
                         }
                     })
                     .catch(function({ response }) {
-                        res = response.data.errors
+                        console.log(response.data.errors)
                         Alert.alert(
                             "Incorrect",
                             "Incorrect login data",

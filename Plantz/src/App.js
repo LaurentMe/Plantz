@@ -18,6 +18,7 @@ import SplashScreen from "./screens/SplashScreen";
 import {AuthContext} from "./hooks/AuthContext";
 import axios from "axios";
 import Moment from "moment";
+import RNBootSplash from 'react-native-bootsplash';
 
 export const App = () => {
     const Stack = createSharedElementStackNavigator();
@@ -121,7 +122,7 @@ export const App = () => {
 
     return (
         <AuthContext.Provider value={authContext}>
-            <NavigationContainer>
+            <NavigationContainer onReady={() => RNBootSplash.hide()}>
                 <Stack.Navigator screenOptions={{headerShown: false}}>
                     {state.isLoading ? (
                         <Stack.Screen name="Splash" component={SplashScreen}/>

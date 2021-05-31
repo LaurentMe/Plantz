@@ -5,13 +5,20 @@ import {faUser, faLock} from '@fortawesome/free-solid-svg-icons'
 import { useStoreSession, useRetrieveSession } from '../hooks/EncryptedStorage.hook';
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import { AuthContext } from "../hooks/AuthContext";
+import {err} from "react-native-svg/lib/typescript/xml";
 
 function Login({navigation}) {
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [errors, setErrors] = useState({});
     const axios = require('axios').default;
 
     const { signIn } = React.useContext(AuthContext);
+
+    const login = (data) => {
+        signIn(data)
+    }
+
     return (
         <KeyboardAwareScrollView contentContainerStyle={styles.container}>
             <Image
@@ -22,7 +29,7 @@ function Login({navigation}) {
                 <Text style={styles.label}>Email</Text>
                 <View style={styles.inputContainer}>
                     <TextInput
-                        style={styles.inputField}
+                        style={[styles.inputField]}
                         onChangeText={(text) => setUsername(text)}
                         autoCapitalize='none'
                         keyboardType={"email-address"}
@@ -33,7 +40,7 @@ function Login({navigation}) {
                 </View>
             </View>
             <View>
-                <Text style={styles.label}>Wachtwoord</Text>
+                <Text style={styles.label}>Password</Text>
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={[styles.inputField, {fontSize: 12}]}
@@ -48,7 +55,7 @@ function Login({navigation}) {
                     <FontAwesomeIcon icon={faLock} color={'#26A66B'}/>
                 </View>
             </View>
-            <TouchableOpacity onPress={() => signIn({ username, password })}>
+            <TouchableOpacity onPress={() => login({ username, password })}>
                 <View style={styles.loginButton}>
                     <Text style={styles.loginText}>Login</Text>
                 </View>

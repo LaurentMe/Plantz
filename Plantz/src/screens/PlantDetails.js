@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     Dimensions,
     Image,
@@ -20,6 +20,8 @@ import {AuthContext} from "../hooks/AuthContext";
 
 function PlantDetails({route, navigation}) {
     const {dayDifference} = React.useContext(AuthContext);
+    const [plant, setPlant] = useState();
+    const [isLoading, setIsLoading] = useState(true);
 
     const goBack = () => {
         navigation.goBack();
@@ -32,8 +34,41 @@ function PlantDetails({route, navigation}) {
         })
     }
 
-    const updateWater = () => {
+    const getPlant = () => {
+        useRetrieveSession().then((session) => {
+            axios.get('http://192.168.1.110/api/plants/' + route.params.plant.id, {
+                headers: {
+                    Authorization: "Bearer " + session
+                }
+            })
+                .then(function (response) {
+                    setPlant(response.data.data)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
 
+    const updateWater = () => {
+        useRetrieveSession().then((session) => {
+            axios.get('http://192.168.1.110/api/updateWater/' + route.params.plant.id, {
+                headers: {
+                    Authorization: "Bearer " + session
+                }
+            })
+                .then(function (response) {
+                    setPlant(response.data.data)
+                    navigation.goBack();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }).catch((error) => {
+            console.log(error)
+        })
     }
 
     const deletePlant = () => {
@@ -126,7 +161,7 @@ function PlantDetails({route, navigation}) {
                     />
                 </SharedElement>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={updateWater}>
                 <View style={[styles.addWater, {backgroundColor: dayDifference(route.params.plant.last_water_day, route.params.plant.plant.days_between_water) < 0 ? '#F01002' : dayDifference(route.params.plant.last_water_day, route.params.plant.plant.days_between_water) === 0 ? '#F07202' : '#23B571'}]}>
                     <Text style={styles.addWaterText}>{dayDifference(route.params.plant.last_water_day, route.params.plant.plant.days_between_water) > 0 ? 'Everything is just fine' : 'Add water to '+ route.params.plant.nickname}</Text>
                 </View>

@@ -26,7 +26,7 @@ class PlantController extends Controller
      */
     public function index(Request $request)
     {
-        return response(PlantUserResource::collection(PlantUser::where('user_id', $request->user()->id)->get())->sortByDesc('name'), 200);
+        return response(PlantUserResource::collection(PlantUser::where('user_id', $request->user()->id)->orderBy('last_water_day')->get()), 200);
     }
 
     /**
@@ -43,6 +43,7 @@ class PlantController extends Controller
             'waterDays' => 'required',
             'location' => 'required',
             'image' => 'required',
+            'description' => 'required',
         ]);
 
         try {
@@ -51,7 +52,9 @@ class PlantController extends Controller
                 $plant = Plant::create([
                     'latin_name' => $request->latinName,
                     'water_amount' => $request->water,
-                    'days_between_water' => $request->waterDays
+                    'days_between_water' => $request->waterDays,
+                    'description' => $request->description
+
                 ]);
                 if ($request->name === null) {
                     $plant->name = $request->latinName;
@@ -60,14 +63,13 @@ class PlantController extends Controller
                 }
                 $plant->save();
             }
-
             $plantUser = PlantUser::create([
                 'plant_id' => $plant->id,
                 'user_id' => $request->user()->id,
                 'location' => $request->location,
                 'image' => $request->image,
                 'nickname' => $plant->name,
-                'last_water_day' => $plant->Carbon::now(),
+                'last_water_day' => Carbon::now()->toDateTimeString(),
             ]);
 
             if ($request->nickname !== null) {
@@ -91,9 +93,9 @@ class PlantController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        return new PlantUserResource(PlantUser::where('user_id', $request->user()->id)->where('id', $id)->firstOrFail());
     }
 
     /**
@@ -122,45 +124,19 @@ class PlantController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param Request $request
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        PlantUser::findOrFail($id)->delete();
+        PlantUser::where('user_id', $request->user()->id)->where('id', $id)->delete();
         return response()->noContent(201);
     }
 
 
     public function searchPlant(Request $request)
     {
-//        $response = $this->requestFactory
-//            ->baseUrl('https://api.plant.id')
-//            ->post('/v2/identify', [
-//                'api_key' => env('PLANT_ID_KEY'),
-//                'images' => [
-//                    $request->image
-//                ],
-//                'plant_language' => "nl"
-//            ]);
-//        if ($response->getStatusCode() === 200) {
-//            return response([
-//                'plant_name' => $response['suggestions'][0]['plant_name']
-//            ], 200);
-//        } else {
-//            return response('Bad request', 400);
-//        }
-
-//        $response = $this->requestFactory
-//            ->baseUrl('https://api.plant.id')
-//            ->post('/v2/identify', [
-//                'api_key' => env('PLANT_ID_KEY'),
-//                'images' => [
-//                    $request->image
-//                ],
-//                'plant_language' => "nl"
-//            ]);
-
 //        $response = $this->requestFactory
 //            ->baseUrl('https://api.plant.id')
 //            ->post('/v2/identify', [
@@ -182,4 +158,10 @@ class PlantController extends Controller
             'plant' => $plant
         ], 200);
     }
+
+    public function updateWater(Request $request, $id) {
+        $plantUser = PlantUser::where('user_id', $request->user()->id)->where('id', $id)->firstOrFail();
+        $plantUser->last_water_day = Carbon::now()->toDateTimeString();
+        $plantUser->save();
+        return new PlantUserResource(PlantUser::where('user_id', $request->user()->id)->where('id', $id)->firstOrFail());    }
 }

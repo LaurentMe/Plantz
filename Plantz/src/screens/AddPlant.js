@@ -27,6 +27,7 @@ function AddPlant({navigation, route}) {
     const [waterDays, setWaterDays] = useState('');
     const [location, setLocation] = useState('');
     const [description, setDescription] = useState('');
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         setLatinName(route.params.plantLatin);
@@ -49,6 +50,7 @@ function AddPlant({navigation, route}) {
     }
 
     const addPlant = () => {
+
         useRetrieveSession().then((session) => {
             axios.post('http://192.168.1.110/api/plants', {
                 name: name,
@@ -69,8 +71,9 @@ function AddPlant({navigation, route}) {
                         navigation.popToTop();
                     }
                 })
-                .catch(function (error) {
-                    console.log(error);
+                .catch(function ({response}) {
+                    console.log(response.data.errors)
+                    setErrors(response.data.errors);
                 });
         })
     }
@@ -108,7 +111,7 @@ function AddPlant({navigation, route}) {
 
                 <View style={styles.formContainer}>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Nickname</Text>
+                        <Text style={[styles.label, {color: errors.nickname ? '#ED1103' : '#000'}]}>Nickname</Text>
                         <TextInput
                             style={styles.inputField}
                             value={nickname}
@@ -117,7 +120,7 @@ function AddPlant({navigation, route}) {
                         />
                     </View>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Plant name</Text>
+                        <Text style={[styles.label, {color: errors.name ? '#ED1103' : '#000'}]}>Plant name</Text>
                         <TextInput
                             style={styles.inputField}
                             value={name}
@@ -127,7 +130,7 @@ function AddPlant({navigation, route}) {
                         />
                     </View>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Latin name</Text>
+                        <Text style={[styles.label, {color: errors.latinName ? '#ED1103' : '#000'}]}>Latin name</Text>
                         <TextInput
                             style={styles.inputField}
                             value={latinName}
@@ -136,7 +139,7 @@ function AddPlant({navigation, route}) {
                         />
                     </View>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Water dosis</Text>
+                        <Text style={[styles.label, {color: errors.water ? '#ED1103' : '#000'}]}>Water dosis</Text>
                         <TextInput
                             style={styles.inputField}
                             value={water.toString()}
@@ -146,7 +149,7 @@ function AddPlant({navigation, route}) {
                         />
                     </View>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Waterdays</Text>
+                        <Text style={[styles.label, {color: errors.waterDays ? '#ED1103' : '#000'}]}>Waterdays</Text>
                         <TextInput
                             style={styles.inputField}
                             value={waterDays.toString()}
@@ -157,9 +160,9 @@ function AddPlant({navigation, route}) {
                         />
                     </View>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Location</Text>
+                        <Text style={[styles.label, {color: errors.location ? '#ED1103' : '#000'}]}>Location</Text>
                         <TextInput
-                            style={styles.inputField}
+                            style={[styles.inputField]}
                             value={location}
                             onChangeText={(text) => setLocation(text)}
                             autoCorrect={true}
@@ -167,7 +170,7 @@ function AddPlant({navigation, route}) {
                         />
                     </View>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Description</Text>
+                        <Text style={[styles.label, {color: errors.description ? '#ED1103' : '#000'}]}>Description</Text>
                         <TextInput
                             multiline={true}
                             style={styles.inputField}

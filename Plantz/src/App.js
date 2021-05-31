@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
-import {Text, View} from "react-native";
+import {Alert, Text, View} from "react-native";
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Login from './screens/login';
@@ -22,7 +22,6 @@ import Moment from "moment";
 export const App = () => {
     const Stack = createSharedElementStackNavigator();
     const axios = require('axios').default;
-
 
     const [state, dispatch] = React.useReducer(
         (prevState, action) => {
@@ -74,7 +73,8 @@ export const App = () => {
 
     const authContext = React.useMemo(
         () => ({
-            signIn: async (data) => {
+            signIn: (data) => {
+                let res;
                 axios.post('http://192.168.1.110/login', {
                     email: data.username,
                     password: data.password,
@@ -85,14 +85,20 @@ export const App = () => {
                             useStoreSession(response.data.token).then(() => {
                                 dispatch({type: 'SIGN_IN', token: response.data});
                             }).catch(function (error) {
-                                console.log(error);
+                                console.log(error.data);
                             });
                         }
                     })
-                    .catch(function (error) {
-                        console.log(error);
+                    .catch(function({ response }) {
+                        res = response.data.errors
+                        Alert.alert(
+                            "Incorrect",
+                            "Incorrect login data",
+                            [
+                                { text: "OK" }
+                            ]
+                        );
                     });
-
             },
             signOut: () => {
                 useLogout();
@@ -108,7 +114,7 @@ export const App = () => {
             },
             dayDifference: (date, days) => {
                 return days - Math.floor((Moment().unix() - Moment(date).unix()) / 3600 / 24);
-            }
+            },
         }),
         []
     );

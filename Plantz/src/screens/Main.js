@@ -16,7 +16,7 @@ import {useLogout, useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 import {Button, ThemeProvider} from 'react-native-elements';
 import {SearchBar} from 'react-native-elements';
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faUser, faSearch, faPlusCircle, faTint, faSyncAlt, faSun, faCheck, faCalendarAlt} from '@fortawesome/free-solid-svg-icons'
+import {faUser, faSearch, faPlusCircle, faTint, faSyncAlt, faSun, faCheck, faCalendarAlt, faSignOutAlt} from '@fortawesome/free-solid-svg-icons'
 import Svg, {Circle} from "react-native-svg";
 import axios from "axios";
 import {useIsFocused} from '@react-navigation/native';
@@ -112,7 +112,7 @@ function Main({navigation}) {
                                 width: 280,
                                 fontFamily: 'Circular Std'
                             }]}
-                            placeholder="Zoek op naam"
+                            placeholder="Search..."
                             placeholderTextColor={'#888'}
                             onChangeText={(text) => search(text)}
                         />
@@ -128,7 +128,7 @@ function Main({navigation}) {
                                 borderColor: '#ececec',
                             }}
                         >
-                            <FontAwesomeIcon size={20} icon={faUser} color={'#545454'}/>
+                            <FontAwesomeIcon size={20} icon={faSignOutAlt} color={'#545454'}/>
                         </View>
                     </TouchableOpacity>
                 </View>

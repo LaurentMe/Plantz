@@ -14,7 +14,7 @@ class AddLastWaterDayToPlantUser extends Migration
     public function up()
     {
         Schema::table('plant_user', function (Blueprint $table) {
-            $table -> integer('last_water_day')->nullable();
+            $table -> dateTime('last_water_day')->nullable();
         });
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PlantUserResource;
 use App\Models\Plant;
 use App\Models\PlantUser;
+use Carbon\Carbon;
 use Illuminate\Http\Client\Factory;
 use Illuminate\Http\Request;
 use Mockery\Exception;
@@ -66,6 +67,7 @@ class PlantController extends Controller
                 'location' => $request->location,
                 'image' => $request->image,
                 'nickname' => $plant->name,
+                'last_water_day' => $plant->Carbon::now(),
             ]);
 
             if ($request->nickname !== null) {

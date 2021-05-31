@@ -21,7 +21,9 @@ class PlantUser extends Model
         'user_id',
         'location',
         'nickname',
-        'image'
+        'image',
+        'last_water_day',
+        'custom_water_amount',
     ];
 
     /**

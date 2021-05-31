@@ -23,6 +23,7 @@ import {useIsFocused} from '@react-navigation/native';
 import {err} from "react-native-svg/lib/typescript/xml";
 import {SharedElement} from "react-navigation-shared-element";
 import { AuthContext } from "./../hooks/AuthContext";
+import Moment from "moment";
 
 
 function Main({navigation}) {
@@ -39,7 +40,6 @@ function Main({navigation}) {
         getPlants().then(() => setRefreshing(false));
     }, []);
 
-
     const camera = () => {
         navigation.navigate('Camera')
     }
@@ -51,6 +51,10 @@ function Main({navigation}) {
     useEffect(() => {
         getPlants();
     }, [isFocused])
+
+    const dayDifference = (date, days) => {
+        return days - Math.floor((Moment().unix() - Moment(date).unix())/3600/24);
+    }
 
     const getPlants = async () => {
         useRetrieveSession().then((session) => {
@@ -195,14 +199,13 @@ function Main({navigation}) {
                                                     <View style={styles.textBox}>
                                                         <FontAwesomeIcon icon={faSyncAlt} style={{marginRight: 5}}
                                                                          color={'#373737'}/>
-                                                        <Text
-                                                            style={styles.text}>{item.plant.days_between_water} days</Text>
+                                                        <Text style={styles.text}>{dayDifference(item.last_water_day, item.plant.days_between_water)} days</Text>
                                                     </View>
                                                 </SharedElement>
                                             </View>
-                                            <View style={styles.waterStatus}>
-                                                <Text style={styles.waterStatusText}>Just fine</Text>
-                                                <FontAwesomeIcon icon={faCheck} size={20} color={'#fff'} style={{}}/>
+                                            <View style={[styles.waterStatus, {backgroundColor: dayDifference(item.last_water_day, item.plant.days_between_water) < 0 ? '#F01002' : dayDifference(item.last_water_day, item.plant.days_between_water) === 0 ? '#F07202' : '#23B571'}]}>
+                                                <Text style={styles.waterStatusText}>{dayDifference(item.last_water_day, item.plant.days_between_water) > 0 ? 'Just fine' : 'Add water'}</Text>
+                                                <FontAwesomeIcon icon={dayDifference(item.last_water_day, item.plant.days_between_water) > 0 ? faCheck : faPlusCircle} size={20} color={'#fff'} style={{}}/>
                                             </View>
                                         </View>
                                     </TouchableWithoutFeedback>
@@ -338,7 +341,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-around',
-        backgroundColor: '#23B571',
         width: '100%',
         height: 30,
         bottom: 0,

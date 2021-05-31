@@ -16,7 +16,7 @@ import {useLogout, useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 import {Button, ThemeProvider} from 'react-native-elements';
 import {SearchBar} from 'react-native-elements';
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faUser, faSearch, faPlusCircle, faTint, faSyncAlt, faSun, faCheck} from '@fortawesome/free-solid-svg-icons'
+import {faUser, faSearch, faPlusCircle, faTint, faSyncAlt, faSun, faCheck, faCalendarAlt} from '@fortawesome/free-solid-svg-icons'
 import Svg, {Circle} from "react-native-svg";
 import axios from "axios";
 import {useIsFocused} from '@react-navigation/native';
@@ -32,7 +32,7 @@ function Main({navigation}) {
     const [refreshing, setRefreshing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
-    const { signOut } = React.useContext(AuthContext);
+    const {signOut, dayDifference} = React.useContext(AuthContext);
     const isFocused = useIsFocused();
 
     const onRefresh = React.useCallback(() => {
@@ -51,10 +51,6 @@ function Main({navigation}) {
     useEffect(() => {
         getPlants();
     }, [isFocused])
-
-    const dayDifference = (date, days) => {
-        return days - Math.floor((Moment().unix() - Moment(date).unix())/3600/24);
-    }
 
     const getPlants = async () => {
         useRetrieveSession().then((session) => {
@@ -152,7 +148,7 @@ function Main({navigation}) {
                     </View>
                 </View>
                 {isLoading ?
-                    <ActivityIndicator size="small" color="#000000" />
+                    <ActivityIndicator size="small" color="#000000"/>
                     :
                     <View style={styles.cardsContainer}>
                         {searchPlants.map((item, index) => {
@@ -197,15 +193,19 @@ function Main({navigation}) {
                                                 </SharedElement>
                                                 <SharedElement id={'waterDays' + index}>
                                                     <View style={styles.textBox}>
-                                                        <FontAwesomeIcon icon={faSyncAlt} style={{marginRight: 5}}
+                                                        <FontAwesomeIcon icon={faCalendarAlt} style={{marginRight: 5}}
                                                                          color={'#373737'}/>
                                                         <Text style={styles.text}>{dayDifference(item.last_water_day, item.plant.days_between_water)} days</Text>
                                                     </View>
                                                 </SharedElement>
                                             </View>
-                                            <View style={[styles.waterStatus, {backgroundColor: dayDifference(item.last_water_day, item.plant.days_between_water) < 0 ? '#F01002' : dayDifference(item.last_water_day, item.plant.days_between_water) === 0 ? '#F07202' : '#23B571'}]}>
-                                                <Text style={styles.waterStatusText}>{dayDifference(item.last_water_day, item.plant.days_between_water) > 0 ? 'Just fine' : 'Add water'}</Text>
-                                                <FontAwesomeIcon icon={dayDifference(item.last_water_day, item.plant.days_between_water) > 0 ? faCheck : faPlusCircle} size={20} color={'#fff'} style={{}}/>
+                                            <View
+                                                style={[styles.waterStatus, {backgroundColor: dayDifference(item.last_water_day, item.plant.days_between_water) < 0 ? '#F01002' : dayDifference(item.last_water_day, item.plant.days_between_water) === 0 ? '#F07202' : '#23B571'}]}>
+                                                <Text
+                                                    style={styles.waterStatusText}>{dayDifference(item.last_water_day, item.plant.days_between_water) > 0 ? 'Just fine' : 'Add water'}</Text>
+                                                <FontAwesomeIcon
+                                                    icon={dayDifference(item.last_water_day, item.plant.days_between_water) > 0 ? faCheck : faPlusCircle}
+                                                    size={20} color={'#fff'} style={{}}/>
                                             </View>
                                         </View>
                                     </TouchableWithoutFeedback>

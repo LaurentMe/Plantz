@@ -26,6 +26,7 @@ function AddPlant({navigation, route}) {
     const [water, setWater] = useState('');
     const [waterDays, setWaterDays] = useState('');
     const [location, setLocation] = useState('');
+    const [description, setDescription] = useState('');
 
     useEffect(() => {
         setLatinName(route.params.plantLatin);
@@ -56,10 +57,11 @@ function AddPlant({navigation, route}) {
                 water: water,
                 waterDays: waterDays,
                 location: location,
+                description: description,
                 image: route.params.image
             }, {
                 headers: {
-                    Authorization: "Bearer " + session.token,
+                    Authorization: "Bearer " + session,
                 }
             })
                 .then(function (response) {
@@ -90,7 +92,7 @@ function AddPlant({navigation, route}) {
                         </View>
                     </TouchableWithoutFeedback>
                     <LinearGradient colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']} style={styles.bottomOverlay}>
-                        <Text style={styles.title}>New plant</Text>
+                        <Text style={[styles.title]}>New plant</Text>
                     </LinearGradient>
                     <SharedElement id={route.params.uri}>
                         <Image
@@ -111,7 +113,7 @@ function AddPlant({navigation, route}) {
                             style={styles.inputField}
                             value={nickname}
                             onChangeText={(text) => setNickname(text)}
-                            autoCorrect={false}
+                            autoCorrect={true}
                         />
                     </View>
                     <View style={styles.inputContainer}>
@@ -120,7 +122,7 @@ function AddPlant({navigation, route}) {
                             style={styles.inputField}
                             value={name}
                             onChangeText={(text) => setName(text)}
-                            autoCorrect={false}
+                            autoCorrect={true}
 
                         />
                     </View>
@@ -151,6 +153,7 @@ function AddPlant({navigation, route}) {
                             onChangeText={(text) => setWaterDays(text)}
                             keyboardType={"number-pad"}
                             autoCorrect={false}
+
                         />
                     </View>
                     <View style={styles.inputContainer}>
@@ -159,16 +162,19 @@ function AddPlant({navigation, route}) {
                             style={styles.inputField}
                             value={location}
                             onChangeText={(text) => setLocation(text)}
-                            autoCorrect={false}
+                            autoCorrect={true}
+                            maxLength={100}
                         />
                     </View>
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Description</Text>
                         <TextInput
+                            multiline={true}
                             style={styles.inputField}
-                            value={location}
-                            onChangeText={(text) => setLocation(text)}
-                            autoCorrect={false}
+                            value={description}
+                            onChangeText={(text) => setDescription(text)}
+                            autoCorrect={true}
+                            maxLength={600}
                         />
                     </View>
 

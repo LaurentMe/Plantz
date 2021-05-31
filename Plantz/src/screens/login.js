@@ -25,7 +25,9 @@ function Login({navigation}) {
                         style={styles.inputField}
                         onChangeText={(text) => setUsername(text)}
                         autoCapitalize='none'
+                        keyboardType={"email-address"}
                         autoCorrect={false}
+                        onSubmitEditing={() => { this.secondTextInput.focus(); }}
                     />
                     <FontAwesomeIcon icon={faUser} color={'#26A66B'}/>
                 </View>
@@ -34,11 +36,14 @@ function Login({navigation}) {
                 <Text style={styles.label}>Wachtwoord</Text>
                 <View style={styles.inputContainer}>
                     <TextInput
-                        style={styles.inputField}
+                        style={[styles.inputField, {fontSize: 12}]}
                         onChangeText={(text) => setPassword(text)}
                         autoCapitalize='none'
                         autoCorrect={false}
+                        keyboardType={"email-address"}
                         secureTextEntry={true}
+                        ref={(input) => { this.secondTextInput = input; }}
+                        onSubmitEditing={() => signIn({ username, password })}
                     />
                     <FontAwesomeIcon icon={faLock} color={'#26A66B'}/>
                 </View>

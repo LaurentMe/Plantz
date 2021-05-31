@@ -48,7 +48,7 @@ function Camera({navigation}) {
                     },
                     {
                         headers: {
-                            Authorization: "Bearer " + session.token
+                            Authorization: "Bearer " + session
                         }
                     }).then((response) => {
                     navigation.navigate('AddPlant', {

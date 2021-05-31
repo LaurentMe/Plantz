@@ -15,9 +15,9 @@ import ImageView from "./screens/ImageView";
 import PlantDetails from "./screens/PlantDetails";
 import {enableScreens} from "react-native-screens";
 import SplashScreen from "./screens/SplashScreen";
-
-import { AuthContext } from "./hooks/AuthContext";
+import {AuthContext} from "./hooks/AuthContext";
 import axios from "axios";
+import Moment from "moment";
 
 export const App = () => {
     const Stack = createSharedElementStackNavigator();
@@ -62,7 +62,7 @@ export const App = () => {
             try {
                 useRetrieveSession().then((res) => {
                     userToken = res;
-                    dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+                    dispatch({type: 'RESTORE_TOKEN', token: userToken});
                 }).catch((error) => {
                     console.log(error)
                 })
@@ -81,9 +81,9 @@ export const App = () => {
                     device_name: 'mobile',
                 })
                     .then(function (response) {
-                        if (response.status == 200){
+                        if (response.status == 200) {
                             useStoreSession(response.data.token).then(() => {
-                                dispatch({ type: 'SIGN_IN', token: response.data });
+                                dispatch({type: 'SIGN_IN', token: response.data});
                             }).catch(function (error) {
                                 console.log(error);
                             });
@@ -96,7 +96,7 @@ export const App = () => {
             },
             signOut: () => {
                 useLogout();
-                dispatch({ type: 'SIGN_OUT' })
+                dispatch({type: 'SIGN_OUT'})
             },
             signUp: async (data) => {
                 // In a production app, we need to send user data to server and get a token
@@ -104,8 +104,11 @@ export const App = () => {
                 // After getting token, we need to persist the token using `SecureStore` or any other encrypted storage
                 // In the example, we'll use a dummy token
 
-                dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+                dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
             },
+            dayDifference: (date, days) => {
+                return days - Math.floor((Moment().unix() - Moment(date).unix()) / 3600 / 24);
+            }
         }),
         []
     );
@@ -115,11 +118,22 @@ export const App = () => {
             <NavigationContainer>
                 <Stack.Navigator screenOptions={{headerShown: false}}>
                     {state.isLoading ? (
-                        <Stack.Screen name="Splash" component={SplashScreen} />
+                        <Stack.Screen name="Splash" component={SplashScreen}/>
                     ) : state.userToken == null ? (
-                        <Stack.Screen name="Login" component={Login} options={{
-                            animationTypeForReplace: state.isSignout ? 'pop' : 'push',
-                        }}/>
+                        <Stack.Screen
+                            name="Login"
+                            component={Login}
+                            options={() => ({
+                                // gestureEnabled: true,
+                                cardStyleInterpolator: ({current: {progress}}) => {
+                                    return {
+                                        cardStyle: {
+                                            opacity: progress,
+                                        }
+                                    }
+                                }
+                            })}
+                        />
                     ) : (
                         <>
                             <Stack.Screen name='Main' component={Main}/>

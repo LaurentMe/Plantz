@@ -191,7 +191,7 @@ function AddPlant({navigation, route}) {
                             value={description}
                             onChangeText={(text) => setDescription(text)}
                             autoCorrect={true}
-                            maxLength={600}
+                            maxLength={800}
                             editable={!route.params.plant}
                         />
                     </View>

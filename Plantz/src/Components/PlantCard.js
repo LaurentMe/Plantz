@@ -138,15 +138,18 @@ const styles = StyleSheet.create({
         fontFamily: 'Circular Std',
         fontWeight: '600',
         alignSelf: 'center',
+        textAlign: 'center',
         marginTop: 50,
         color: '#373737',
-        fontSize: 15
+        fontSize: 15,
+        maxWidth: 140
     },
     cardText: {
-        marginTop: 15,
+        position: 'absolute',
         marginHorizontal: 15,
         color: '#373737',
         fontFamily: 'Circular Std',
+        bottom: 40,
     },
     textBox: {
         flexDirection: 'row',

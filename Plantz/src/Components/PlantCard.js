@@ -4,6 +4,7 @@ import {SharedElement} from "react-navigation-shared-element";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faCalendarAlt, faCheck, faPlusCircle, faTint} from "@fortawesome/free-solid-svg-icons";
 import {AuthContext} from "../hooks/AuthContext";
+import Moment from "moment";
 
 function PlantCard({navigation, details,item, index,}) {
     const {dayDifference} = React.useContext(AuthContext);
@@ -51,7 +52,7 @@ function PlantCard({navigation, details,item, index,}) {
                             <View style={styles.textBox}>
                                 <FontAwesomeIcon icon={faCalendarAlt} style={{marginRight: 5}}
                                                  color={'#373737'}/>
-                                <Text style={styles.text}>{dayDifference(item.last_water_day, item.custom_water_days)} days</Text>
+                                <Text style={styles.text}>{Moment(item.next_water_day).format('DD/MM/YYYY')}</Text>
                             </View>
                         </SharedElement>
                     </View>

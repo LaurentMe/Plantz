@@ -36,6 +36,7 @@ function AddPlant({navigation, route}) {
             setName(route.params.plant.name);
             setWater(route.params.plant.water_amount);
             setWaterDays(route.params.plant.days_between_water);
+            setDescription(route.params.plant.description)
         }
     }, [])
 
@@ -135,26 +136,37 @@ function AddPlant({navigation, route}) {
                             autoCorrect={false}
                         />
                     </View>
-                    <View style={styles.inputContainer}>
-                        <Text style={[styles.label, {color: errors.water ? '#ED1103' : '#000'}]}>Water dosis</Text>
-                        <TextInput
-                            style={styles.inputField}
-                            value={water.toString()}
-                            onChangeText={(text) => setWater(text)}
-                            keyboardType={"number-pad"}
-                            autoCorrect={false}
-                        />
-                    </View>
-                    <View style={styles.inputContainer}>
-                        <Text style={[styles.label, {color: errors.waterDays ? '#ED1103' : '#000'}]}>Waterdays</Text>
-                        <TextInput
-                            style={styles.inputField}
-                            value={waterDays.toString()}
-                            onChangeText={(text) => setWaterDays(text)}
-                            keyboardType={"number-pad"}
-                            autoCorrect={false}
+                    <Text style={[styles.label, {color: errors.water ? '#ED1103' : '#000'}]}>Water</Text>
+                    <Text style={styles.text}>These values are an indication of the amount of water that is necessary
+                        for this plant. If you think these are incorrect, feel free to change the values.</Text>
 
-                        />
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                    }}>
+                        <View style={styles.inputContainer}>
+                            <TextInput
+                                style={styles.inputField}
+                                value={water.toString()}
+                                onChangeText={(text) => setWater(text)}
+                                keyboardType={"number-pad"}
+                                autoCorrect={false}
+                                maxLength={4}
+                            />
+                        </View>
+                        <Text style={[styles.label, {marginBottom: 30, fontWeight: 'normal'}]}>cl every </Text>
+                        <View style={styles.inputContainer}>
+                            <TextInput
+                                style={styles.inputField}
+                                value={waterDays.toString()}
+                                onChangeText={(text) => setWaterDays(text)}
+                                keyboardType={"number-pad"}
+                                autoCorrect={false}
+                                maxLength={4}
+
+                            />
+                        </View>
+                        <Text style={[styles.label, {marginBottom: 30, fontWeight: 'normal'}]}>days</Text>
                     </View>
                     <View style={styles.inputContainer}>
                         <Text style={[styles.label, {color: errors.location ? '#ED1103' : '#000'}]}>Location</Text>
@@ -167,7 +179,8 @@ function AddPlant({navigation, route}) {
                         />
                     </View>
                     <View style={styles.inputContainer}>
-                        <Text style={[styles.label, {color: errors.description ? '#ED1103' : '#000'}]}>Description</Text>
+                        <Text
+                            style={[styles.label, {color: errors.description ? '#ED1103' : '#000'}]}>Description</Text>
                         <TextInput
                             multiline={true}
                             style={styles.inputField}
@@ -220,7 +233,9 @@ const styles = StyleSheet.create({
         fontSize: 15,
         marginHorizontal: 2,
         borderBottomWidth: 1,
-        borderColor: '#26A66B'
+        borderColor: '#26A66B',
+        fontFamily: 'Circular Std',
+        color: '#424242'
     },
     loginButton: {
         backgroundColor: '#26A66B',
@@ -259,5 +274,10 @@ const styles = StyleSheet.create({
         fontSize: 45,
         bottom: 15,
         left: 20
+    },
+    text: {
+        fontFamily: 'Circular Std',
+        color: '#575757',
+        marginTop: 2,
     }
 })

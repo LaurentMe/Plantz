@@ -127,13 +127,16 @@ function PlantDetails({route, navigation}) {
                     }}>
                     </LinearGradient>
                 </SharedElement>
-                <SharedElement id={route.params.plant.nickname} style={[{zIndex: 10, position: "absolute"}]}>
+                <SharedElement id={route.params.plant.nickname} style={[{zIndex: 10, position: "absolute", height: '100%'}]}>
                     <Text style={{
-                        top: 410,
+                        position: 'absolute',
+                        width: Dimensions.get('window').width,
+                        bottom: 30,
+                        paddingRight: 20,
                         color: '#fff',
                         fontFamily: 'Circular Std',
                         fontWeight: 'bold',
-                        fontSize: 50,
+                        fontSize: 45,
                         left: 20
                     }}>{route.params.plant.nickname}</Text>
                 </SharedElement>

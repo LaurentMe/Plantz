@@ -43,7 +43,7 @@ class PlantController extends Controller
             'waterDays' => 'required|max:4',
             'location' => 'required|max:100',
             'image' => 'required',
-            'description' => 'required|max:600',
+            'description' => 'required|max:800',
         ]);
 
         try {
@@ -63,6 +63,7 @@ class PlantController extends Controller
                 }
                 $plant->save();
             }
+
             $plantUser = PlantUser::create([
                 'plant_id' => $plant->id,
                 'user_id' => $request->user()->id,

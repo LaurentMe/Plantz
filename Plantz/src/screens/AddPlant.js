@@ -93,7 +93,8 @@ function AddPlant({navigation, route}) {
                         </View>
                     </TouchableWithoutFeedback>
                     <LinearGradient colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']} style={styles.bottomOverlay}>
-                        <Text style={[styles.title]}>New plant</Text>
+                        <Text
+                            style={[styles.title]}>{!route.params.plant ? 'New plant' : route.params.plant.name}</Text>
                     </LinearGradient>
                     <SharedElement id={route.params.uri}>
                         <Image
@@ -108,6 +109,12 @@ function AddPlant({navigation, route}) {
                 </View>
 
                 <View style={styles.formContainer}>
+                    {!route.params.plant &&
+                    <Text style={[styles.text, {marginBottom: 20}]}>It seems like you've added a plant with the Latin
+                        name <Text style={{fontWeight: 'bold'}}>{route.params.plantLatin}</Text> that does not yet
+                        exists in our
+                        database. Please fill out this forum carefully to add it to our database.</Text>
+                    }
                     <View style={styles.inputContainer}>
                         <Text style={[styles.label, {color: errors.nickname ? '#ED1103' : '#000'}]}>Nickname</Text>
                         <TextInput
@@ -136,13 +143,15 @@ function AddPlant({navigation, route}) {
                             value={latinName}
                             onChangeText={(text) => setLatinName(text)}
                             autoCorrect={false}
-                            editable={!route.params.plant}
+                            editable={false}
                             maxLength={60}
                         />
                     </View>
                     <Text style={[styles.label, {color: errors.water ? '#ED1103' : '#000'}]}>Water</Text>
+                    {route.params.plant &&
                     <Text style={styles.text}>These values are an indication of the amount of water that is necessary
                         for this plant. If you think these are incorrect, feel free to change the values.</Text>
+                    }
 
                     <View style={{
                         flexDirection: 'row',

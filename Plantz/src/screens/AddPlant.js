@@ -124,7 +124,7 @@ function AddPlant({navigation, route}) {
                             value={name}
                             onChangeText={(text) => setName(text)}
                             autoCorrect={true}
-
+                            editable={!route.params.plant}
                         />
                     </View>
                     <View style={styles.inputContainer}>
@@ -134,6 +134,7 @@ function AddPlant({navigation, route}) {
                             value={latinName}
                             onChangeText={(text) => setLatinName(text)}
                             autoCorrect={false}
+                            editable={!route.params.plant}
                         />
                     </View>
                     <Text style={[styles.label, {color: errors.water ? '#ED1103' : '#000'}]}>Water</Text>
@@ -188,6 +189,7 @@ function AddPlant({navigation, route}) {
                             onChangeText={(text) => setDescription(text)}
                             autoCorrect={true}
                             maxLength={600}
+                            editable={!route.params.plant}
                         />
                     </View>
 

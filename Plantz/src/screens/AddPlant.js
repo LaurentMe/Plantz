@@ -149,7 +149,7 @@ function AddPlant({navigation, route}) {
                     </View>
                     <Text style={[styles.label, {color: errors.water ? '#ED1103' : '#000'}]}>Water</Text>
                     {route.params.plant &&
-                    <Text style={styles.text}>These values are an indication of the amount of water that is necessary
+                    <Text style={[styles.text]}>These values are an indication of the amount of water that is necessary
                         for this plant. If you think these are incorrect, feel free to change the values.</Text>
                     }
 

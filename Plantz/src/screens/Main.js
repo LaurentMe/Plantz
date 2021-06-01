@@ -61,6 +61,21 @@ function Main({navigation}) {
         });
     }
 
+    useEffect(() => {
+        Notifications.ios.cancelAllLocalNotifications();
+        plants.forEach((item, index) => {
+            Notifications.postLocalNotification({
+                body: item.nickname + ' needs water',
+                title: item.nickname,
+                sound: "chime.aiff",
+                silent: false,
+                category: "SOME_CATEGORY",
+                userInfo: { },
+                fireDate: Moment(item.next_water_date).format('YYYY-MM-DD') + 'T09:00:00.000Z'
+            });
+        })
+    }, [plants])
+
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         getPlants().then(() => setRefreshing(false));

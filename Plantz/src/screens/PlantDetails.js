@@ -103,7 +103,7 @@ function PlantDetails({route, navigation}) {
                         <Text style={[styles.text, {
                             color: '#fff',
                             marginLeft: 2
-                        }]}>{route.params.plant.custom_water_amount}ml</Text>
+                        }]}>{route.params.plant.custom_water_amount}cl</Text>
                     </View>
                 </SharedElement>
                 <SharedElement id={'waterDays' + route.params.index} style={[{zIndex: 30, position: "absolute"}]}>

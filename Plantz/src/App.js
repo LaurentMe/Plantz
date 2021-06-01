@@ -120,7 +120,7 @@ export const App = () => {
                     });
             },
             dayDifference: (date, days) => {
-                return days - Math.ceil((Moment().unix() - Moment(date).unix()) / 3600 / 24);
+                return days - Math.floor((Moment().unix() - Moment(date).unix()) / 3600 / 24);
             },
         }),
         []

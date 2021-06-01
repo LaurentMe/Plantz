@@ -17,6 +17,7 @@ import axios from "axios";
 import {useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 import {SharedElement} from "react-navigation-shared-element";
 import LinearGradient from "react-native-linear-gradient";
+import BackButton from "../Components/BackButton";
 
 
 function AddPlant({navigation, route}) {
@@ -83,11 +84,7 @@ function AddPlant({navigation, route}) {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View>
                     <SharedElement id={'back'} style={{zIndex: 4}}>
-                        <TouchableWithoutFeedback style={{zIndex: 1}} onPress={back}>
-                            <View style={styles.backButton}>
-                                <FontAwesomeIcon icon={faArrowLeft} color={'#000'} size={18}/>
-                            </View>
-                        </TouchableWithoutFeedback>
+                        <BackButton navigation={navigation}/>
                     </SharedElement>
                     <TouchableWithoutFeedback style={{zIndex: 10}} onPress={enlarge}>
                         <View style={styles.expandButton}>
@@ -236,17 +233,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         fontFamily: 'Roboto',
         fontWeight: 'bold',
-    },
-    backButton: {
-        position: 'absolute',
-        top: 30,
-        left: 30,
-        color: '#fff',
-        backgroundColor: '#fff',
-        zIndex: 20,
-        borderRadius: 200,
-        padding: 12,
-        opacity: 0.9,
     },
     expandButton: {
         position: 'absolute',

@@ -17,6 +17,7 @@ import Moment from 'moment';
 import {useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 import axios from "axios";
 import {AuthContext} from "../hooks/AuthContext";
+import BackButton from "../Components/BackButton";
 
 function PlantDetails({route, navigation}) {
     const {dayDifference} = React.useContext(AuthContext);
@@ -93,26 +94,25 @@ function PlantDetails({route, navigation}) {
     return (
         <ScrollView>
             <View>
-                <TouchableWithoutFeedback onPress={() => {
-                    goBack()
-                }}>
-                    <SharedElement id={'back'} style={[{zIndex: 40, position: "absolute"}]}>
-                        <View style={styles.backButton}>
-                            <FontAwesomeIcon icon={faArrowLeft} color={'#000'} size={18} style={{zIndex: 20}}/>
-                        </View>
-                    </SharedElement>
-                </TouchableWithoutFeedback>
-
+                <SharedElement id={'back'} style={[{zIndex: 40, position: "absolute"}]}>
+                    <BackButton navigation={navigation}/>
+                </SharedElement>
                 <SharedElement id={'water' + route.params.index} style={[{zIndex: 30, position: "absolute"}]}>
                     <View style={[styles.bottomIcons, {flexDirection: 'row', alignItems: 'center'}]}>
                         <FontAwesomeIcon icon={faTint} color={'#fff'} size={20} style={{zIndex: 20}}/>
-                        <Text style={[styles.text, {color: '#fff', marginLeft: 2}]}>{route.params.plant.plant.water_amount}ml</Text>
+                        <Text style={[styles.text, {
+                            color: '#fff',
+                            marginLeft: 2
+                        }]}>{route.params.plant.plant.water_amount}ml</Text>
                     </View>
                 </SharedElement>
                 <SharedElement id={'waterDays' + route.params.index} style={[{zIndex: 30, position: "absolute"}]}>
                     <View style={[styles.bottomIcons, {flexDirection: 'row', alignItems: 'center', marginTop: 30}]}>
                         <FontAwesomeIcon icon={faCalendarAlt} color={'#fff'} size={20} style={{zIndex: 20}}/>
-                        <Text style={[styles.text, {color: '#fff', marginLeft: 4}]}>{dayDifference(route.params.plant.last_water_day, route.params.plant.plant.days_between_water)} days</Text>
+                        <Text style={[styles.text, {
+                            color: '#fff',
+                            marginLeft: 4
+                        }]}>{dayDifference(route.params.plant.last_water_day, route.params.plant.plant.days_between_water)} days</Text>
                     </View>
                 </SharedElement>
 
@@ -162,8 +162,10 @@ function PlantDetails({route, navigation}) {
                 </SharedElement>
             </View>
             <TouchableOpacity onPress={updateWater}>
-                <View style={[styles.addWater, {backgroundColor: dayDifference(route.params.plant.last_water_day, route.params.plant.plant.days_between_water) < 0 ? '#F01002' : dayDifference(route.params.plant.last_water_day, route.params.plant.plant.days_between_water) === 0 ? '#F07202' : '#23B571'}]}>
-                    <Text style={styles.addWaterText}>{dayDifference(route.params.plant.last_water_day, route.params.plant.plant.days_between_water) > 0 ? 'Everything is just fine' : 'Add water to '+ route.params.plant.nickname}</Text>
+                <View
+                    style={[styles.addWater, {backgroundColor: dayDifference(route.params.plant.last_water_day, route.params.plant.plant.days_between_water) < 0 ? '#F01002' : dayDifference(route.params.plant.last_water_day, route.params.plant.plant.days_between_water) === 0 ? '#F07202' : '#23B571'}]}>
+                    <Text
+                        style={styles.addWaterText}>{dayDifference(route.params.plant.last_water_day, route.params.plant.plant.days_between_water) > 0 ? 'Everything is just fine' : 'Add water to ' + route.params.plant.nickname}</Text>
                 </View>
             </TouchableOpacity>
             <View style={styles.infoContainer}>
@@ -188,16 +190,6 @@ function PlantDetails({route, navigation}) {
 export default PlantDetails;
 
 const styles = StyleSheet.create({
-    backButton: {
-        top: 40,
-        left: 30,
-        color: '#fff',
-        backgroundColor: '#fff',
-        zIndex: 20,
-        borderRadius: 200,
-        padding: 12,
-        opacity: 0.9,
-    },
     bottomIcons: {
         top: 415,
         right: -280,

@@ -24,6 +24,8 @@ import {err} from "react-native-svg/lib/typescript/xml";
 import {SharedElement} from "react-navigation-shared-element";
 import { AuthContext } from "./../hooks/AuthContext";
 import Moment from "moment";
+import PlantCard from "../Components/PlantCard";
+import TopBar from "../Components/TopBar";
 
 
 function Main({navigation}) {
@@ -97,42 +99,7 @@ function Main({navigation}) {
                     />
                 </Svg>
             </View>
-            <SafeAreaView>
-                <View style={styles.topContainer}>
-                    <View style={styles.searchContainer}>
-                        <FontAwesomeIcon icon={faSearch} color={'#888'} style={{marginLeft: 8}}/>
-                        <TextInput
-                            style={[{
-                                borderColor: '#e0ddd7',
-                                paddingVertical: 4,
-                                paddingHorizontal: 10,
-                                height: 34,
-                                borderRadius: 3,
-                                marginVertical: 10,
-                                width: 280,
-                                fontFamily: 'Circular Std'
-                            }]}
-                            placeholder="Search..."
-                            placeholderTextColor={'#888'}
-                            onChangeText={(text) => search(text)}
-                        />
-                    </View>
-                    <TouchableOpacity onPress={() => signOut()}>
-                        <View
-                            style={{
-                                backgroundColor: '#ddd',
-                                padding: 7,
-                                marginRight: 20,
-                                borderRadius: 100,
-                                borderWidth: 1,
-                                borderColor: '#ececec',
-                            }}
-                        >
-                            <FontAwesomeIcon size={20} icon={faSignOutAlt} color={'#545454'}/>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            </SafeAreaView>
+            <TopBar search={search} signOut={signOut}/>
             <ScrollView style={styles.scrollViewContainers} showsVerticalScrollIndicator={false}>
                 <RefreshControl
                     refreshing={refreshing}
@@ -153,63 +120,12 @@ function Main({navigation}) {
                     <View style={styles.cardsContainer}>
                         {searchPlants.map((item, index) => {
                             return (
-                                <View key={index}>
-                                    <View style={{
-                                        shadowColor: '#444',
-                                        shadowOffset: {width: 0, height: 0},
-                                        shadowOpacity: 0.50,
-                                        shadowRadius: 4,
-                                        zIndex: 10,
-                                        position: "absolute",
-                                        alignSelf: 'center',
-                                    }}>
-                                        <TouchableWithoutFeedback onPress={() => details(item, index)}>
-                                            <SharedElement id={item.created_at.toString()} style={{zIndex: 0}}>
-                                                <Image
-                                                    style={{
-                                                        width: 90,
-                                                        height: 90,
-                                                        borderRadius: 100,
-                                                        alignSelf: 'center',
-                                                    }}
-                                                    source={{uri: 'data:image/png;base64,' + item.image}}
-                                                />
-                                            </SharedElement>
-                                        </TouchableWithoutFeedback>
-
-                                    </View>
-                                    <TouchableWithoutFeedback onPress={() => details(item, index)}>
-                                        <View style={styles.card}>
-                                            <SharedElement id={item.nickname + item.created_at.toString()}>
-                                                <Text style={styles.cardTitle}>{item.nickname}</Text>
-                                            </SharedElement>
-                                            <View style={styles.cardText}>
-                                                <SharedElement id={'water' + index}>
-                                                    <View style={styles.textBox}>
-                                                        <FontAwesomeIcon icon={faTint} style={{marginRight: 5}}
-                                                                         color={'#373737'}/>
-                                                        <Text style={styles.text}>{item.plant.water_amount}ml</Text>
-                                                    </View>
-                                                </SharedElement>
-                                                <SharedElement id={'waterDays' + index}>
-                                                    <View style={styles.textBox}>
-                                                        <FontAwesomeIcon icon={faCalendarAlt} style={{marginRight: 5}}
-                                                                         color={'#373737'}/>
-                                                        <Text style={styles.text}>{dayDifference(item.last_water_day, item.plant.days_between_water)} days</Text>
-                                                    </View>
-                                                </SharedElement>
-                                            </View>
-                                            <View
-                                                style={[styles.waterStatus, {backgroundColor: dayDifference(item.last_water_day, item.plant.days_between_water) < 0 ? '#F01002' : dayDifference(item.last_water_day, item.plant.days_between_water) === 0 ? '#F07202' : '#23B571'}]}>
-                                                <Text
-                                                    style={styles.waterStatusText}>{dayDifference(item.last_water_day, item.plant.days_between_water) > 0 ? 'Just fine' : 'Add water'}</Text>
-                                                <FontAwesomeIcon
-                                                    icon={dayDifference(item.last_water_day, item.plant.days_between_water) > 0 ? faCheck : faPlusCircle}
-                                                    size={20} color={'#fff'} style={{}}/>
-                                            </View>
-                                        </View>
-                                    </TouchableWithoutFeedback>
-                                </View>
+                                <PlantCard
+                                    item={item}
+                                    index={index}
+                                    details={details}
+                                    key={item.created_at}
+                                />
                             )
                         })}
                         <TouchableWithoutFeedback onPress={() => camera()}>

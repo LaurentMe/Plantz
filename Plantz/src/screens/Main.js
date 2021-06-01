@@ -9,10 +9,11 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     ScrollView, Image,
-    RefreshControl, TouchableWithoutFeedback, Share, ActivityIndicator
+    RefreshControl, TouchableWithoutFeedback, Share, ActivityIndicator, AppState
 } from "react-native";
 import LinearGradient from 'react-native-linear-gradient';
 import {useLogout, useRetrieveSession} from "../hooks/EncryptedStorage.hook";
+import { useStorePlants, useRetrievePlants } from "../hooks/AsyncStorage.hook";
 import {Button, ThemeProvider} from 'react-native-elements';
 import {SearchBar} from 'react-native-elements';
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
@@ -27,10 +28,11 @@ import Moment from "moment";
 import PlantCard from "../Components/PlantCard";
 import TopBar from "../Components/TopBar";
 import {Notifications} from "react-native-notifications";
+import PlantDetails from "./PlantDetails";
 
 
 function Main({navigation}) {
-    const [plants, setPlants] = useState([]);
+    const [plants, setPlants] = useState();
     const [searchPlants, setSearchPlants] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -40,14 +42,19 @@ function Main({navigation}) {
 
     Notifications.registerRemoteNotifications();
 
+    Notifications.events().registerNotificationReceivedBackground((notification: Notification, completion)=> {
+        console.log(`Notification received in background: ${notification.title} : ${notification.body}`);
+        completion({alert: true, sound: true, badge: true});
+    })
+
     Notifications.events().registerNotificationReceivedForeground((notification: Notification, completion) => {
         console.log(`Notification received in foreground: ${notification.title} : ${notification.body}`);
         completion({alert: true, sound: true, badge: true});
     });
 
     Notifications.events().registerNotificationOpened((notification: Notification, completion) => {
-        console.log(`Notification opened: ${notification.payload}`);
-        completion();
+        console.log(notification.payload.userInfo.plant)
+        navigation.navigate('PlantDetails', {image: notification.payload.userInfo.plant.image, index: notification.payload.userInfo.index, plant: notification.payload.userInfo.plant})
     });
 
     const setNotification = () => {
@@ -57,23 +64,35 @@ function Main({navigation}) {
             sound: "chime.aiff",
             silent: false,
             category: "SOME_CATEGORY",
-            userInfo: { }
+            userInfo: { "plant": "test"}
         });
     }
 
+    AppState.addEventListener('change', state => {
+        if (state === 'inactive') {
+            useStorePlants(plants);
+        }
+    });
+
     useEffect(() => {
         Notifications.ios.cancelAllLocalNotifications();
-        plants.forEach((item, index) => {
-            Notifications.postLocalNotification({
-                body: item.nickname + ' needs water',
-                title: item.nickname,
-                sound: "chime.aiff",
-                silent: false,
-                category: "SOME_CATEGORY",
-                userInfo: { },
-                fireDate: Moment(item.next_water_date).format('YYYY-MM-DD') + 'T09:00:00.000Z'
-            });
-        })
+        try {
+            plants.forEach((item, index) => {
+                Notifications.postLocalNotification({
+                    body: item.nickname + ' needs water',
+                    title: item.nickname,
+                    sound: "chime.aiff",
+                    silent: false,
+                    category: "SOME_CATEGORY",
+                    userInfo: { "plant": item, "index": index},
+                    // fireDate: test.toISOString(),
+                    fireDate: Moment(item.next_water_date).format('YYYY-MM-DD') + 'T09:00:00.000Z'
+                });
+            })
+        } catch (e) {
+
+        }
+
     }, [plants])
 
     const onRefresh = React.useCallback(() => {
@@ -86,7 +105,6 @@ function Main({navigation}) {
     }
 
     const details = (plant, index) => {
-        setNotification();
         navigation.navigate('PlantDetails', {image: plant.image, index: index, plant: plant})
     }
 
@@ -107,7 +125,13 @@ function Main({navigation}) {
                     setIsLoading(false);
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    useRetrievePlants().then((plants) => {
+                        setPlants(plants)
+                        setSearchPlants(plants)
+                        setIsLoading(false)
+                    }).catch((error) => {
+                        console.log(error)
+                    })
                 });
         }).catch((error) => {
             console.log(error)

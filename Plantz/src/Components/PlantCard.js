@@ -44,23 +44,23 @@ function PlantCard({navigation, details,item, index,}) {
                             <View style={styles.textBox}>
                                 <FontAwesomeIcon icon={faTint} style={{marginRight: 5}}
                                                  color={'#373737'}/>
-                                <Text style={styles.text}>{item.plant.water_amount}ml</Text>
+                                <Text style={styles.text}>{item.custom_water_amount}ml</Text>
                             </View>
                         </SharedElement>
                         <SharedElement id={'waterDays' + index}>
                             <View style={styles.textBox}>
                                 <FontAwesomeIcon icon={faCalendarAlt} style={{marginRight: 5}}
                                                  color={'#373737'}/>
-                                <Text style={styles.text}>{dayDifference(item.last_water_day, item.plant.days_between_water)} days</Text>
+                                <Text style={styles.text}>{dayDifference(item.last_water_day, item.custom_water_days)} days</Text>
                             </View>
                         </SharedElement>
                     </View>
                     <View
-                        style={[styles.waterStatus, {backgroundColor: dayDifference(item.last_water_day, item.plant.days_between_water) < 0 ? '#F01002' : dayDifference(item.last_water_day, item.plant.days_between_water) === 0 ? '#F07202' : '#23B571'}]}>
+                        style={[styles.waterStatus, {backgroundColor: dayDifference(item.last_water_day, item.custom_water_days) < 0 ? '#F01002' : dayDifference(item.last_water_day, item.custom_water_days) === 0 ? '#F07202' : '#23B571'}]}>
                         <Text
-                            style={styles.waterStatusText}>{dayDifference(item.last_water_day, item.plant.days_between_water) > 0 ? 'Just fine' : 'Add water'}</Text>
+                            style={styles.waterStatusText}>{dayDifference(item.last_water_day, item.custom_water_days) > 0 ? 'Just fine' : 'Add water'}</Text>
                         <FontAwesomeIcon
-                            icon={dayDifference(item.last_water_day, item.plant.days_between_water) > 0 ? faCheck : faPlusCircle}
+                            icon={dayDifference(item.last_water_day, item.custom_water_days) > 0 ? faCheck : faPlusCircle}
                             size={20} color={'#fff'} style={{}}/>
                     </View>
                 </View>

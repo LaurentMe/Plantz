@@ -26,7 +26,7 @@ class PlantController extends Controller
      */
     public function index(Request $request)
     {
-        return response(PlantUserResource::collection(PlantUser::where('user_id', $request->user()->id)->orderBy('last_water_day')->get()), 200);
+        return response(PlantUserResource::collection(PlantUser::where('user_id', $request->user()->id)->orderBy('next_water_day')->get()), 200);
     }
 
     /**
@@ -72,6 +72,7 @@ class PlantController extends Controller
                 'custom_water_amount' => $request->water,
                 'custom_water_days' => $request->waterDays,
                 'last_water_day' => Carbon::now()->toDateTimeString(),
+                'next_water_day' => Carbon::createFromTimestamp(Carbon::now()->timestamp + $request->waterDays * 24 * 3600)->toDateTimeString(),
             ]);
 
             if ($request->nickname !== null) {
@@ -164,6 +165,7 @@ class PlantController extends Controller
     public function updateWater(Request $request, $id) {
         $plantUser = PlantUser::where('user_id', $request->user()->id)->where('id', $id)->firstOrFail();
         $plantUser->last_water_day = Carbon::now()->toDateTimeString();
+        $plantUser->next_water_day = Carbon::createFromTimestamp(Carbon::now()->timestamp + $plantUser->custom_water_days * 24 * 3600)->toDateTimeString();
         $plantUser->save();
         return new PlantUserResource(PlantUser::where('user_id', $request->user()->id)->where('id', $id)->firstOrFail());    }
 }

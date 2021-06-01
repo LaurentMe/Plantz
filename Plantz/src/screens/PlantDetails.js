@@ -103,7 +103,7 @@ function PlantDetails({route, navigation}) {
                         <Text style={[styles.text, {
                             color: '#fff',
                             marginLeft: 2
-                        }]}>{route.params.plant.plant.water_amount}ml</Text>
+                        }]}>{route.params.plant.custom_water_amount}ml</Text>
                     </View>
                 </SharedElement>
                 <SharedElement id={'waterDays' + route.params.index} style={[{zIndex: 30, position: "absolute"}]}>
@@ -112,7 +112,7 @@ function PlantDetails({route, navigation}) {
                         <Text style={[styles.text, {
                             color: '#fff',
                             marginLeft: 4
-                        }]}>{dayDifference(route.params.plant.last_water_day, route.params.plant.plant.days_between_water)} days</Text>
+                        }]}>{dayDifference(route.params.plant.last_water_day, route.params.plant.custom_water_days)} days</Text>
                     </View>
                 </SharedElement>
 
@@ -163,9 +163,9 @@ function PlantDetails({route, navigation}) {
             </View>
             <TouchableOpacity onPress={updateWater}>
                 <View
-                    style={[styles.addWater, {backgroundColor: dayDifference(route.params.plant.last_water_day, route.params.plant.plant.days_between_water) < 0 ? '#F01002' : dayDifference(route.params.plant.last_water_day, route.params.plant.plant.days_between_water) === 0 ? '#F07202' : '#23B571'}]}>
+                    style={[styles.addWater, {backgroundColor: dayDifference(route.params.plant.last_water_day, route.params.plant.custom_water_days) < 0 ? '#F01002' : dayDifference(route.params.plant.last_water_day, route.params.plant.custom_water_days) === 0 ? '#F07202' : '#23B571'}]}>
                     <Text
-                        style={styles.addWaterText}>{dayDifference(route.params.plant.last_water_day, route.params.plant.plant.days_between_water) > 0 ? 'Everything is just fine' : 'Add water to ' + route.params.plant.nickname}</Text>
+                        style={styles.addWaterText}>{dayDifference(route.params.plant.last_water_day, route.params.plant.custom_water_days) > 0 ? 'Everything is just fine' : 'Add water to ' + route.params.plant.nickname}</Text>
                 </View>
             </TouchableOpacity>
             <View style={styles.infoContainer}>

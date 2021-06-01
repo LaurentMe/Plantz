@@ -23,6 +23,8 @@ class PlantUserResource extends JsonResource
             'image' => $this->image,
             'last_water_day' => $this->last_water_day,
             'custom_water_amount' => $this->custom_water_amount,
+            'custom_water_days' => $this->custom_water_days,
+            'next_water_days' => $this->next_water_days,
             'plant' => Plant::where('id', $this->plant_id)->first(),
             'created_at' => $this->created_at
         ];

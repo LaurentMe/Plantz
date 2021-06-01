@@ -25,6 +25,7 @@ class PlantUser extends Model
         'custom_water_amount',
         'custom_water_days',
         'last_water_day',
+        'next_water_day',
     ];
 
     /**

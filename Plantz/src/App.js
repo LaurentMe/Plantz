@@ -20,6 +20,7 @@ import axios from "axios";
 import Moment from "moment";
 import RNBootSplash from 'react-native-bootsplash';
 import Register from "./screens/Register";
+import {Notifications} from 'react-native-notifications';
 
 export const App = () => {
     const Stack = createSharedElementStackNavigator();

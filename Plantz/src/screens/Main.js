@@ -26,6 +26,7 @@ import { AuthContext } from "./../hooks/AuthContext";
 import Moment from "moment";
 import PlantCard from "../Components/PlantCard";
 import TopBar from "../Components/TopBar";
+import {Notifications} from "react-native-notifications";
 
 
 function Main({navigation}) {
@@ -37,6 +38,29 @@ function Main({navigation}) {
     const {signOut, dayDifference} = React.useContext(AuthContext);
     const isFocused = useIsFocused();
 
+    Notifications.registerRemoteNotifications();
+
+    Notifications.events().registerNotificationReceivedForeground((notification: Notification, completion) => {
+        console.log(`Notification received in foreground: ${notification.title} : ${notification.body}`);
+        completion({alert: true, sound: true, badge: true});
+    });
+
+    Notifications.events().registerNotificationOpened((notification: Notification, completion) => {
+        console.log(`Notification opened: ${notification.payload}`);
+        completion();
+    });
+
+    const setNotification = () => {
+        Notifications.postLocalNotification({
+            body: "Local notification!",
+            title: "Test",
+            sound: "chime.aiff",
+            silent: false,
+            category: "SOME_CATEGORY",
+            userInfo: { }
+        });
+    }
+
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
         getPlants().then(() => setRefreshing(false));
@@ -47,6 +71,7 @@ function Main({navigation}) {
     }
 
     const details = (plant, index) => {
+        setNotification();
         navigation.navigate('PlantDetails', {image: plant.image, index: index, plant: plant})
     }
 

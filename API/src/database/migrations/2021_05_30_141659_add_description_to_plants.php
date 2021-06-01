@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddLastWaterDayToPlantUser extends Migration
+class AddDescriptionToPlants extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddLastWaterDayToPlantUser extends Migration
      */
     public function up()
     {
-        Schema::table('plant_user', function (Blueprint $table) {
-            $table -> dateTime('last_water_day')->nullable();
+        Schema::table('plants', function (Blueprint $table) {
+            $table -> longText('description')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ class AddLastWaterDayToPlantUser extends Migration
      */
     public function down()
     {
-        Schema::table('plant_user', function (Blueprint $table) {
-            $table->dropColumn('last_water_day');
+        Schema::table('plants', function (Blueprint $table) {
+            $table->dropColumn('description');
         });
     }
 }

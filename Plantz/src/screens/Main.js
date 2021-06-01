@@ -9,24 +9,32 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     ScrollView, Image,
-    RefreshControl
+    RefreshControl, TouchableWithoutFeedback, Share, ActivityIndicator
 } from "react-native";
 import LinearGradient from 'react-native-linear-gradient';
 import {useLogout, useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 import {Button, ThemeProvider} from 'react-native-elements';
 import {SearchBar} from 'react-native-elements';
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faUser, faSearch, faPlusCircle, faTint, faSyncAlt, faSun} from '@fortawesome/free-solid-svg-icons'
+import {faUser, faSearch, faPlusCircle, faTint, faSyncAlt, faSun, faCheck, faCalendarAlt, faSignOutAlt} from '@fortawesome/free-solid-svg-icons'
 import Svg, {Circle} from "react-native-svg";
 import axios from "axios";
 import {useIsFocused} from '@react-navigation/native';
 import {err} from "react-native-svg/lib/typescript/xml";
+import {SharedElement} from "react-navigation-shared-element";
+import { AuthContext } from "./../hooks/AuthContext";
+import Moment from "moment";
+import PlantCard from "../Components/PlantCard";
+import TopBar from "../Components/TopBar";
+
 
 function Main({navigation}) {
     const [plants, setPlants] = useState([]);
-    const [searchPlants, setSearchPlants] =useState([]);
+    const [searchPlants, setSearchPlants] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
+    const {signOut, dayDifference} = React.useContext(AuthContext);
     const isFocused = useIsFocused();
 
     const onRefresh = React.useCallback(() => {
@@ -34,14 +42,12 @@ function Main({navigation}) {
         getPlants().then(() => setRefreshing(false));
     }, []);
 
-    const logout = () => {
-        useLogout().then(() => {
-            navigation.replace('Login')
-        }).catch((error) => {
-        });
-    }
     const camera = () => {
         navigation.navigate('Camera')
+    }
+
+    const details = (plant, index) => {
+        navigation.navigate('PlantDetails', {image: plant.image, index: index, plant: plant})
     }
 
     useEffect(() => {
@@ -52,12 +58,13 @@ function Main({navigation}) {
         useRetrieveSession().then((session) => {
             axios.get('http://192.168.1.110/api/plants', {
                 headers: {
-                    Authorization: "Bearer " + session.token
+                    Authorization: "Bearer " + session
                 }
             })
                 .then(function (response) {
                     setPlants(response.data)
                     setSearchPlants(response.data)
+                    setIsLoading(false);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -69,7 +76,7 @@ function Main({navigation}) {
 
     function search(text) {
         setSearchPlants(plants.filter(i => {
-            if (i.nickname.toLowerCase().includes(text.toLowerCase())){
+            if (i.nickname.toLowerCase().includes(text.toLowerCase())) {
                 return i;
             }
         }))
@@ -92,43 +99,8 @@ function Main({navigation}) {
                     />
                 </Svg>
             </View>
-            <SafeAreaView>
-                <View style={styles.topContainer}>
-                    <View style={styles.searchContainer}>
-                        <FontAwesomeIcon icon={faSearch} color={'#888'} style={{marginLeft: 8}}/>
-                        <TextInput
-                            style={[{
-                                borderColor: '#e0ddd7',
-                                paddingVertical: 4,
-                                paddingHorizontal: 10,
-                                height: 34,
-                                borderRadius: 3,
-                                marginVertical: 10,
-                                width: 280,
-                                fontFamily: 'Circular Std'
-                            }]}
-                            placeholder="Zoek op naam"
-                            placeholderTextColor={'#888'}
-                            onChangeText={(text) => search(text)}
-                        />
-                    </View>
-                    <TouchableOpacity onPress={logout}>
-                        <View
-                            style={{
-                                backgroundColor: '#ddd',
-                                padding: 7,
-                                marginRight: 20,
-                                borderRadius: 100,
-                                borderWidth: 1,
-                                borderColor: '#ececec',
-                            }}
-                        >
-                            <FontAwesomeIcon size={20} icon={faUser} color={'#545454'}/>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            </SafeAreaView>
-            <ScrollView style={styles.scrollViewContainers}>
+            <TopBar search={search} signOut={signOut}/>
+            <ScrollView style={styles.scrollViewContainers} showsVerticalScrollIndicator={false}>
                 <RefreshControl
                     refreshing={refreshing}
                     onRefresh={onRefresh}
@@ -136,55 +108,58 @@ function Main({navigation}) {
                 <View style={styles.secondContainer}>
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>My Plants</Text>
-                        <TouchableOpacity onPress={camera}>
-                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'} style={{top: 4, marginRight: 4}}/>
+                        <TouchableOpacity onPress={camera} style={{zIndex: 1000}}>
+                            <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'}
+                                             style={{top: 4, marginRight: 4, zIndex: 1000}}/>
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={styles.cardsContainer}>
-                    {searchPlants.map((item, index) => {
-                        return (
-                            <View key={index} style={{marginTop: -40}}>
+                {isLoading ?
+                    <ActivityIndicator size="small" color="#000000"/>
+                    :
+                    <View style={styles.cardsContainer}>
+                        {searchPlants.map((item, index) => {
+                            return (
+                                <PlantCard
+                                    item={item}
+                                    index={index}
+                                    details={details}
+                                    key={item.created_at}
+                                />
+                            )
+                        })}
+                        <TouchableWithoutFeedback onPress={() => camera()}>
+                            <View>
                                 <View style={{
+                                    width: 90,
+                                    height: 90,
+                                    borderRadius: 100,
+                                    alignSelf: 'center',
+                                    backgroundColor: '#fff',
+                                    position: 'absolute',
+                                    zIndex: 20,
                                     shadowColor: '#444',
                                     shadowOffset: {width: 0, height: 0},
                                     shadowOpacity: 0.40,
                                     shadowRadius: 6,
-                                    zIndex: 10,
                                 }}>
                                     <Image
                                         style={{
                                             width: 90,
                                             height: 90,
                                             borderRadius: 100,
-                                            alignSelf: 'center',
-                                            top: 50,
                                         }}
-                                        source={{uri: 'data:image/png;base64,' + item.image}}
+                                        source={require('../assets/logo/logoPlantz.png')}
                                     />
                                 </View>
-                                <View style={styles.card}>
-                                    <Text style={styles.cardTitle}>{item.nickname}</Text>
-                                    <View style={styles.cardText}>
-                                        <View style={styles.textBox}>
-                                            <FontAwesomeIcon icon={faTint} style={{marginRight: 5}} color={'#373737'}/>
-                                            <Text style={styles.text}>{item.plant.water_amount}ml</Text>
-                                        </View>
-                                        <View style={styles.textBox}>
-                                            <FontAwesomeIcon icon={faSyncAlt} style={{marginRight: 5}}
-                                                             color={'#373737'}/>
-                                            <Text style={styles.text}>{item.plant.days_between_water} days</Text>
-                                        </View>
-                                        <View style={styles.textBox}>
-                                            <FontAwesomeIcon icon={faSun} style={{marginRight: 5}} color={'#373737'}/>
-                                            <Text style={styles.text}>{item.plant.days_between_water} days</Text>
-                                        </View>
-                                    </View>
+                                <View style={[styles.card, {justifyContent: "center"}]}>
+                                    <FontAwesomeIcon icon={faPlusCircle} size={30} color={'#1F6F4A'}
+                                                     style={{alignSelf: 'center'}}/>
                                 </View>
                             </View>
-                        )
-                    })}
-                </View>
+                        </TouchableWithoutFeedback>
+                    </View>
+                }
             </ScrollView>
         </View>
     );
@@ -221,7 +196,6 @@ const styles = StyleSheet.create({
     secondContainer: {
         marginHorizontal: 35,
         paddingBottom: 10,
-        borderBottomWidth: 1,
         borderColor: '#eee',
     },
     titleContainer: {
@@ -249,9 +223,11 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         shadowColor: '#444',
         shadowOffset: {width: 0, height: 0},
-        shadowOpacity: 0.2,
-        shadowRadius: 6,
+        shadowOpacity: 0.4,
+        shadowRadius: 12,
         margin: 6,
+        marginTop: 50,
+        marginBottom: 15
     },
     cardTitle: {
         fontFamily: 'Circular Std',
@@ -276,5 +252,21 @@ const styles = StyleSheet.create({
         fontFamily: 'Circular Std',
         fontSize: 14,
     },
-    scrollViewContainers: {}
+    waterStatus: {
+        position: 'absolute',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        width: '100%',
+        height: 30,
+        bottom: 0,
+        borderBottomLeftRadius: 8,
+        borderBottomRightRadius: 8,
+    },
+    waterStatusText: {
+        fontFamily: 'Circular Std',
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: '#fff',
+    }
 })

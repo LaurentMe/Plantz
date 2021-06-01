@@ -21,7 +21,9 @@ class PlantUser extends Model
         'user_id',
         'location',
         'nickname',
-        'image'
+        'image',
+        'custom_water_amount',
+        'last_water_day',
     ];
 
     /**
@@ -39,7 +41,6 @@ class PlantUser extends Model
      * @var array
      */
     protected $casts = [
-
     ];
 
     public function users(){

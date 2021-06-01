@@ -16,11 +16,15 @@ class PlantUserResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'location' => $this->location,
             'nickname' => $this->nickname,
             'image' => $this->image,
+            'last_water_day' => $this->last_water_day,
+            'custom_water_amount' => $this->custom_water_amount,
             'plant' => Plant::where('id', $this->plant_id)->first(),
+            'created_at' => $this->created_at
         ];
     }
 }

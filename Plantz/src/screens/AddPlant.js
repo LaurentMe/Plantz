@@ -16,6 +16,9 @@ import {useStoreSession} from "../hooks/EncryptedStorage.hook";
 import axios from "axios";
 import {useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 import {SharedElement} from "react-navigation-shared-element";
+import LinearGradient from "react-native-linear-gradient";
+import BackButton from "../Components/BackButton";
+
 
 function AddPlant({navigation, route}) {
     const [name, setName] = useState('');
@@ -24,6 +27,8 @@ function AddPlant({navigation, route}) {
     const [water, setWater] = useState('');
     const [waterDays, setWaterDays] = useState('');
     const [location, setLocation] = useState('');
+    const [description, setDescription] = useState('');
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         setLatinName(route.params.plantLatin);
@@ -34,9 +39,10 @@ function AddPlant({navigation, route}) {
         }
     }, [])
 
-    const goBack = () => {
+    const back = () => {
         navigation.goBack();
     }
+
     const enlarge = () => {
         navigation.navigate('ImageView', {
             image: route.params.image,
@@ -45,6 +51,7 @@ function AddPlant({navigation, route}) {
     }
 
     const addPlant = () => {
+
         useRetrieveSession().then((session) => {
             axios.post('http://192.168.1.110/api/plants', {
                 name: name,
@@ -53,10 +60,11 @@ function AddPlant({navigation, route}) {
                 water: water,
                 waterDays: waterDays,
                 location: location,
+                description: description,
                 image: route.params.image
             }, {
                 headers: {
-                    Authorization: "Bearer " + session.token,
+                    Authorization: "Bearer " + session,
                 }
             })
                 .then(function (response) {
@@ -64,8 +72,9 @@ function AddPlant({navigation, route}) {
                         navigation.popToTop();
                     }
                 })
-                .catch(function (error) {
-                    console.log(error);
+                .catch(function ({response}) {
+                    console.log(response.data.errors)
+                    setErrors(response.data.errors);
                 });
         })
     }
@@ -74,17 +83,18 @@ function AddPlant({navigation, route}) {
         <View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View>
-                    <TouchableOpacity style={{zIndex: 1}} onPress={goBack}>
-                        <View style={styles.backButton}>
-                            <FontAwesomeIcon icon={faArrowLeft} color={'#000'} size={18}/>
-                        </View>
-                    </TouchableOpacity>
+                    <SharedElement id={'back'} style={{zIndex: 4}}>
+                        <BackButton navigation={navigation}/>
+                    </SharedElement>
                     <TouchableWithoutFeedback style={{zIndex: 10}} onPress={enlarge}>
                         <View style={styles.expandButton}>
                             <FontAwesomeIcon icon={faExpandArrowsAlt} color={'#fff'} size={18}/>
                         </View>
                     </TouchableWithoutFeedback>
-                    <SharedElement id={'image'}>
+                    <LinearGradient colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']} style={styles.bottomOverlay}>
+                        <Text style={[styles.title]}>New plant</Text>
+                    </LinearGradient>
+                    <SharedElement id={route.params.uri}>
                         <Image
                             style={{
                                 width: Dimensions.get('window').width,
@@ -97,28 +107,27 @@ function AddPlant({navigation, route}) {
                 </View>
 
                 <View style={styles.formContainer}>
-                    <Text style={styles.title}>New plant</Text>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Nickname</Text>
+                        <Text style={[styles.label, {color: errors.nickname ? '#ED1103' : '#000'}]}>Nickname</Text>
                         <TextInput
                             style={styles.inputField}
                             value={nickname}
                             onChangeText={(text) => setNickname(text)}
-                            autoCorrect={false}
+                            autoCorrect={true}
                         />
                     </View>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Plant name</Text>
+                        <Text style={[styles.label, {color: errors.name ? '#ED1103' : '#000'}]}>Plant name</Text>
                         <TextInput
                             style={styles.inputField}
                             value={name}
                             onChangeText={(text) => setName(text)}
-                            autoCorrect={false}
+                            autoCorrect={true}
 
                         />
                     </View>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Latin name</Text>
+                        <Text style={[styles.label, {color: errors.latinName ? '#ED1103' : '#000'}]}>Latin name</Text>
                         <TextInput
                             style={styles.inputField}
                             value={latinName}
@@ -127,7 +136,7 @@ function AddPlant({navigation, route}) {
                         />
                     </View>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Water dosis</Text>
+                        <Text style={[styles.label, {color: errors.water ? '#ED1103' : '#000'}]}>Water dosis</Text>
                         <TextInput
                             style={styles.inputField}
                             value={water.toString()}
@@ -137,22 +146,35 @@ function AddPlant({navigation, route}) {
                         />
                     </View>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Waterdays</Text>
+                        <Text style={[styles.label, {color: errors.waterDays ? '#ED1103' : '#000'}]}>Waterdays</Text>
                         <TextInput
                             style={styles.inputField}
                             value={waterDays.toString()}
                             onChangeText={(text) => setWaterDays(text)}
                             keyboardType={"number-pad"}
                             autoCorrect={false}
+
                         />
                     </View>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Location</Text>
+                        <Text style={[styles.label, {color: errors.location ? '#ED1103' : '#000'}]}>Location</Text>
                         <TextInput
-                            style={styles.inputField}
+                            style={[styles.inputField]}
                             value={location}
                             onChangeText={(text) => setLocation(text)}
-                            autoCorrect={false}
+                            autoCorrect={true}
+                            maxLength={100}
+                        />
+                    </View>
+                    <View style={styles.inputContainer}>
+                        <Text style={[styles.label, {color: errors.description ? '#ED1103' : '#000'}]}>Description</Text>
+                        <TextInput
+                            multiline={true}
+                            style={styles.inputField}
+                            value={description}
+                            onChangeText={(text) => setDescription(text)}
+                            autoCorrect={true}
+                            maxLength={600}
                         />
                     </View>
 
@@ -165,9 +187,6 @@ function AddPlant({navigation, route}) {
             </ScrollView>
         </View>
     );
-}
-AddPlant.sharedElements = (route, otherRoute, showing) => {
-    return ['image'];
 }
 
 export default AddPlant;
@@ -183,13 +202,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-    },
-    title: {
-        marginBottom: 20,
-        fontSize: 28,
-        fontFamily: 'Roboto',
-        fontWeight: 'bold',
-        color: '#1F6F4A'
     },
     formContainer: {
         marginHorizontal: 35,
@@ -222,17 +234,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto',
         fontWeight: 'bold',
     },
-    backButton: {
-        position: 'absolute',
-        top: 30,
-        left: 30,
-        color: '#fff',
-        backgroundColor: '#fff',
-        zIndex: 20,
-        borderRadius: 200,
-        padding: 12,
-        opacity: 0.9,
-    },
     expandButton: {
         position: 'absolute',
         bottom: 20,
@@ -240,4 +241,23 @@ const styles = StyleSheet.create({
         zIndex: 40,
         opacity: 0.9,
     },
+    bottomOverlay: {
+        position: 'absolute',
+        width: Dimensions.get('window').width,
+        height: 200,
+        backgroundColor: '#000',
+        zIndex: 20,
+        bottom: 0,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+    },
+    title: {
+        position: 'absolute',
+        color: '#fff',
+        fontFamily: 'Circular Std',
+        fontWeight: 'bold',
+        fontSize: 45,
+        bottom: 15,
+        left: 20
+    }
 })

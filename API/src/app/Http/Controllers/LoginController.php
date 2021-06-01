@@ -44,15 +44,13 @@ class LoginController extends Controller
 
     public function register(Request $request) {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
             'device_name' => 'required'
         ]);
 
         try {
             $user = User::create([
-                'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password)
             ]);
@@ -63,7 +61,7 @@ class LoginController extends Controller
             ], 201);
         } catch (Exception $exception) {
             return response([
-                'error' => 'Username already exists'
+                'error' => 'Email is already in use.'
             ], 402);
         }
 

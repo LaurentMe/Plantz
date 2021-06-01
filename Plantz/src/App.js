@@ -1,62 +1,265 @@
 import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
-import {Text, View} from "react-native";
+import {Alert, Text, View} from "react-native";
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Login from './screens/login';
 import Main from './screens/Main';
-import {useRetrieveSession} from './hooks/EncryptedStorage.hook';
+import {useLogout, useRetrieveSession, useStoreSession} from './hooks/EncryptedStorage.hook';
 import AppStack from "./AppStack";
 import AuthStack from "./AuthStack";
 import Camera from "./screens/Camera";
 import AddPlant from "./screens/AddPlant";
 import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 import ImageView from "./screens/ImageView";
+import PlantDetails from "./screens/PlantDetails";
+import {enableScreens} from "react-native-screens";
+import SplashScreen from "./screens/SplashScreen";
+import {AuthContext} from "./hooks/AuthContext";
+import axios from "axios";
+import Moment from "moment";
+import RNBootSplash from 'react-native-bootsplash';
+import Register from "./screens/Register";
 
 export const App = () => {
-    console.log('rerender app');
     const Stack = createSharedElementStackNavigator();
-    const [user, setUser] = useState(null);
+    const axios = require('axios').default;
 
-    useEffect(() => {
-        useRetrieveSession().then((session) => {
-            setUser(session);
-        })
-    }, [])
+    const [state, dispatch] = React.useReducer(
+        (prevState, action) => {
+            switch (action.type) {
+                case 'RESTORE_TOKEN':
+                    return {
+                        ...prevState,
+                        userToken: action.token,
+                        isLoading: false,
+                    };
+                case 'SIGN_IN':
+                    return {
+                        ...prevState,
+                        isSignout: false,
+                        userToken: action.token,
+                    };
+                case 'SIGN_OUT':
+                    return {
+                        ...prevState,
+                        isSignout: true,
+                        userToken: null,
+                    };
+            }
+        },
+        {
+            isLoading: true,
+            isSignout: false,
+            userToken: null,
+        }
+    );
+
+    React.useEffect(() => {
+        // Fetch the token from storage then navigate to our appropriate place
+        const bootstrapAsync = async () => {
+            let userToken;
+
+            try {
+                useRetrieveSession().then((res) => {
+                    userToken = res;
+                    dispatch({type: 'RESTORE_TOKEN', token: userToken});
+                }).catch((error) => {
+                    console.log(error)
+                })
+            } catch (e) {
+            }
+        };
+        bootstrapAsync();
+    }, []);
+
+    const authContext = React.useMemo(
+        () => ({
+            signIn: (data) => {
+                axios.post('http://192.168.1.110/login', {
+                    email: data.username,
+                    password: data.password,
+                    device_name: 'mobile',
+                })
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            useStoreSession(response.data.token).then(() => {
+                                dispatch({type: 'SIGN_IN', token: response.data});
+                            }).catch(function (error) {
+                                console.log(error.data);
+                            });
+                        }
+                    })
+                    .catch(function ({response}) {
+                        console.log(response.data.errors)
+                        Alert.alert(
+                            "Error",
+                            "Incorrect login data",
+                            [
+                                {text: "OK"}
+                            ]
+                        );
+                    });
+            },
+            signOut: () => {
+                useLogout();
+                dispatch({type: 'SIGN_OUT'})
+            },
+            signUp: async (data) => {
+                axios.post('http://192.168.1.110/register', {
+                    email: data.username,
+                    password: data.password,
+                    device_name: 'mobile',
+                })
+                    .then(function (response) {
+                        if (response.status == 201) {
+                            useStoreSession(response.data.token).then(() => {
+                                dispatch({type: 'SIGN_IN', token: response.data});
+                            }).catch(function (error) {
+                                console.log(error.data);
+                            });
+                        }
+                    })
+                    .catch(function ({response}) {
+                        console.log(response.data)
+                        if ("email" in response.data.errors) {
+                            Alert.alert(
+                                "Error",
+                                response.data.errors.email[0],
+                                [
+                                    {text: "OK"}
+                                ]
+                            );
+                            return
+                        }
+                        if ("password" in response.data.errors) {
+                            Alert.alert(
+                                "Error",
+                                response.data.errors.password[0],
+                                [
+                                    {text: "OK"}
+                                ]
+                            );
+                        }
+                    });
+            },
+            dayDifference: (date, days) => {
+                return days - Math.floor((Moment().unix() - Moment(date).unix()) / 3600 / 24);
+            },
+        }),
+        []
+    );
 
     return (
-        <NavigationContainer>
-            {/*{user ?*/}
-            {/*    <AppStack />*/}
-            {/*    :*/}
-            {/*    <AuthStack />*/}
-            {/*}*/}
+        <AuthContext.Provider value={authContext}>
+            <NavigationContainer onReady={() => RNBootSplash.hide()}>
+                <Stack.Navigator screenOptions={{headerShown: false}}>
+                    {state.isLoading ? (
+                        <Stack.Screen name="Splash" component={SplashScreen}/>
+                    ) : state.userToken == null ? (
+                        <>
+                            <Stack.Screen
+                                name="Login"
+                                component={Login}
+                                options={() => ({
+                                    gestureEnabled: false,
+                                    cardStyleInterpolator: ({current: {progress}}) => {
+                                        return {
+                                            cardStyle: {
+                                                opacity: progress,
+                                            }
+                                        }
+                                    }
+                                })}
+                            />
+                            <Stack.Screen
+                                name={"Register"}
+                                component={Register}
+                                options={() => ({
+                                    gestureEnabled: false,
+                                    cardStyleInterpolator: ({current: {progress}}) => {
+                                        return {
+                                            cardStyle: {
+                                                opacity: progress,
+                                            }
+                                        }
+                                    }
+                                })}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <Stack.Screen name='Main' component={Main}/>
+                            <Stack.Screen
+                                name={'PlantDetails'}
+                                component={PlantDetails}
 
-            <Stack.Navigator
-                screenOptions={{
-                    headerShown: false,
-                }}>
-                <Stack.Screen name="Login" component={Login}/>
-                <Stack.Screen name='Main' component={Main}/>
-                <Stack.Screen name='Camera' component={Camera}/>
-                <Stack.Screen name={'AddPlant'} component={AddPlant}/>
-                <Stack.Screen
-                    name={'ImageView'}
-                    component={ImageView}
-                    options={() => ({
-                        gestureEnabled: false,
+                                sharedElementsConfig={(route, otherRoute, showing) => {
+                                    if (otherRoute.name === 'Main' && showing) {
+                                        return [
+                                            {id: route.params.plant.created_at.toString()},
+                                            {id: 'back', animation: 'fade-in'},
+                                            {id: 'enlarge', animation: 'fade-in'},
+                                            {id: 'overlay', animation: 'fade-in'},
+                                            {id: 'date', animation: 'fade'},
+                                            {id: 'water' + route.params.index, animation: 'fade'},
+                                            {id: 'waterDays' + route.params.index, animation: 'fade'},
+                                            {id: route.params.plant.nickname, animation: 'fade-in'},
+                                        ];
+                                    }
+                                }}
+                                options={() => ({
+                                    gestureEnabled: true,
+                                    // cardStyleInterpolator: ({current: {progress}}) => {
+                                    //     return {
+                                    //         cardStyle: {
+                                    //             opacity: progress,
+                                    //         }
+                                    //     }
+                                    // }
+                                })}
+                            />
+                            <Stack.Screen name='Camera' component={Camera}/>
+                            <Stack.Screen name={'AddPlant'} component={AddPlant}/>
+                            <Stack.Screen
+                                name={'ImageView'}
+                                component={ImageView}
+                                sharedElementsConfig={(route, otherRoute, showing) => {
+                                    if (otherRoute.name === 'AddPlant' && showing) {
+                                        return [
+                                            {id: route.params.uri},
+                                            {id: 'back'}
+                                        ];
+                                    }
+                                }}
+                                options={() => ({
+                                    gestureEnabled: false,
+                                    cardStyleInterpolator: ({current: {progress}}) => {
+                                        return {
+                                            cardStyle: {
+                                                opacity: progress,
+                                            }
+                                        }
+                                    }
+                                })}
+                            />
+                        </>
+                    )}
+                </Stack.Navigator>
+            </NavigationContainer>
+        </AuthContext.Provider>
 
-                        cardStyleInterpolator: ({current: {progress}}) => {
-                            return {
-                                cardStyle: {
-                                    opacity: progress,
-                                }
-                            }
-                        }
-                    })}/>
-            </Stack.Navigator>
-        </NavigationContainer>
     );
 }
-
+export const iosTransitionSpec = {
+    animation: "spring",
+    config: {
+        stiffness: 1000,
+        damping: 500,
+        mass: 3,
+        overshootClamping: true,
+        restDisplacementThreshold: 10,
+        restSpeedThreshold: 10,
+    },
+};
 export default App;

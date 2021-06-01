@@ -1,25 +1,31 @@
 import React, {useState, useEffect} from 'react';
 import {Image, Text, View, StyleSheet, TextInput, TouchableOpacity} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faUser, faLock} from '@fortawesome/free-solid-svg-icons'
+import {faUser, faLock, faSyncAlt} from '@fortawesome/free-solid-svg-icons'
 import { useStoreSession, useRetrieveSession } from '../hooks/EncryptedStorage.hook';
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import { AuthContext } from "../hooks/AuthContext";
 import {err} from "react-native-svg/lib/typescript/xml";
 
-function Login({navigation}) {
+function Register({navigation}) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [errors, setErrors] = useState({});
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [errors, setErrors] = useState(false);
     const axios = require('axios').default;
 
-    const { signIn } = React.useContext(AuthContext);
+    const { signIn, signUp } = React.useContext(AuthContext);
 
-    const login = (data) => {
-        signIn(data)
+    const login = () => {
+       navigation.goBack();
     }
-    const register = () => {
-        navigation.navigate('Register');
+    const register = (data) => {
+        if (data.password !== data.confirmPassword || password === ''){
+            setErrors(true);
+            return
+        }
+        setErrors(false)
+        signUp(data)
     }
 
     return (
@@ -43,7 +49,7 @@ function Login({navigation}) {
                 </View>
             </View>
             <View>
-                <Text style={styles.label}>Password</Text>
+                <Text style={[styles.label, {color: errors ? '#ED1103' : '#000'}]}>Password</Text>
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={[styles.inputField, {fontSize: 12}]}
@@ -53,26 +59,42 @@ function Login({navigation}) {
                         keyboardType={"email-address"}
                         secureTextEntry={true}
                         ref={(input) => { this.secondTextInput = input; }}
-                        onSubmitEditing={() => signIn({ username, password })}
+                        onSubmitEditing={() => {this.thirdTextInput.focus()}}
                     />
                     <FontAwesomeIcon icon={faLock} color={'#26A66B'}/>
                 </View>
             </View>
-            <TouchableOpacity onPress={() => login({ username, password })}>
+            <View>
+                <Text style={[styles.label, {color: errors ? '#ED1103' : '#000'}]}>Confirm password</Text>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={[styles.inputField, {fontSize: 12}]}
+                        onChangeText={(text) => setConfirmPassword(text)}
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        keyboardType={"email-address"}
+                        secureTextEntry={true}
+                        ref={(input) => { this.thirdTextInput = input; }}
+                        onSubmitEditing={() => register({ username, password, confirmPassword })}
+                    />
+                    <FontAwesomeIcon icon={faSyncAlt} color={'#26A66B'}/>
+                </View>
+            </View>
+            <TouchableOpacity onPress={() => register({ username, password, confirmPassword })}>
                 <View style={styles.loginButton}>
-                    <Text style={styles.loginText}>Login</Text>
+                    <Text style={styles.loginText}>Sign up</Text>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => register()}>
+            <TouchableOpacity onPress={() => login()}>
                 <View style={styles.registerButton}>
-                    <Text style={styles.registerText}>Sign up</Text>
+                    <Text style={styles.registerText}>Back to login</Text>
                 </View>
             </TouchableOpacity>
         </KeyboardAwareScrollView>
     );
 }
 
-export default Login;
+export default Register;
 
 const styles = StyleSheet.create({
     container: {
@@ -85,7 +107,7 @@ const styles = StyleSheet.create({
     logo: {
         width: 300,
         height: 300,
-        top: -40,
+        top: -6,
     },
     inputContainer: {
         flexDirection: 'row',

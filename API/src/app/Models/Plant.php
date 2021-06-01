@@ -15,6 +15,7 @@ class Plant extends Model
         'latin_name',
         'water_amount',
         'days_between_water',
+        'description'
     ];
 
     public function users(){

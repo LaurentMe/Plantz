@@ -25,3 +25,4 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::post('/searchPlant', [PlantController::class, 'searchPlant']) -> middleware('auth:sanctum');
+Route::get('/updateWater/{id}', [PlantController::class, 'updateWater']) -> middleware('auth:sanctum');

@@ -76,7 +76,7 @@ export const App = () => {
 
     const authContext = React.useMemo(
         () => ({
-            signIn: (data) => {
+            signIn: (data, setErrors) => {
                 axios.post('http://192.168.1.110/login', {
                     email: data.username,
                     password: data.password,
@@ -92,14 +92,8 @@ export const App = () => {
                         }
                     })
                     .catch(function ({response}) {
-                        console.log(response.data.errors)
-                        Alert.alert(
-                            "Error",
-                            "Incorrect login data",
-                            [
-                                {text: "OK"}
-                            ]
-                        );
+                        setErrors(response.data.errors);
+                        if (!response.data.errors) setErrors({"wrong": "Incorrect login credentials."})
                     });
             },
             signOut: () => {

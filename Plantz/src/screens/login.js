@@ -10,17 +10,21 @@ import {err} from "react-native-svg/lib/typescript/xml";
 function Login({navigation}) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState();
     const axios = require('axios').default;
 
     const { signIn } = React.useContext(AuthContext);
 
     const login = (data) => {
-        signIn(data)
+        signIn(data, setErrors)
     }
     const register = () => {
         navigation.navigate('Register');
     }
+
+    useEffect(() => {
+        console.log(errors)
+    }, [errors])
 
     return (
         <KeyboardAwareScrollView contentContainerStyle={styles.container}>
@@ -44,7 +48,7 @@ function Login({navigation}) {
             </View>
             <View>
                 <Text style={styles.label}>Password</Text>
-                <View style={styles.inputContainer}>
+                <View style={[styles.inputContainer, {marginBottom: 0}]}>
                     <TextInput
                         style={[styles.inputField, {fontSize: 12}]}
                         onChangeText={(text) => setPassword(text)}
@@ -57,6 +61,13 @@ function Login({navigation}) {
                     />
                     <FontAwesomeIcon icon={faLock} color={'#26A66B'}/>
                 </View>
+            </View>
+            <View style={styles.errorContainer}>
+                {errors && Object.keys(errors).map(function (key, index){
+                    return (
+                        <Text key={key} style={styles.errorsText}>{errors[key]}</Text>
+                    )
+                })}
             </View>
             <TouchableOpacity onPress={() => login({ username, password })}>
                 <View style={styles.loginButton}>
@@ -136,4 +147,20 @@ const styles = StyleSheet.create({
         fontFamily: 'Circular Std',
         fontWeight: 'bold',
     },
+    title: {
+        fontFamily: 'Circular Std',
+        fontWeight: 'bold',
+        fontSize: 40
+    },
+    errorContainer: {
+        width: 260,
+        height: 50,
+        justifyContent: 'center'
+    },
+    errorsText: {
+        fontFamily: 'Circular Std',
+        fontWeight: 'bold',
+        color: '#ED1103',
+        fontSize: 12,
+    }
 });

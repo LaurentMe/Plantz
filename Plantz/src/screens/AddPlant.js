@@ -113,7 +113,7 @@ function AddPlant({navigation, route}) {
                     <Text style={[styles.text, {marginBottom: 20}]}>It seems like you've added a plant with the Latin
                         name <Text style={{fontWeight: 'bold'}}>{route.params.plantLatin}</Text> that does not yet
                         exists in our
-                        database. Please fill out this forum carefully to add it to our database.</Text>
+                        database. Please fill out this form carefully to add it to our database.</Text>
                     }
                     <View style={styles.inputContainer}>
                         <Text style={[styles.label, {color: errors.nickname ? '#ED1103' : '#000'}]}>Nickname</Text>

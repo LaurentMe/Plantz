@@ -57,11 +57,11 @@ function PlantCard({navigation, details,item, index,}) {
                         </SharedElement>
                     </View>
                     <View
-                        style={[styles.waterStatus, {backgroundColor: dayDifference(item.last_water_day, item.custom_water_days) < 0 ? '#F01002' : dayDifference(item.last_water_day, item.custom_water_days) === 0 ? '#F07202' : '#23B571'}]}>
+                        style={[styles.waterStatus, {backgroundColor: dayDifference(item.next_water_day) < 0 ? '#F01002' : dayDifference(item.next_water_day) === 0 ? '#F07202' : '#23B571'}]}>
                         <Text
-                            style={styles.waterStatusText}>{dayDifference(item.last_water_day, item.custom_water_days) > 0 ? 'Just fine' : 'Add water'}</Text>
+                            style={styles.waterStatusText}>{dayDifference(item.next_water_day) > 0 ? 'Just fine' : 'Add water'}</Text>
                         <FontAwesomeIcon
-                            icon={dayDifference(item.last_water_day, item.custom_water_days) > 0 ? faCheck : faPlusCircle}
+                            icon={dayDifference(item.next_water_day) > 0 ? faCheck : faPlusCircle}
                             size={20} color={'#fff'} style={{}}/>
                     </View>
                 </View>

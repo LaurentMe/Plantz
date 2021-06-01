@@ -125,8 +125,8 @@ export const App = () => {
                         setApiErrors(response.data.errors);
                     });
             },
-            dayDifference: (date, days) => {
-                return days - Math.floor((Moment().unix() - Moment(date).unix()) / 3600 / 24);
+            dayDifference: (next_water_day) => {
+                return Math.floor((Moment(next_water_day).unix() - Moment().unix())/3600/24);
             },
         }),
         []

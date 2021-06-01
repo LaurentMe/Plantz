@@ -112,7 +112,7 @@ function PlantDetails({route, navigation}) {
                         <Text style={[styles.text, {
                             color: '#fff',
                             marginLeft: 4
-                        }]}>{dayDifference(route.params.plant.last_water_day, route.params.plant.custom_water_days)} days</Text>
+                        }]}>{dayDifference(route.params.plant.next_water_day)} days</Text>
                     </View>
                 </SharedElement>
 
@@ -166,9 +166,9 @@ function PlantDetails({route, navigation}) {
             </View>
             <TouchableOpacity onPress={updateWater}>
                 <View
-                    style={[styles.addWater, {backgroundColor: dayDifference(route.params.plant.last_water_day, route.params.plant.custom_water_days) < 0 ? '#F01002' : dayDifference(route.params.plant.last_water_day, route.params.plant.custom_water_days) === 0 ? '#F07202' : '#23B571'}]}>
+                    style={[styles.addWater, {backgroundColor: dayDifference(route.params.plant.next_water_day) < 0 ? '#F01002' : dayDifference(route.params.plant.next_water_day) === 0 ? '#F07202' : '#23B571'}]}>
                     <Text
-                        style={styles.addWaterText}>{dayDifference(route.params.plant.last_water_day, route.params.plant.custom_water_days) > 0 ? 'Everything is just fine' : 'Add water to ' + route.params.plant.nickname}</Text>
+                        style={styles.addWaterText}>{dayDifference(route.params.plant.next_water_day) > 0 ? 'Everything is just fine' : 'Add water to ' + route.params.plant.nickname}</Text>
                 </View>
             </TouchableOpacity>
             <View style={styles.infoContainer}>

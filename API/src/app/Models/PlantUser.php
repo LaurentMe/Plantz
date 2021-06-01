@@ -23,6 +23,7 @@ class PlantUser extends Model
         'nickname',
         'image',
         'custom_water_amount',
+        'custom_water_days',
         'last_water_day',
     ];
 

@@ -38,12 +38,12 @@ class PlantController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'latinName' => 'required',
-            'water' => 'required',
-            'waterDays' => 'required',
-            'location' => 'required',
+            'latinName' => 'required|max:60',
+            'water' => 'required|max:4',
+            'waterDays' => 'required|max:4',
+            'location' => 'required|max:100',
             'image' => 'required',
-            'description' => 'required',
+            'description' => 'required|max:600',
         ]);
 
         try {
@@ -69,6 +69,8 @@ class PlantController extends Controller
                 'location' => $request->location,
                 'image' => $request->image,
                 'nickname' => $plant->name,
+                'custom_water_amount' => $request->water,
+                'custom_water_days' => $request->waterDays,
                 'last_water_day' => Carbon::now()->toDateTimeString(),
             ]);
 

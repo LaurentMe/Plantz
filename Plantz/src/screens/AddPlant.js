@@ -115,6 +115,7 @@ function AddPlant({navigation, route}) {
                             value={nickname}
                             onChangeText={(text) => setNickname(text)}
                             autoCorrect={true}
+                            maxLength={40}
                         />
                     </View>
                     <View style={styles.inputContainer}>
@@ -125,6 +126,7 @@ function AddPlant({navigation, route}) {
                             onChangeText={(text) => setName(text)}
                             autoCorrect={true}
                             editable={!route.params.plant}
+                            maxLength={40}
                         />
                     </View>
                     <View style={styles.inputContainer}>
@@ -135,6 +137,7 @@ function AddPlant({navigation, route}) {
                             onChangeText={(text) => setLatinName(text)}
                             autoCorrect={false}
                             editable={!route.params.plant}
+                            maxLength={60}
                         />
                     </View>
                     <Text style={[styles.label, {color: errors.water ? '#ED1103' : '#000'}]}>Water</Text>

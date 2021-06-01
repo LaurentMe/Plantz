@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddCustomWaterAmountToPlantUser extends Migration
+class AddCustomWaterDaysToPlantUser extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddCustomWaterAmountToPlantUser extends Migration
     public function up()
     {
         Schema::table('plant_user', function (Blueprint $table) {
-            $table -> integer('custom_water_amount');
+            $table -> integer('custom_water_days');
         });
     }
 

@@ -21,6 +21,7 @@ import Moment from "moment";
 import RNBootSplash from 'react-native-bootsplash';
 import Register from "./screens/Register";
 import {Notifications} from 'react-native-notifications';
+import {deletePlants} from "./hooks/AsyncStorage.hook";
 
 export const App = () => {
     const Stack = createSharedElementStackNavigator();
@@ -92,11 +93,16 @@ export const App = () => {
                         }
                     })
                     .catch(function ({response}) {
-                        setErrors(response.data.errors);
-                        if (!response.data.errors) setErrors({"wrong": "Incorrect login credentials."})
+                        try {
+                            setErrors(response.data.errors);
+                            if (!response.data.errors) setErrors({"wrong": "Incorrect login credentials."})
+                        } catch (e) {
+                            setErrors({"error": "Network error."})
+                        }
                     });
             },
             signOut: () => {
+                deletePlants();
                 useLogout();
                 dispatch({type: 'SIGN_OUT'})
             },

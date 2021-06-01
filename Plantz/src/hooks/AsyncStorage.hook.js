@@ -19,3 +19,13 @@ export async function useRetrievePlants (data) {
         // error reading value
     }
 }
+
+export async function deletePlants () {
+    try {
+        await AsyncStorage.removeItem('plants')
+    } catch(e) {
+        // remove error
+    }
+
+    console.log('Done.')
+}

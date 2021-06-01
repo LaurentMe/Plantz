@@ -100,7 +100,7 @@ export const App = () => {
                 useLogout();
                 dispatch({type: 'SIGN_OUT'})
             },
-            signUp: async (data) => {
+            signUp: async (data, setApiErrors) => {
                 axios.post('http://192.168.1.110/register', {
                     email: data.username,
                     password: data.password,
@@ -116,26 +116,7 @@ export const App = () => {
                         }
                     })
                     .catch(function ({response}) {
-                        console.log(response.data)
-                        if ("email" in response.data.errors) {
-                            Alert.alert(
-                                "Error",
-                                response.data.errors.email[0],
-                                [
-                                    {text: "OK"}
-                                ]
-                            );
-                            return
-                        }
-                        if ("password" in response.data.errors) {
-                            Alert.alert(
-                                "Error",
-                                response.data.errors.password[0],
-                                [
-                                    {text: "OK"}
-                                ]
-                            );
-                        }
+                        setApiErrors(response.data.errors);
                     });
             },
             dayDifference: (date, days) => {

@@ -12,6 +12,7 @@ function Register({navigation}) {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errors, setErrors] = useState(false);
+    const [apiErrors, setApiErrors] = useState();
     const axios = require('axios').default;
 
     const { signIn, signUp } = React.useContext(AuthContext);
@@ -20,13 +21,18 @@ function Register({navigation}) {
        navigation.goBack();
     }
     const register = (data) => {
+        setApiErrors();
         if (data.password !== data.confirmPassword || password === ''){
             setErrors(true);
             return
         }
+        signUp(data, setApiErrors)
         setErrors(false)
-        signUp(data)
     }
+
+    useEffect(() => {
+        console.log(apiErrors)
+    }, [apiErrors])
 
     return (
         <KeyboardAwareScrollView contentContainerStyle={styles.container}>
@@ -66,7 +72,7 @@ function Register({navigation}) {
             </View>
             <View>
                 <Text style={[styles.label, {color: errors ? '#ED1103' : '#000'}]}>Confirm password</Text>
-                <View style={styles.inputContainer}>
+                <View style={[styles.inputContainer, {marginBottom: 0}]}>
                     <TextInput
                         style={[styles.inputField, {fontSize: 12}]}
                         onChangeText={(text) => setConfirmPassword(text)}
@@ -79,6 +85,13 @@ function Register({navigation}) {
                     />
                     <FontAwesomeIcon icon={faSyncAlt} color={'#26A66B'}/>
                 </View>
+            </View>
+            <View style={styles.errorContainer}>
+                {apiErrors && Object.keys(apiErrors).map(function (key, index){
+                    return (
+                        <Text key={key} style={styles.errorsText}>{apiErrors[key]}</Text>
+                    )
+                })}
             </View>
             <TouchableOpacity onPress={() => register({ username, password, confirmPassword })}>
                 <View style={styles.loginButton}>
@@ -158,4 +171,15 @@ const styles = StyleSheet.create({
         fontFamily: 'Circular Std',
         fontWeight: 'bold',
     },
+    errorContainer: {
+        width: 260,
+        height: 50,
+        justifyContent: 'center'
+    },
+    errorsText: {
+        fontFamily: 'Circular Std',
+        fontWeight: 'bold',
+        color: '#ED1103',
+        fontSize: 12,
+    }
 });

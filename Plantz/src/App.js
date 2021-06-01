@@ -19,6 +19,7 @@ import {AuthContext} from "./hooks/AuthContext";
 import axios from "axios";
 import Moment from "moment";
 import RNBootSplash from 'react-native-bootsplash';
+import Register from "./screens/Register";
 
 export const App = () => {
     const Stack = createSharedElementStackNavigator();
@@ -75,7 +76,6 @@ export const App = () => {
     const authContext = React.useMemo(
         () => ({
             signIn: (data) => {
-                let res;
                 axios.post('http://192.168.1.110/login', {
                     email: data.username,
                     password: data.password,
@@ -90,13 +90,13 @@ export const App = () => {
                             });
                         }
                     })
-                    .catch(function({ response }) {
+                    .catch(function ({response}) {
                         console.log(response.data.errors)
                         Alert.alert(
-                            "Incorrect",
+                            "Error",
                             "Incorrect login data",
                             [
-                                { text: "OK" }
+                                {text: "OK"}
                             ]
                         );
                     });
@@ -106,12 +106,42 @@ export const App = () => {
                 dispatch({type: 'SIGN_OUT'})
             },
             signUp: async (data) => {
-                // In a production app, we need to send user data to server and get a token
-                // We will also need to handle errors if sign up failed
-                // After getting token, we need to persist the token using `SecureStore` or any other encrypted storage
-                // In the example, we'll use a dummy token
-
-                dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
+                axios.post('http://192.168.1.110/register', {
+                    email: data.username,
+                    password: data.password,
+                    device_name: 'mobile',
+                })
+                    .then(function (response) {
+                        if (response.status == 201) {
+                            useStoreSession(response.data.token).then(() => {
+                                dispatch({type: 'SIGN_IN', token: response.data});
+                            }).catch(function (error) {
+                                console.log(error.data);
+                            });
+                        }
+                    })
+                    .catch(function ({response}) {
+                        console.log(response.data)
+                        if ("email" in response.data.errors) {
+                            Alert.alert(
+                                "Error",
+                                response.data.errors.email[0],
+                                [
+                                    {text: "OK"}
+                                ]
+                            );
+                            return
+                        }
+                        if ("password" in response.data.errors) {
+                            Alert.alert(
+                                "Error",
+                                response.data.errors.password[0],
+                                [
+                                    {text: "OK"}
+                                ]
+                            );
+                        }
+                    });
             },
             dayDifference: (date, days) => {
                 return days - Math.floor((Moment().unix() - Moment(date).unix()) / 3600 / 24);
@@ -127,20 +157,36 @@ export const App = () => {
                     {state.isLoading ? (
                         <Stack.Screen name="Splash" component={SplashScreen}/>
                     ) : state.userToken == null ? (
-                        <Stack.Screen
-                            name="Login"
-                            component={Login}
-                            options={() => ({
-                                // gestureEnabled: true,
-                                cardStyleInterpolator: ({current: {progress}}) => {
-                                    return {
-                                        cardStyle: {
-                                            opacity: progress,
+                        <>
+                            <Stack.Screen
+                                name="Login"
+                                component={Login}
+                                options={() => ({
+                                    gestureEnabled: false,
+                                    cardStyleInterpolator: ({current: {progress}}) => {
+                                        return {
+                                            cardStyle: {
+                                                opacity: progress,
+                                            }
                                         }
                                     }
-                                }
-                            })}
-                        />
+                                })}
+                            />
+                            <Stack.Screen
+                                name={"Register"}
+                                component={Register}
+                                options={() => ({
+                                    gestureEnabled: false,
+                                    cardStyleInterpolator: ({current: {progress}}) => {
+                                        return {
+                                            cardStyle: {
+                                                opacity: progress,
+                                            }
+                                        }
+                                    }
+                                })}
+                            />
+                        </>
                     ) : (
                         <>
                             <Stack.Screen name='Main' component={Main}/>

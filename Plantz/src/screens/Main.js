@@ -79,7 +79,7 @@ function Main({navigation}) {
                         category: "SOME_CATEGORY",
                         userInfo: { "plant": item, "index": index},
                         // fireDate: test.toISOString(),
-                        fireDate: new Date(Moment(item.next_water_date).format('YYYY-MM-DD')).toISOString()
+                        // fireDate: new Date(Moment(item.next_water_date).format('YYYY-MM-DD')).toISOString()
                     }, item.id);
                 })
             } catch (e) {

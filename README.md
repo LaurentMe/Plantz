@@ -15,3 +15,11 @@ Features in a nutshell:
 * **Local notifications** 
 * **Offline functionality**
 * **React Native Shared Element** transitions
+
+
+<img src="/Plantz/src/assets/screenshots/Login.png" alt="Plantz" width="200"/>
+<img src="/Plantz/src/assets/screenshots/Main.png" alt="Plantz" width="200"/>
+<img src="/Plantz/src/assets/screenshots/Notification.png" alt="Plantz" width="200"/>
+<img src="/Plantz/src/assets/screenshots/Detail.png" alt="Plantz" width="200"/>
+<img src="/Plantz/src/assets/screenshots/Camera.PNG" alt="Plantz" width="200"/>
+<img src="/Plantz/src/assets/screenshots/AddPlant.PNG" alt="Plantz" width="200"/>

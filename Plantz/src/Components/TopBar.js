@@ -47,11 +47,6 @@ function TopBar({navigation, search, signOut}) {
 export default TopBar;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#FBFBFB',
-        fontFamily: 'Circular Std',
-    },
     topContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -77,75 +72,4 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         borderColor: '#eee',
     },
-    titleContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    title: {
-        marginTop: 10,
-        fontSize: 28,
-        fontFamily: 'Circular Std',
-        fontWeight: 'bold',
-        color: '#1F6F4A'
-    },
-    cardsContainer: {
-        marginHorizontal: 25,
-        marginTop: 5,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-    },
-    card: {
-        width: 150,
-        height: 170,
-        backgroundColor: '#fff',
-        borderRadius: 8,
-        shadowColor: '#444',
-        shadowOffset: {width: 0, height: 0},
-        shadowOpacity: 0.4,
-        shadowRadius: 12,
-        margin: 6,
-        marginTop: 50,
-        marginBottom: 15
-    },
-    cardTitle: {
-        fontFamily: 'Circular Std',
-        fontWeight: '600',
-        alignSelf: 'center',
-        marginTop: 50,
-        color: '#373737',
-        fontSize: 15
-    },
-    cardText: {
-        marginTop: 15,
-        marginHorizontal: 15,
-        color: '#373737',
-        fontFamily: 'Circular Std',
-    },
-    textBox: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: 4
-    },
-    text: {
-        fontFamily: 'Circular Std',
-        fontSize: 14,
-    },
-    waterStatus: {
-        position: 'absolute',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        width: '100%',
-        height: 30,
-        bottom: 0,
-        borderBottomLeftRadius: 8,
-        borderBottomRightRadius: 8,
-    },
-    waterStatusText: {
-        fontFamily: 'Circular Std',
-        fontSize: 15,
-        fontWeight: 'bold',
-        color: '#fff',
-    }
 })

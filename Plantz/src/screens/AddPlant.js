@@ -143,7 +143,7 @@ function AddPlant({navigation, route}) {
                             <SaveButton savePlant={savePlant}/>
                         </SharedElement>
                     }
-                    <TouchableWithoutFeedback style={{zIndex: 60}} onPress={enlarge}>
+                    <TouchableWithoutFeedback style={{zIndex: 70}} onPress={enlarge}>
                         <View style={styles.expandButton}>
                             <FontAwesomeIcon icon={faExpandArrowsAlt} color={'#fff'} size={18}/>
                         </View>
@@ -370,7 +370,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 20,
         right: 30,
-        zIndex: 50,
+        zIndex: 70,
         opacity: 0.9,
     },
     bottomOverlay: {

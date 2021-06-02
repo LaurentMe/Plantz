@@ -105,7 +105,7 @@ function AddPlant({navigation, route}) {
             })
                 .then(function (response) {
                     if (response.status === 200) {
-                        navigation.goBack();
+                        navigation.popToTop();
                     }
                 })
                 .catch(function ({response}) {

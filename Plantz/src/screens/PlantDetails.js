@@ -99,7 +99,7 @@ function PlantDetails({route, navigation}) {
                         <Text style={[styles.text, {
                             color: '#fff',
                             marginLeft: 4
-                        }]}>{dayDifference(route.params.plant.next_water_day)} days</Text>
+                        }]}>{dayDifference(route.params.plant.next_water_day)} {dayDifference(route.params.plant.next_water_day) === 1 ? 'day' : 'days'}</Text>
                     </View>
                 </SharedElement>
 

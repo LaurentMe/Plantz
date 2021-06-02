@@ -21,8 +21,8 @@ export default SaveButton;
 const styles = StyleSheet.create({
     saveButton: {
         position: 'absolute',
-        top: 30,
-        right: 30,
+        top: 40,
+        right: 22,
         color: '#fff',
         backgroundColor: '#fff',
         zIndex: 20,

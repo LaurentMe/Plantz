@@ -31,7 +31,7 @@ export default BackButton;
 const styles = StyleSheet.create({
     editButton: {
         position: 'absolute',
-        top: 30,
+        top: 40,
         right: -350,
         color: '#fff',
         backgroundColor: '#fff',

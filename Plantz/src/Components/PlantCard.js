@@ -73,54 +73,6 @@ function PlantCard({navigation, details,item, index,}) {
 export default PlantCard;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#FBFBFB',
-        fontFamily: 'Circular Std',
-    },
-    topContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: 10,
-        borderBottomWidth: 1,
-        paddingBottom: 15,
-        borderColor: '#eee',
-    },
-    searchContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#eee',
-        borderRadius: 100,
-        borderWidth: 1,
-        borderColor: '#ddd',
-        height: 34,
-        width: 280,
-        marginLeft: 30,
-    },
-    secondContainer: {
-        marginHorizontal: 35,
-        paddingBottom: 10,
-        borderColor: '#eee',
-    },
-    titleContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    title: {
-        marginTop: 10,
-        fontSize: 28,
-        fontFamily: 'Circular Std',
-        fontWeight: 'bold',
-        color: '#1F6F4A'
-    },
-    cardsContainer: {
-        marginHorizontal: 25,
-        marginTop: 5,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-    },
     card: {
         width: 150,
         height: 170,

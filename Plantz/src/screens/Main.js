@@ -1,28 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {
-    SafeAreaView,
     Text,
     View,
     StyleSheet,
     Dimensions,
-    TextInput,
-    TouchableHighlight,
     TouchableOpacity,
     ScrollView, Image,
-    RefreshControl, TouchableWithoutFeedback, Share, ActivityIndicator, AppState
+    RefreshControl, TouchableWithoutFeedback, ActivityIndicator, AppState
 } from "react-native";
-import LinearGradient from 'react-native-linear-gradient';
 import {useLogout, useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 import { useStorePlants, useRetrievePlants } from "../hooks/AsyncStorage.hook";
-import {Button, ThemeProvider} from 'react-native-elements';
-import {SearchBar} from 'react-native-elements';
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faUser, faSearch, faPlusCircle, faTint, faSyncAlt, faSun, faCheck, faCalendarAlt, faSignOutAlt} from '@fortawesome/free-solid-svg-icons'
+import {faPlusCircle} from '@fortawesome/free-solid-svg-icons'
 import Svg, {Circle} from "react-native-svg";
 import axios from "axios";
 import {useIsFocused} from '@react-navigation/native';
-import {err} from "react-native-svg/lib/typescript/xml";
-import {SharedElement} from "react-navigation-shared-element";
 import { AuthContext } from "./../hooks/AuthContext";
 import Moment from "moment";
 import PlantCard from "../Components/PlantCard";

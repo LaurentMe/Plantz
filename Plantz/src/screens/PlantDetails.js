@@ -1,59 +1,27 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {
     Dimensions,
     Image,
-    SafeAreaView,
     Text,
     StyleSheet,
     TouchableOpacity,
     View,
-    TouchableWithoutFeedback, ScrollView, Share
+    ScrollView
 } from "react-native";
 import {SharedElement} from "react-navigation-shared-element";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faArrowLeft, faExpandArrowsAlt, faTint, faCalendarAlt, faEdit} from "@fortawesome/free-solid-svg-icons";
+import {faTint, faCalendarAlt} from "@fortawesome/free-solid-svg-icons";
 import LinearGradient from 'react-native-linear-gradient'
 import Moment from 'moment';
 import {useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 import axios from "axios";
 import {AuthContext} from "../hooks/AuthContext";
 import BackButton from "../Components/BackButton";
-import {get} from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 import EditButton from "../Components/EditButton";
 
 function PlantDetails({route, navigation}) {
     const {dayDifference} = React.useContext(AuthContext);
     const [plant, setPlant] = useState();
-
-    const goBack = () => {
-        navigation.goBack();
-    }
-
-    const enlarge = () => {
-        navigation.navigate('ImageView', {
-            image: route.params.image,
-            uri: 'image'
-        })
-    }
-
-
-    const getPlant = () => {
-        useRetrieveSession().then((session) => {
-            axios.get('http://192.168.1.110/api/plants/' + route.params.plant.id, {
-                headers: {
-                    Authorization: "Bearer " + session
-                }
-            })
-                .then(function (response) {
-                    setPlant(response.data.data)
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        }).catch((error) => {
-            console.log(error)
-        })
-    }
 
     const updateWater = () => {
         useRetrieveSession().then((session) => {
@@ -73,7 +41,6 @@ function PlantDetails({route, navigation}) {
             console.log(error)
         })
     }
-
 
     return (
         <ScrollView>

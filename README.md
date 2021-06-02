@@ -18,7 +18,6 @@ the amount of water and other information. The user will get notifications when 
 * **React Native Shared Element** transitions
 
 <br/>
-<br/>
 
 <h2>Screenshots</h2>
 

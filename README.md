@@ -16,16 +16,25 @@ Features in a nutshell:
 * **Offline functionality**
 * **React Native Shared Element** transitions
 
+<br/>
+<br/>
+
 <p align="center">
+    <p>Login</p>
     <img src="/Plantz/src/assets/screenshots/Login.png" alt="Plantz" width="40%"/>
     &nbsp; &nbsp; &nbsp; &nbsp;
+    <p>Notification</p>
     <img src="/Plantz/src/assets/screenshots/Main.png" alt="Plantz" width="40%"/>
     &nbsp; &nbsp; &nbsp; &nbsp;
+    <p>Main screen</p>
     <img src="/Plantz/src/assets/screenshots/Notification.png" alt="Plantz" width="40%"/>
     &nbsp; &nbsp; &nbsp; &nbsp;
+    <p>Detail page</p>
     <img src="/Plantz/src/assets/screenshots/Detail.png" alt="Plantz" width="40%"/>
     &nbsp; &nbsp; &nbsp; &nbsp;
+    <p>Camera</p>
     <img src="/Plantz/src/assets/screenshots/Camera.PNG" alt="Plantz" width="40%"/>
     &nbsp; &nbsp; &nbsp; &nbsp;
+    <p>Add plant</p>
     <img src="/Plantz/src/assets/screenshots/AddPlant.PNG" alt="Plantz" width="40%"/>
 </p>

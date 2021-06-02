@@ -135,27 +135,58 @@ function AddPlant({navigation, route}) {
         <View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View>
-                    <SharedElement id={'back'} style={{zIndex: 4}}>
+                    <SharedElement id={'back'} style={{zIndex: 50}}>
                         <BackButton navigation={navigation}/>
                     </SharedElement>
                     {route.params.edit &&
-                        <SharedElement id={'edit'} style={{zIndex: 4}}>
+                        <SharedElement id={'edit'} style={{zIndex: 50}}>
                             <SaveButton savePlant={savePlant}/>
                         </SharedElement>
                     }
-                    <TouchableWithoutFeedback style={{zIndex: 10}} onPress={enlarge}>
+                    <TouchableWithoutFeedback style={{zIndex: 60}} onPress={enlarge}>
                         <View style={styles.expandButton}>
                             <FontAwesomeIcon icon={faExpandArrowsAlt} color={'#fff'} size={18}/>
                         </View>
                     </TouchableWithoutFeedback>
-                    <LinearGradient colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']} style={styles.bottomOverlay}>
-                        <Text
-                            style={[styles.title]}>{!route.params.plant ? 'New plant' : route.params.plant.name}</Text>
-                        {route.params.edit &&
-                        <Text
-                            style={[styles.title]}>{!route.params.plant ? 'New plant' : route.params.plant.nickname}</Text>
+                    <SharedElement id={'overlay'} style={[{zIndex: 40, position: "absolute"}]}>
+                        <LinearGradient colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']} style={{
+                            top: 200,
+                            width: Dimensions.get('window').width,
+                            height: 200,
+                            zIndex: 50,
+                            borderBottomLeftRadius: 20,
+                            borderBottomRightRadius: 20,
+                        }}>
+                        </LinearGradient>
+                    </SharedElement>
+                    <SharedElement id={route.params.plant.nickname} style={[{zIndex: 50, position: "absolute", height: '100%'}]}>
+
+                        {route.params.edit ?
+                        <Text style={{
+                            position: 'absolute',
+                            width: Dimensions.get('window').width,
+                            bottom: 30,
+                            paddingRight: 20,
+                            color: '#fff',
+                            fontFamily: 'Circular Std',
+                            fontWeight: 'bold',
+                            fontSize: 45,
+                            left: 20
+                        }}>{!route.params.plant ? 'New plant' : route.params.plant.nickname}</Text>
+                            :
+                            <Text style={{
+                                position: 'absolute',
+                                width: Dimensions.get('window').width,
+                                bottom: 30,
+                                paddingRight: 20,
+                                color: '#fff',
+                                fontFamily: 'Circular Std',
+                                fontWeight: 'bold',
+                                fontSize: 45,
+                                left: 20
+                            }}>{!route.params.plant ? 'New plant' : route.params.plant.name}</Text>
                         }
-                    </LinearGradient>
+                    </SharedElement>
                     <SharedElement id={route.params.uri}>
                         <Image
                             style={{
@@ -339,7 +370,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 20,
         right: 30,
-        zIndex: 40,
+        zIndex: 50,
         opacity: 0.9,
     },
     bottomOverlay: {

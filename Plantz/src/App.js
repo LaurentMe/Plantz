@@ -211,6 +211,9 @@ export const App = () => {
                                         return [
                                             {id: route.params.uri},
                                             {id: 'save', animation: 'fade-in'},
+                                            {id: 'overlay', animation: 'fade-in'},
+                                            {id: 'edit', animation: 'fade-in'},
+                                            {id: route.params.plant.nickname, animation: 'fade-in'},
                                             {id: 'back'}
                                         ];
                                     }

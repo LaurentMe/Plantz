@@ -20,21 +20,21 @@ Features in a nutshell:
 <br/>
 
 <p align="center">
-    <p>Login</p>
-    <img src="/Plantz/src/assets/screenshots/Login.png" alt="Plantz" width="40%"/>
+    <p align="center">Login</p>
+    <img src="/Plantz/src/assets/screenshots/Login.png" alt="Plantz" width="35%"/>
     &nbsp; &nbsp; &nbsp; &nbsp;
-    <p>Notification</p>
-    <img src="/Plantz/src/assets/screenshots/Main.png" alt="Plantz" width="40%"/>
+    <p align="center">Notification</p>
+    <img src="/Plantz/src/assets/screenshots/Main.png" alt="Plantz" width="35%"/>
     &nbsp; &nbsp; &nbsp; &nbsp;
-    <p>Main screen</p>
-    <img src="/Plantz/src/assets/screenshots/Notification.png" alt="Plantz" width="40%"/>
+    <p align="center">Main screen</p>
+    <img src="/Plantz/src/assets/screenshots/Notification.png" alt="Plantz" width="35%"/>
     &nbsp; &nbsp; &nbsp; &nbsp;
-    <p>Detail page</p>
+    <p align="center">Detail page</p>
     <img src="/Plantz/src/assets/screenshots/Detail.png" alt="Plantz" width="40%"/>
     &nbsp; &nbsp; &nbsp; &nbsp;
-    <p>Camera</p>
+    <p align="center">Camera</p>
     <img src="/Plantz/src/assets/screenshots/Camera.PNG" alt="Plantz" width="40%"/>
     &nbsp; &nbsp; &nbsp; &nbsp;
-    <p>Add plant</p>
+    <p align="center">Add plant</p>
     <img src="/Plantz/src/assets/screenshots/AddPlant.PNG" alt="Plantz" width="40%"/>
 </p>

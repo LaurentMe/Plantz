@@ -126,7 +126,7 @@ export const App = () => {
                     });
             },
             dayDifference: (next_water_day) => {
-                return Math.floor((Moment(next_water_day).unix() - Moment().unix())/3600/24);
+                return Math.floor((Moment(next_water_day).unix() - Moment().unix())/3600/24) + 1;
             },
         }),
         []

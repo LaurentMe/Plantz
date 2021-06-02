@@ -187,7 +187,7 @@ export const App = () => {
                                             {id: 'date', animation: 'fade'},
                                             {id: 'water' + route.params.plant.id, animation: 'fade'},
                                             {id: 'waterDays' + route.params.plant.id, animation: 'fade'},
-                                            {id: route.params.plant.nickname, animation: 'fade-in'},
+                                            {id: 'nickname', animation: 'fade-in'},
                                         ];
                                     }
                                 }}

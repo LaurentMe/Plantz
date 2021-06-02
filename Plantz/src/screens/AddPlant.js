@@ -8,7 +8,7 @@ import {
     StyleSheet,
     TextInput,
     ScrollView,
-    Dimensions, TouchableWithoutFeedback
+    Dimensions, TouchableWithoutFeedback, Keyboard
 } from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faArrowLeft, faPlusCircle, faExpandArrowsAlt} from "@fortawesome/free-solid-svg-icons";
@@ -20,6 +20,7 @@ import LinearGradient from "react-native-linear-gradient";
 import BackButton from "../Components/BackButton";
 import EditButton from "../Components/EditButton";
 import SaveButton from "../Components/SaveButton";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 
 function AddPlant({navigation, route}) {
@@ -133,7 +134,7 @@ function AddPlant({navigation, route}) {
 
     return (
         <View>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
                 <View>
                     <SharedElement id={'back'} style={{zIndex: 50}}>
                         <BackButton navigation={navigation}/>
@@ -159,8 +160,7 @@ function AddPlant({navigation, route}) {
                         }}>
                         </LinearGradient>
                     </SharedElement>
-                    <SharedElement id={route.params.plant.nickname} style={[{zIndex: 50, position: "absolute", height: '100%'}]}>
-
+                    <SharedElement id={'nickname'} style={[{zIndex: 50, position: "absolute", height: '100%'}]}>
                         {route.params.edit ?
                         <Text style={{
                             position: 'absolute',
@@ -216,6 +216,7 @@ function AddPlant({navigation, route}) {
                             onChangeText={(text) => setNickname(text)}
                             autoCorrect={true}
                             maxLength={40}
+                            onSubmitEditing={() => Keyboard.dismiss()}
                         />
                     </View>
                     <View style={styles.inputContainer}>
@@ -227,6 +228,7 @@ function AddPlant({navigation, route}) {
                             autoCorrect={true}
                             editable={!route.params.plant}
                             maxLength={40}
+                            onSubmitEditing={() => Keyboard.dismiss()}
                         />
                     </View>
                     <View style={styles.inputContainer}>
@@ -238,6 +240,7 @@ function AddPlant({navigation, route}) {
                             autoCorrect={false}
                             editable={false}
                             maxLength={60}
+                            onSubmitEditing={() => Keyboard.dismiss()}
                         />
                     </View>
                     <Text style={[styles.label, {color: errors.water ? '#ED1103' : '#000'}]}>Water</Text>
@@ -258,6 +261,7 @@ function AddPlant({navigation, route}) {
                                 keyboardType={"number-pad"}
                                 autoCorrect={false}
                                 maxLength={4}
+                                onSubmitEditing={() => Keyboard.dismiss()}
                             />
                         </View>
                         <Text style={[styles.label, {marginBottom: 30, fontWeight: 'normal'}]}>cl every </Text>
@@ -269,7 +273,7 @@ function AddPlant({navigation, route}) {
                                 keyboardType={"number-pad"}
                                 autoCorrect={false}
                                 maxLength={4}
-
+                                onSubmitEditing={() => Keyboard.dismiss()}
                             />
                         </View>
                         <Text style={[styles.label, {marginBottom: 30, fontWeight: 'normal'}]}>days</Text>
@@ -282,6 +286,7 @@ function AddPlant({navigation, route}) {
                             onChangeText={(text) => setLocation(text)}
                             autoCorrect={true}
                             maxLength={100}
+                            onSubmitEditing={() => Keyboard.dismiss()}
                         />
                     </View>
                     <View style={styles.inputContainer}>
@@ -295,6 +300,7 @@ function AddPlant({navigation, route}) {
                             autoCorrect={true}
                             maxLength={800}
                             editable={!route.params.plant}
+                            onSubmitEditing={() => Keyboard.dismiss()}
                         />
                     </View>
 
@@ -314,7 +320,7 @@ function AddPlant({navigation, route}) {
                         </TouchableOpacity>
                     </>
                 }
-            </ScrollView>
+            </KeyboardAwareScrollView>
         </View>
     );
 }

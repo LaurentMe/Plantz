@@ -114,7 +114,7 @@ function PlantDetails({route, navigation}) {
                     }}>
                     </LinearGradient>
                 </SharedElement>
-                <SharedElement id={route.params.plant.nickname} style={[{zIndex: 10, position: "absolute", height: '100%'}]}>
+                <SharedElement id={'nickname'} style={[{zIndex: 10, position: "absolute", height: '100%'}]}>
                     <Text style={{
                         position: 'absolute',
                         width: Dimensions.get('window').width,
@@ -155,7 +155,7 @@ function PlantDetails({route, navigation}) {
                 <View
                     style={[styles.addWater, {backgroundColor: dayDifference(route.params.plant.next_water_day) < 0 ? '#F01002' : dayDifference(route.params.plant.next_water_day) === 0 ? '#F07202' : '#23B571'}]}>
                     <Text
-                        style={styles.addWaterText}>{dayDifference(route.params.plant.next_water_day) > 0 ? 'Everything is just fine' : 'Add water to ' + route.params.plant.nickname}</Text>
+                        style={styles.addWaterText}>{dayDifference(route.params.plant.next_water_day) > 0 ? 'Add water anyway' : 'Add water to ' + route.params.plant.nickname}</Text>
                 </View>
             </TouchableOpacity>
             <View style={styles.infoContainer}>

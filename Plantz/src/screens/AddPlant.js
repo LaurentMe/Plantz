@@ -21,6 +21,7 @@ import BackButton from "../Components/BackButton";
 import EditButton from "../Components/EditButton";
 import SaveButton from "../Components/SaveButton";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import EnlargeButton from "../Components/EnlargeButton";
 
 
 function AddPlant({navigation, route}) {
@@ -51,10 +52,6 @@ function AddPlant({navigation, route}) {
         setLocation(route.params.plant.location)
         setDescription(route.params.plant.plant.description)
     }, [])
-
-    const back = () => {
-        navigation.goBack();
-    }
 
     const enlarge = () => {
         navigation.navigate('ImageView', {
@@ -140,16 +137,14 @@ function AddPlant({navigation, route}) {
                         <BackButton navigation={navigation}/>
                     </SharedElement>
                     {route.params.edit &&
-                        <SharedElement id={'edit'} style={{zIndex: 50}}>
-                            <SaveButton savePlant={savePlant}/>
-                        </SharedElement>
+                    <SharedElement id={'edit'} style={{zIndex: 50}}>
+                        <SaveButton savePlant={savePlant}/>
+                    </SharedElement>
                     }
-                    <TouchableWithoutFeedback style={{zIndex: 70}} onPress={enlarge}>
-                        <View style={styles.expandButton}>
-                            <FontAwesomeIcon icon={faExpandArrowsAlt} color={'#fff'} size={18}/>
-                        </View>
-                    </TouchableWithoutFeedback>
-                    <SharedElement id={'overlay'} style={[{zIndex: 40, position: "absolute"}]}>
+                    <SharedElement id={'enlarge'} style={{zIndex: 70}}>
+                        <EnlargeButton enlarge={enlarge}/>
+                    </SharedElement>
+                    <SharedElement id={'overlay'} style={[{zIndex: 1, position: "absolute"}]}>
                         <LinearGradient colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']} style={{
                             top: 200,
                             width: Dimensions.get('window').width,
@@ -162,17 +157,17 @@ function AddPlant({navigation, route}) {
                     </SharedElement>
                     <SharedElement id={'nickname'} style={[{zIndex: 50, position: "absolute", height: '100%'}]}>
                         {route.params.edit ?
-                        <Text style={{
-                            position: 'absolute',
-                            width: Dimensions.get('window').width,
-                            bottom: 30,
-                            paddingRight: 20,
-                            color: '#fff',
-                            fontFamily: 'Circular Std',
-                            fontWeight: 'bold',
-                            fontSize: 45,
-                            left: 20
-                        }}>{!route.params.plant ? 'New plant' : route.params.plant.nickname}</Text>
+                            <Text style={{
+                                position: 'absolute',
+                                width: Dimensions.get('window').width,
+                                bottom: 30,
+                                paddingRight: 20,
+                                color: '#fff',
+                                fontFamily: 'Circular Std',
+                                fontWeight: 'bold',
+                                fontSize: 45,
+                                left: 20
+                            }}>{!route.params.plant ? 'New plant' : route.params.plant.nickname}</Text>
                             :
                             <Text style={{
                                 position: 'absolute',
@@ -305,20 +300,21 @@ function AddPlant({navigation, route}) {
                     </View>
 
                 </View>
-                <TouchableOpacity style={{alignItems: 'center', marginBottom: 20}} onPress={!route.params.edit ? addPlant : savePlant}>
+                <TouchableOpacity style={{alignItems: 'center', marginBottom: 20}}
+                                  onPress={!route.params.edit ? addPlant : savePlant}>
                     <View style={styles.loginButton}>
                         <Text style={styles.loginText}>{!route.params.edit ? 'Add plant' : 'Save plant'}</Text>
                     </View>
                 </TouchableOpacity>
                 {route.params.edit &&
-                    <>
-                        <Text style={[styles.subTitle, {marginTop: 20}]}>Danger zone</Text>
-                        <TouchableOpacity style={{alignItems: 'center', marginBottom: 20}} onPress={deletePlant}>
-                            <View style={styles.deleteButton}>
-                                <Text style={styles.deleteText}>Remove plant</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </>
+                <>
+                    <Text style={[styles.subTitle, {marginTop: 20}]}>Danger zone</Text>
+                    <TouchableOpacity style={{alignItems: 'center', marginBottom: 20}} onPress={deletePlant}>
+                        <View style={styles.deleteButton}>
+                            <Text style={styles.deleteText}>Remove plant</Text>
+                        </View>
+                    </TouchableOpacity>
+                </>
                 }
             </KeyboardAwareScrollView>
         </View>
@@ -374,9 +370,12 @@ const styles = StyleSheet.create({
     },
     expandButton: {
         position: 'absolute',
-        bottom: 20,
-        right: 30,
+        bottom: -385,
+        right: 15,
+        color: '#fff',
         zIndex: 70,
+        borderRadius: 200,
+        padding: 12,
         opacity: 0.9,
     },
     bottomOverlay: {

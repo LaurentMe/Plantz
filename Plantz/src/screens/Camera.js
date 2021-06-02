@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     View,
     StyleSheet,
@@ -7,7 +7,7 @@ import {
     SafeAreaView,
     TouchableWithoutFeedback,
     LogBox,
-    TouchableHighlight, TouchableNativeFeedback
+    TouchableHighlight, TouchableNativeFeedback, ActivityIndicator
 } from "react-native";
 import {RNCamera} from 'react-native-camera';
 import Main from "./Main";
@@ -21,6 +21,7 @@ import AddPlant from "./AddPlant";
 import BackButton from "../Components/BackButton";
 
 function Camera({navigation}) {
+    const [isLoading, setIsLoading] = useState(false);
 
     const PendingView = () => (
         <View
@@ -43,6 +44,7 @@ function Camera({navigation}) {
         const options = {quality: 0.5, base64: true};
         await camera.takePictureAsync(options).then((data) => {
             useRetrieveSession().then((session) => {
+                setIsLoading(true);
                 axios.post('http://192.168.1.110/api/searchPlant',
                     {
                         image: data.base64
@@ -52,6 +54,7 @@ function Camera({navigation}) {
                             Authorization: "Bearer " + session
                         }
                     }).then((response) => {
+                    setIsLoading(false);
                     navigation.navigate('AddPlant', {
                         image: data.base64,
                         plantLatin: response.data.plant_name,
@@ -60,9 +63,11 @@ function Camera({navigation}) {
                         edit: false
                     });
                 }).catch((error) => {
+                    setIsLoading(false)
                     console.log(error)
                 })
             }).catch((error) => {
+                setIsLoading(false)
                 console.log(error)
             })
         });
@@ -92,14 +97,24 @@ function Camera({navigation}) {
                 {({camera, status, recordAudioPermissionStatus}) => {
                     if (status !== 'READY') return <PendingView/>;
                     return (
-                        <View style={{flex: 0, flexDirection: 'row', justifyContent: 'center'}}>
-                            <View style={styles.capture}>
-                                <TouchableOpacity onPress={() => takePicture(camera)}>
-                                    <View style={styles.innerCircle}>
-                                    </View>
-                                </TouchableOpacity>
+                        <>
+                            {isLoading &&
+                            <View style={styles.loading}>
+                                <View style={styles.loadingBox}/>
+                                <ActivityIndicator size="small" color="#fff" style={{position: "absolute"}}/>
+
                             </View>
-                        </View>
+                            }
+                            <View style={{flex: 0, flexDirection: 'row', justifyContent: 'center'}}>
+                                <View style={styles.capture}>
+                                    <TouchableOpacity onPress={() => takePicture(camera)}>
+                                        <View style={styles.innerCircle}>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </>
+
                     );
                 }}
             </RNCamera>
@@ -135,4 +150,19 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: 'black'
     },
+    loading: {
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+    },
+    loadingBox: {
+        backgroundColor: '#777',
+        padding: 50,
+        borderRadius: 20,
+        opacity: 0.4,
+    }
 });

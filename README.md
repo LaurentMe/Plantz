@@ -1,6 +1,6 @@
 # Web & Mobile: Plantz
 
-![Plantz logo](/Plantz/src/assets/logo/logoPlantz.png)
+![Plantz logo](/Plantz/src/assets/logo/logoPlantz.png){width=25%}
 
 Plantz is an app that helps to keep your plants alive.
 With the Plant.id API you can scan your plant to import it into the app. If the plant exists in 

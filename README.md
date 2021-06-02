@@ -20,21 +20,15 @@ Features in a nutshell:
 <br/>
 
 <p align="center">
-    <p align="center">Login</p>
-    <img src="/Plantz/src/assets/screenshots/Login.png" alt="Plantz" width="35%"/>
+    <img src="/Plantz/src/assets/screenshots/Login.png" alt="Plantz" width="40%"/>
     &nbsp; &nbsp; &nbsp; &nbsp;
-    <p align="center">Notification</p>
-    <img src="/Plantz/src/assets/screenshots/Main.png" alt="Plantz" width="35%"/>
+    <img src="/Plantz/src/assets/screenshots/Main.png" alt="Plantz" width="40%"/>
     &nbsp; &nbsp; &nbsp; &nbsp;
-    <p align="center">Main screen</p>
-    <img src="/Plantz/src/assets/screenshots/Notification.png" alt="Plantz" width="35%"/>
+    <img src="/Plantz/src/assets/screenshots/Notification.png" alt="Plantz" width="40%"/>
     &nbsp; &nbsp; &nbsp; &nbsp;
-    <p align="center">Detail page</p>
     <img src="/Plantz/src/assets/screenshots/Detail.png" alt="Plantz" width="40%"/>
     &nbsp; &nbsp; &nbsp; &nbsp;
-    <p align="center">Camera</p>
     <img src="/Plantz/src/assets/screenshots/Camera.PNG" alt="Plantz" width="40%"/>
     &nbsp; &nbsp; &nbsp; &nbsp;
-    <p align="center">Add plant</p>
     <img src="/Plantz/src/assets/screenshots/AddPlant.PNG" alt="Plantz" width="40%"/>
 </p>

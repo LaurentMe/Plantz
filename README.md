@@ -20,6 +20,8 @@ the amount of water and other information. The user will get notifications when 
 <br/>
 <br/>
 
+<h2>Screenshots</h2>
+
 <p align="center">
     <img src="/Plantz/src/assets/screenshots/Login.png" alt="Plantz" width="40%"/>
     &nbsp; &nbsp; &nbsp; &nbsp;

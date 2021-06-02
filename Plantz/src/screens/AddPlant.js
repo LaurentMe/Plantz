@@ -63,7 +63,6 @@ function AddPlant({navigation, route}) {
     }
 
     const addPlant = () => {
-
         useRetrieveSession().then((session) => {
             axios.post('http://192.168.1.110/api/plants', {
                 name: name,
@@ -92,7 +91,26 @@ function AddPlant({navigation, route}) {
     }
 
     const savePlant = () => {
-        console.log('ok')
+        useRetrieveSession().then((session) => {
+            axios.put('http://192.168.1.110/api/plants/' + route.params.plant.id, {
+                nickname: nickname,
+                water: water,
+                waterDays: waterDays,
+                location: location,
+            }, {
+                headers: {
+                    Authorization: "Bearer " + session,
+                }
+            })
+                .then(function (response) {
+                    if (response.status === 200) {
+                        navigation.goBack();
+                    }
+                })
+                .catch(function ({response}) {
+                    console.log(response.data)
+                });
+        })
     }
 
     const deletePlant = () => {

@@ -38,6 +38,8 @@ class PlantController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'nickname' => 'max:40',
+            'name' => 'max:40',
             'latinName' => 'required|max:60',
             'water' => 'required|max:4',
             'waterDays' => 'required|max:4',
@@ -122,7 +124,29 @@ class PlantController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'water' => 'required|max:4',
+            'waterDays' => 'required|max:4',
+            'location' => 'required|max:100',
+        ]);
+
+        try {
+            $plantUser = PlantUser::find($id);
+            $plantUser->location = $request->location;
+            $plantUser->nickname = $plantUser->latin_name;
+            $plantUser->custom_water_amount = $request->water;
+            $plantUser->custom_water_days = $request->waterDays;
+            $plantUser->next_water_day = Carbon::createFromTimestamp(Carbon::createFromFormat('Y-m-d H:i:s' , $plantUser->last_water_day)->timestamp + $request->waterDays * 24 * 3600)->toDateTimeString();
+
+            if ($request->nickname !== null) {
+                $plantUser->nickname = $request->nickname;
+            }
+            $plantUser->save();
+            return response(['status'=> 'ok'], 200);
+        } catch (Exception $exception) {
+            return response(['error'=>$exception], 500);
+        }
+
     }
 
     /**

@@ -45,7 +45,7 @@ function PlantCard({navigation, details,item, index,}) {
                             <View style={styles.textBox}>
                                 <FontAwesomeIcon icon={faTint} style={{marginRight: 5}}
                                                  color={'#373737'}/>
-                                <Text style={styles.text}>{item.custom_water_amount}ml</Text>
+                                <Text style={styles.text}>{item.custom_water_amount}cl</Text>
                             </View>
                         </SharedElement>
                         <SharedElement id={'waterDays' + item.id}>

@@ -53,7 +53,6 @@ function Main({navigation}) {
     });
 
     Notifications.events().registerNotificationOpened((notification: Notification, completion) => {
-        console.log(notification.payload.userInfo.plant)
         navigation.navigate('PlantDetails', {image: notification.payload.userInfo.plant.image, index: notification.payload.userInfo.index, plant: notification.payload.userInfo.plant})
     });
 
@@ -75,24 +74,26 @@ function Main({navigation}) {
     });
 
     useEffect(() => {
-        Notifications.ios.cancelAllLocalNotifications();
-        try {
-            plants.forEach((item, index) => {
-                Notifications.postLocalNotification({
-                    body: item.nickname + ' needs water',
-                    title: item.nickname,
-                    sound: "chime.aiff",
-                    silent: false,
-                    category: "SOME_CATEGORY",
-                    userInfo: { "plant": item, "index": index},
-                    // fireDate: test.toISOString(),
-                    fireDate: Moment(item.next_water_date).format('YYYY-MM-DD') + 'T09:00:00.000Z'
-                });
-            })
-        } catch (e) {
-
+        if (plants) {
+            Notifications.ios.cancelAllLocalNotifications();
+            try {
+                plants.forEach((item, index) => {
+                    // console.log((Moment(item.next_water_date).format('YYYY-MM-DD') + '\'T\'14:47:30.000Z'))
+                    Notifications.postLocalNotification({
+                        body: item.nickname + ' needs water',
+                        title: item.nickname,
+                        sound: "chime.aiff",
+                        silent: false,
+                        category: "SOME_CATEGORY",
+                        userInfo: { "plant": item, "index": index},
+                        // fireDate: test.toISOString(),
+                        fireDate: new Date(Moment(item.next_water_date).format('YYYY-MM-DD')).toISOString()
+                    }, item.id);
+                })
+            } catch (e) {
+                console.log(e)
+            }
         }
-
     }, [plants])
 
     const onRefresh = React.useCallback(() => {

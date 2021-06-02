@@ -117,7 +117,7 @@ function PlantDetails({route, navigation}) {
                 <SharedElement id={'nickname'} style={[{zIndex: 10, position: "absolute", height: '100%'}]}>
                     <Text style={{
                         position: 'absolute',
-                        width: Dimensions.get('window').width,
+                        width: Dimensions.get('window').width*0.85,
                         bottom: 30,
                         paddingRight: 20,
                         color: '#fff',

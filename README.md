@@ -17,15 +17,15 @@ Features in a nutshell:
 * **React Native Shared Element** transitions
 
 <p align="center">
-  <img src="/Plantz/src/assets/screenshots/Login.png" alt="Plantz" width="45%"/>
-
-&nbsp; &nbsp; &nbsp; &nbsp;
-<img src="/Plantz/src/assets/screenshots/Notification.png" alt="Plantz" width="45%"/>
-
+    <img src="/Plantz/src/assets/screenshots/Login.png" alt="Plantz" width="40%"/>
+    &nbsp; &nbsp; &nbsp; &nbsp;
+    <img src="/Plantz/src/assets/screenshots/Main.png" alt="Plantz" width="40%"/>
+    &nbsp; &nbsp; &nbsp; &nbsp;
+    <img src="/Plantz/src/assets/screenshots/Notification.png" alt="Plantz" width="40%"/>
+    &nbsp; &nbsp; &nbsp; &nbsp;
+    <img src="/Plantz/src/assets/screenshots/Detail.png" alt="Plantz" width="40%"/>
+    &nbsp; &nbsp; &nbsp; &nbsp;
+    <img src="/Plantz/src/assets/screenshots/Camera.PNG" alt="Plantz" width="40%"/>
+    &nbsp; &nbsp; &nbsp; &nbsp;
+    <img src="/Plantz/src/assets/screenshots/AddPlant.PNG" alt="Plantz" width="40%"/>
 </p>
-
-<img src="/Plantz/src/assets/screenshots/Main.png" alt="Plantz" width="200"/>
-<img src="/Plantz/src/assets/screenshots/Notification.png" alt="Plantz" width="200"/>
-<img src="/Plantz/src/assets/screenshots/Detail.png" alt="Plantz" width="200"/>
-<img src="/Plantz/src/assets/screenshots/Camera.PNG" alt="Plantz" width="200"/>
-<img src="/Plantz/src/assets/screenshots/AddPlant.PNG" alt="Plantz" width="200"/>

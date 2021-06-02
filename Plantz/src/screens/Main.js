@@ -187,25 +187,9 @@ function Main({navigation}) {
                         })}
                         <TouchableWithoutFeedback onPress={() => camera()}>
                             <View>
-                                <View style={{
-                                    width: 90,
-                                    height: 90,
-                                    borderRadius: 100,
-                                    alignSelf: 'center',
-                                    backgroundColor: '#fff',
-                                    position: 'absolute',
-                                    zIndex: 20,
-                                    shadowColor: '#444',
-                                    shadowOffset: {width: 0, height: 0},
-                                    shadowOpacity: 0.40,
-                                    shadowRadius: 6,
-                                }}>
+                                <View style={styles.imageContainer}>
                                     <Image
-                                        style={{
-                                            width: 90,
-                                            height: 90,
-                                            borderRadius: 100,
-                                        }}
+                                        style={styles.plantzImg}
                                         source={require('../assets/logo/logoPlantz.png')}
                                     />
                                 </View>
@@ -238,6 +222,24 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         paddingBottom: 15,
         borderColor: '#eee',
+    },
+    imageContainer: {
+        width: 90,
+        height: 90,
+        borderRadius: 100,
+        alignSelf: 'center',
+        backgroundColor: '#fff',
+        position: 'absolute',
+        zIndex: 20,
+        shadowColor: '#444',
+        shadowOffset: {width: 0, height: 0},
+        shadowOpacity: 0.40,
+        shadowRadius: 6,
+    },
+    plantzImg: {
+        width: 90,
+        height: 90,
+        borderRadius: 100,
     },
     searchContainer: {
         flexDirection: 'row',

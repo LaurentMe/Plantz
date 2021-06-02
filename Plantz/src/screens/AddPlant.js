@@ -18,6 +18,8 @@ import {useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 import {SharedElement} from "react-navigation-shared-element";
 import LinearGradient from "react-native-linear-gradient";
 import BackButton from "../Components/BackButton";
+import EditButton from "../Components/EditButton";
+import SaveButton from "../Components/SaveButton";
 
 
 function AddPlant({navigation, route}) {
@@ -32,12 +34,21 @@ function AddPlant({navigation, route}) {
 
     useEffect(() => {
         setLatinName(route.params.plantLatin);
-        if (route.params.plant !== null) {
-            setName(route.params.plant.name);
-            setWater(route.params.plant.water_amount);
-            setWaterDays(route.params.plant.days_between_water);
-            setDescription(route.params.plant.description)
+        if (!route.params.edit) {
+            if (route.params.plant !== null) {
+                setName(route.params.plant.name);
+                setWater(route.params.plant.water_amount);
+                setWaterDays(route.params.plant.days_between_water);
+                setDescription(route.params.plant.description)
+            }
+            return
         }
+        setName(route.params.plant.plant.name)
+        setNickname(route.params.plant.nickname)
+        setWater(route.params.plant.custom_water_amount)
+        setWaterDays(route.params.plant.custom_water_days)
+        setLocation(route.params.plant.location)
+        setDescription(route.params.plant.plant.description)
     }, [])
 
     const back = () => {
@@ -80,6 +91,28 @@ function AddPlant({navigation, route}) {
         })
     }
 
+    const savePlant = () => {
+        console.log('ok')
+    }
+
+    const deletePlant = () => {
+        useRetrieveSession().then((session) => {
+            axios.delete('http://192.168.1.110/api/plants/' + route.params.plant.id, {
+                headers: {
+                    Authorization: "Bearer " + session
+                }
+            })
+                .then(function (response) {
+                    navigation.popToTop();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
     return (
         <View>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -87,6 +120,11 @@ function AddPlant({navigation, route}) {
                     <SharedElement id={'back'} style={{zIndex: 4}}>
                         <BackButton navigation={navigation}/>
                     </SharedElement>
+                    {route.params.edit &&
+                        <SharedElement id={'edit'} style={{zIndex: 4}}>
+                            <SaveButton savePlant={savePlant}/>
+                        </SharedElement>
+                    }
                     <TouchableWithoutFeedback style={{zIndex: 10}} onPress={enlarge}>
                         <View style={styles.expandButton}>
                             <FontAwesomeIcon icon={faExpandArrowsAlt} color={'#fff'} size={18}/>
@@ -95,13 +133,19 @@ function AddPlant({navigation, route}) {
                     <LinearGradient colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']} style={styles.bottomOverlay}>
                         <Text
                             style={[styles.title]}>{!route.params.plant ? 'New plant' : route.params.plant.name}</Text>
+                        {route.params.edit &&
+                        <Text
+                            style={[styles.title]}>{!route.params.plant ? 'New plant' : route.params.plant.nickname}</Text>
+                        }
                     </LinearGradient>
                     <SharedElement id={route.params.uri}>
                         <Image
                             style={{
                                 width: Dimensions.get('window').width,
                                 height: 400,
-                                alignSelf: 'center'
+                                alignSelf: 'center',
+                                borderBottomRightRadius: 20,
+                                borderBottomLeftRadius: 20,
                             }}
                             source={{uri: 'data:image/png;base64,' + route.params.image}}
                         />
@@ -206,11 +250,21 @@ function AddPlant({navigation, route}) {
                     </View>
 
                 </View>
-                <TouchableOpacity style={{alignItems: 'center', marginBottom: 20}} onPress={addPlant}>
+                <TouchableOpacity style={{alignItems: 'center', marginBottom: 20}} onPress={!route.params.edit ? addPlant : savePlant}>
                     <View style={styles.loginButton}>
-                        <Text style={styles.loginText}>Add plant</Text>
+                        <Text style={styles.loginText}>{!route.params.edit ? 'Add plant' : 'Save plant'}</Text>
                     </View>
                 </TouchableOpacity>
+                {route.params.edit &&
+                    <>
+                        <Text style={[styles.subTitle, {marginTop: 20}]}>Danger zone</Text>
+                        <TouchableOpacity style={{alignItems: 'center', marginBottom: 20}} onPress={deletePlant}>
+                            <View style={styles.deleteButton}>
+                                <Text style={styles.deleteText}>Remove plant</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </>
+                }
             </ScrollView>
         </View>
     );
@@ -293,5 +347,26 @@ const styles = StyleSheet.create({
         fontFamily: 'Circular Std',
         color: '#575757',
         marginTop: 2,
-    }
+    },
+
+    deleteButton: {
+        backgroundColor: '#e01919',
+        width: 250,
+        height: 45,
+        justifyContent: 'center',
+    },
+    deleteText: {
+        color: '#fff',
+        alignSelf: 'center',
+        fontFamily: 'Circular Std',
+        fontWeight: 'bold',
+    },
+    subTitle: {
+        color: '#1a1a1a',
+        fontFamily: 'Circular Std',
+        fontWeight: 'bold',
+        fontSize: 26,
+        marginHorizontal: 35,
+        marginBottom: 20,
+    },
 })

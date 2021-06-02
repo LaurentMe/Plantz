@@ -41,14 +41,14 @@ function PlantCard({navigation, details,item, index,}) {
                         <Text style={styles.cardTitle}>{item.nickname}</Text>
                     </SharedElement>
                     <View style={styles.cardText}>
-                        <SharedElement id={'water' + index}>
+                        <SharedElement id={'water' + item.id}>
                             <View style={styles.textBox}>
                                 <FontAwesomeIcon icon={faTint} style={{marginRight: 5}}
                                                  color={'#373737'}/>
                                 <Text style={styles.text}>{item.custom_water_amount}ml</Text>
                             </View>
                         </SharedElement>
-                        <SharedElement id={'waterDays' + index}>
+                        <SharedElement id={'waterDays' + item.id}>
                             <View style={styles.textBox}>
                                 <FontAwesomeIcon icon={faCalendarAlt} style={{marginRight: 5}}
                                                  color={'#373737'}/>

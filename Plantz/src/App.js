@@ -181,11 +181,12 @@ export const App = () => {
                                         return [
                                             {id: route.params.plant.created_at.toString()},
                                             {id: 'back', animation: 'fade-in'},
+                                            {id: 'edit', animation: 'fade-in'},
                                             {id: 'enlarge', animation: 'fade-in'},
                                             {id: 'overlay', animation: 'fade-in'},
                                             {id: 'date', animation: 'fade'},
-                                            {id: 'water' + route.params.index, animation: 'fade'},
-                                            {id: 'waterDays' + route.params.index, animation: 'fade'},
+                                            {id: 'water' + route.params.plant.id, animation: 'fade'},
+                                            {id: 'waterDays' + route.params.plant.id, animation: 'fade'},
                                             {id: route.params.plant.nickname, animation: 'fade-in'},
                                         ];
                                     }
@@ -202,7 +203,19 @@ export const App = () => {
                                 })}
                             />
                             <Stack.Screen name='Camera' component={Camera}/>
-                            <Stack.Screen name={'AddPlant'} component={AddPlant}/>
+                            <Stack.Screen
+                                name={'AddPlant'}
+                                component={AddPlant}
+                                sharedElementsConfig={(route, otherRoute, showing) => {
+                                    if (otherRoute.name === 'PlantDetails' && showing) {
+                                        return [
+                                            {id: route.params.uri},
+                                            {id: 'save', animation: 'fade-in'},
+                                            {id: 'back'}
+                                        ];
+                                    }
+                                }}
+                            />
                             <Stack.Screen
                                 name={'ImageView'}
                                 component={ImageView}
@@ -210,6 +223,7 @@ export const App = () => {
                                     if (otherRoute.name === 'AddPlant' && showing) {
                                         return [
                                             {id: route.params.uri},
+                                            {id: 'save', animation: 'fade-in'},
                                             {id: 'back'}
                                         ];
                                     }

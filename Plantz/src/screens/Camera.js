@@ -56,7 +56,8 @@ function Camera({navigation}) {
                         image: data.base64,
                         plantLatin: response.data.plant_name,
                         plant: response.data.plant,
-                        uri: data.uri
+                        uri: data.uri,
+                        edit: false
                     });
                 }).catch((error) => {
                     console.log(error)

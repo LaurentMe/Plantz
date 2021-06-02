@@ -21,6 +21,7 @@ class PlantUserResource extends JsonResource
             'location' => $this->location,
             'nickname' => $this->nickname,
             'image' => $this->image,
+
             'last_water_day' => $this->last_water_day,
             'custom_water_amount' => $this->custom_water_amount,
             'custom_water_days' => $this->custom_water_days,

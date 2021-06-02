@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Dimensions,
     Image,
@@ -7,22 +7,23 @@ import {
     StyleSheet,
     TouchableOpacity,
     View,
-    TouchableWithoutFeedback, ScrollView
+    TouchableWithoutFeedback, ScrollView, Share
 } from "react-native";
 import {SharedElement} from "react-navigation-shared-element";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {faArrowLeft, faExpandArrowsAlt, faTint, faCalendarAlt} from "@fortawesome/free-solid-svg-icons";
+import {faArrowLeft, faExpandArrowsAlt, faTint, faCalendarAlt, faEdit} from "@fortawesome/free-solid-svg-icons";
 import LinearGradient from 'react-native-linear-gradient'
 import Moment from 'moment';
 import {useRetrieveSession} from "../hooks/EncryptedStorage.hook";
 import axios from "axios";
 import {AuthContext} from "../hooks/AuthContext";
 import BackButton from "../Components/BackButton";
+import {get} from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import EditButton from "../Components/EditButton";
 
 function PlantDetails({route, navigation}) {
     const {dayDifference} = React.useContext(AuthContext);
     const [plant, setPlant] = useState();
-    const [isLoading, setIsLoading] = useState(true);
 
     const goBack = () => {
         navigation.goBack();
@@ -34,6 +35,7 @@ function PlantDetails({route, navigation}) {
             uri: 'image'
         })
     }
+
 
     const getPlant = () => {
         useRetrieveSession().then((session) => {
@@ -72,24 +74,6 @@ function PlantDetails({route, navigation}) {
         })
     }
 
-    const deletePlant = () => {
-        useRetrieveSession().then((session) => {
-            axios.delete('http://192.168.1.110/api/plants/' + route.params.plant.id, {
-                headers: {
-                    Authorization: "Bearer " + session
-                }
-            })
-                .then(function (response) {
-                    navigation.popToTop();
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        }).catch((error) => {
-            console.log(error)
-        })
-    }
-
 
     return (
         <ScrollView>
@@ -97,7 +81,10 @@ function PlantDetails({route, navigation}) {
                 <SharedElement id={'back'} style={[{zIndex: 40, position: "absolute"}]}>
                     <BackButton navigation={navigation}/>
                 </SharedElement>
-                <SharedElement id={'water' + route.params.index} style={[{zIndex: 30, position: "absolute"}]}>
+                <SharedElement id={'edit'} style={[{zIndex: 40, position: "absolute"}]}>
+                    <EditButton navigation={navigation} plant={route.params.plant}/>
+                </SharedElement>
+                <SharedElement id={'water' + route.params.plant.id} style={[{zIndex: 30, position: "absolute"}]}>
                     <View style={[styles.bottomIcons, {flexDirection: 'row', alignItems: 'center'}]}>
                         <FontAwesomeIcon icon={faTint} color={'#fff'} size={20} style={{zIndex: 20}}/>
                         <Text style={[styles.text, {
@@ -106,7 +93,7 @@ function PlantDetails({route, navigation}) {
                         }]}>{route.params.plant.custom_water_amount}cl</Text>
                     </View>
                 </SharedElement>
-                <SharedElement id={'waterDays' + route.params.index} style={[{zIndex: 30, position: "absolute"}]}>
+                <SharedElement id={'waterDays' + route.params.plant.id} style={[{zIndex: 30, position: "absolute"}]}>
                     <View style={[styles.bottomIcons, {flexDirection: 'row', alignItems: 'center', marginTop: 30}]}>
                         <FontAwesomeIcon icon={faCalendarAlt} color={'#fff'} size={20} style={{zIndex: 20}}/>
                         <Text style={[styles.text, {
@@ -178,14 +165,7 @@ function PlantDetails({route, navigation}) {
                 <Text style={styles.bigText}>{route.params.plant.plant.latin_name}</Text>
                 <Text style={[styles.subTitle]}>Description</Text>
                 <Text style={styles.text}>{route.params.plant.plant.description}</Text>
-                <Text style={[styles.subTitle, {marginTop: 20}]}>Danger zone</Text>
             </View>
-
-            <TouchableOpacity onPress={deletePlant}>
-                <View style={styles.deleteButton}>
-                    <Text style={styles.deleteText}>Remove plant</Text>
-                </View>
-            </TouchableOpacity>
         </ScrollView>
     );
 }
